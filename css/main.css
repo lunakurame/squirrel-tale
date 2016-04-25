@@ -4,12 +4,18 @@ body {
 	padding: 0;
 }
 
-#map {
+canvas {
 	position: absolute;
+}
+
+#map {
 	z-index: 0;
 }
 
 #player {
-	position: absolute;
 	z-index: 100;
+}
+
+#hud {
+	z-index: 1000;
 }
