@@ -4,6 +4,10 @@ body, div, p, canvas {
 	padding: 0;
 }
 
+body {
+	background: orange;
+}
+
 canvas {
 	image-rendering: optimizeSpeed;             /* Older versions of FF          */
 	image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */

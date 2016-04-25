@@ -1,0 +1,14 @@
+{
+	"name": "Shiro",
+	"variants": [
+		"normal",
+		"apple"
+	], 
+	"images": [
+		"shiro.png",
+		"shiro-apple.png"
+	],
+	"width": 16,
+	"height": 29,
+	"defaultSpeed": 100
+}
