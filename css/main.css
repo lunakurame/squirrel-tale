@@ -1,0 +1,15 @@
+body {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+#map {
+	position: absolute;
+	z-index: 0;
+}
+
+#player {
+	position: absolute;
+	z-index: 100;
+}
