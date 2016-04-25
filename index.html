@@ -6,11 +6,18 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-	<canvas id="map" width="800" height="800">Your browser does not support the HTML5 canvas tag.</canvas>
-	<canvas id="player" width="800" height="800"></canvas>
-	<canvas id="hud" width="800" height="800"></canvas>
+	<div id="black-screen" class="fullscreen">
+		<div>
+			<img class="loading-icon" src="img/loading.png" alt="Loading icon">
+		</div>
+	</div>
+
+	<canvas id="map" class="overscreen">Your browser does not support the HTML5 canvas tag.</canvas>
+	<canvas id="player" class="fullscreen"></canvas>
+	<canvas id="hud" class="fullscreen"></canvas>
 
 	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="js/jQueryRotate.js"></script>
 	<script src="js/main.js"></script>
 </body>
 </html>

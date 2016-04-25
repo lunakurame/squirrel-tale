@@ -1,11 +1,32 @@
-body {
+body, div, p, canvas {
 	border: 0;
 	margin: 0;
 	padding: 0;
 }
 
 canvas {
+	image-rendering: optimizeSpeed;             /* Older versions of FF          */
+	image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */
+	image-rendering: -webkit-optimize-contrast; /* Safari                        */
+	image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
+	image-rendering: pixelated;                 /* Awesome future-browsers       */
+	-ms-interpolation-mode: nearest-neighbor;   /* IE                            */
+}
+
+canvas, #black-screen {
 	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+.fullscreen {
+	width: 100%;
+	height: 100%;
+}
+
+.overscreen {
+/*TODO*/
+	height: 100%;
 }
 
 #map {
@@ -19,3 +40,25 @@ canvas {
 #hud {
 	z-index: 1000;
 }
+
+#black-screen {
+	z-index: 100000;
+	display: flex;
+	background-color: #000;
+}
+
+#black-screen > div {
+	margin: auto;
+}
+
+#black-screen img {
+	display: block;
+	margin: auto;
+}
+
+#black-screen p {
+	padding-top: 20px;
+	font-family: Verdana, sans-serif;
+	color: #fff;
+}
+
