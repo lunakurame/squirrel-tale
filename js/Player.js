@@ -48,6 +48,17 @@ Player.prototype.draw = function () {
 		this.data.file.width,
 		this.data.file.height
 	);
+
+	// drawing collision boxes
+	if (this.app.config.debug.collisions.draw) {
+		this.context.fillStyle = this.app.config.debug.collisions.color;
+		this.context.fillRect(
+			parseInt(this.posX - this.app.map.left + this.app.map.marginLeft) + this.data.file.collisions[0].posX,
+			parseInt(this.posY - this.app.map.top + this.app.map.marginTop) + this.data.file.collisions[0].posY,
+			this.data.file.collisions[0].width,
+			this.data.file.collisions[0].height
+		);
+	}
 };
 
 Player.prototype.react = function (speed, resizeWindow) {
@@ -74,7 +85,7 @@ Player.prototype.react = function (speed, resizeWindow) {
 		this.frame = 0;
 	}
 
-	// check if player is moving
+	// check if player is moving (it doesn't check collisions)
 	var moving_up = (
 		isKeyDown('up') &&
 		this.posY > 0
@@ -148,6 +159,10 @@ Player.prototype.react = function (speed, resizeWindow) {
 			}
 		}
 
+		// remember current position (for collisions)
+		var old_player_posX = this.posX;
+		var old_player_posY = this.posY;
+
 		// move the player
 		if (isKeyDown('right') && this.posX < this.app.map.image.file.width - this.data.file.width) {
 			this.posX += speed;
@@ -170,34 +185,109 @@ Player.prototype.react = function (speed, resizeWindow) {
 		else if (this.posY > this.app.map.image.file.height - this.data.file.height)
 			this.posY = this.app.map.image.file.height - this.data.file.height;
 
+		// fix position in case player is violating some collisions
+		for (var i in this.app.map.entities) {
+			if (this.app.map.entities[i].enableCollisions === false)
+				continue;
+			for (var j in this.app.map.entities[i].data.file.collisions) {
+				var entity = this.app.map.entities[i];
+				var collision = entity.data.file.collisions[j];
+
+				var collides_horizontally = (
+					this.posX + this.data.file.collisions[0].posX > entity.posX + collision.posX - this.data.file.collisions[0].width &&
+					this.posX + this.data.file.collisions[0].posX < entity.posX + collision.posX + collision.width
+				);
+				var collides_vertically = (
+					this.posY + this.data.file.collisions[0].posY > entity.posY + collision.posY - this.data.file.collisions[0].height &&
+					this.posY + this.data.file.collisions[0].posY < entity.posY + collision.posY + collision.height
+				);
+
+				// player collides an entity only if collides it both horizontally and vertically
+				if (collides_horizontally && collides_vertically) {
+					// check if player collided it a move ago too
+					var collided_horizontally = (
+						old_player_posX + this.data.file.collisions[0].posX > entity.posX + collision.posX - this.data.file.collisions[0].width &&
+						old_player_posX + this.data.file.collisions[0].posX < entity.posX + collision.posX + collision.width
+					);
+					var collided_vertically = (
+						old_player_posY + this.data.file.collisions[0].posY > entity.posY + collision.posY - this.data.file.collisions[0].height &&
+						old_player_posY + this.data.file.collisions[0].posY < entity.posY + collision.posY + collision.height
+					);
+
+					// move player's position if necessary, also fix direction and moving animation
+					if (isKeyDown('right') && collides_vertically && collided_vertically) {
+						this.posX = entity.posX + collision.posX - this.data.file.collisions[0].width - this.data.file.collisions[0].posX;
+						if (isKeyDown('up'))
+							this.direction = this.app.config.player.direction.up;
+						else if (isKeyDown('down'))
+							this.direction = this.app.config.player.direction.down;
+						else
+							this.moving = false;
+					} else if (isKeyDown('left') && collides_vertically && collided_vertically) {
+						this.posX = entity.posX + collision.posX + collision.width - this.data.file.collisions[0].posX;
+						if (isKeyDown('up'))
+							this.direction = this.app.config.player.direction.up;
+						else if (isKeyDown('down'))
+							this.direction = this.app.config.player.direction.down;
+						else
+							this.moving = false;
+					} else if (isKeyDown('up') && collides_horizontally && collided_horizontally) {
+						this.posY = entity.posY + collision.posY + collision.height - this.data.file.collisions[0].posY;
+						if (isKeyDown('right'))
+							this.direction = this.app.config.player.direction.right;
+						else if (isKeyDown('left'))
+							this.direction = this.app.config.player.direction.left;
+						else
+							this.moving = false;
+					} else if (isKeyDown('down') && collides_horizontally && collided_horizontally) {
+						this.posY = entity.posY + collision.posY - this.data.file.collisions[0].height - this.data.file.collisions[0].posY;
+						if (isKeyDown('right'))
+							this.direction = this.app.config.player.direction.right;
+						else if (isKeyDown('left'))
+							this.direction = this.app.config.player.direction.left;
+						else
+							this.moving = false;
+					}
+				}
+			}
+		}
+
+		// remember current map position
 		var old_map_left = this.app.map.left;
 		var old_map_top = this.app.map.top;
-		if (
-			moving_up &&
-			(this.posY - this.app.map.top <= (this.app.canvasList.canvas['player'].height - this.data.file.height) / 2) &&
-			(this.app.map.top > 0)
-		) {
-			this.app.map.top -= speed;
-		} else if (
-			moving_down &&
-			(this.posY - this.app.map.top >= (this.app.canvasList.canvas['player'].height - this.data.file.height) / 2) &&
-			(this.app.map.top < this.app.map.image.file.height - this.app.canvasList.canvas['player'].height)
-		) {
-			this.app.map.top += speed;
-		}
-		if (
-			moving_right &&
-			(this.posX - this.app.map.left >= (this.app.canvasList.canvas['player'].width - this.data.file.width) / 2) &&
-			(this.app.map.left < this.app.map.image.file.width - this.app.canvasList.canvas['player'].width)
-		) {
-			this.app.map.left += speed;
-		} else if (
-			moving_left &&
-			(this.posX - this.app.map.left <= (this.app.canvasList.canvas['player'].width - this.data.file.width) / 2) &&
-			(this.app.map.left > 0)
-		) {
-			this.app.map.left -= speed;
-		}
+
+		// center the player (actually move the map so the player is in the center, even if the map position is wrong)
+		this.app.map.top = this.posY - ((this.app.canvasList.canvas['player'].height - this.data.file.height) / 2);
+		this.app.map.left = this.posX - ((this.app.canvasList.canvas['player'].width - this.data.file.width) / 2);
+
+// that's the old code responsible for moving the map
+// it is save to remove it
+//		if (
+//			moving_up &&
+//			(this.posY - this.app.map.top <= (this.app.canvasList.canvas['player'].height - this.data.file.height) / 2) &&
+//			(this.app.map.top > 0)
+//		) {
+//			this.app.map.top = this.posY - ((this.app.canvasList.canvas['player'].height - this.data.file.height) / 2);
+//		} else if (
+//			moving_down &&
+//			(this.posY - this.app.map.top >= (this.app.canvasList.canvas['player'].height - this.data.file.height) / 2) &&
+//			(this.app.map.top < this.app.map.image.file.height - this.app.canvasList.canvas['player'].height)
+//		) {
+//			this.app.map.top = this.posY - ((this.app.canvasList.canvas['player'].height - this.data.file.height) / 2);
+//		}
+//		if (
+//			moving_right &&
+//			(this.posX - this.app.map.left >= (this.app.canvasList.canvas['player'].width - this.data.file.width) / 2) &&
+//			(this.app.map.left < this.app.map.image.file.width - this.app.canvasList.canvas['player'].width)
+//		) {
+//			this.app.map.left = this.posX - ((this.app.canvasList.canvas['player'].width - this.data.file.width) / 2);
+//		} else if (
+//			moving_left &&
+//			(this.posX - this.app.map.left <= (this.app.canvasList.canvas['player'].width - this.data.file.width) / 2) &&
+//			(this.app.map.left > 0)
+//		) {
+//			this.app.map.left = this.posX - ((this.app.canvasList.canvas['player'].width - this.data.file.width) / 2);
+//		}
 
 		// fix map position in case map is not within canvas' borders
 		if (this.app.map.top < 0)
@@ -206,15 +296,23 @@ Player.prototype.react = function (speed, resizeWindow) {
 			this.app.map.top = this.app.map.image.file.height - this.app.canvasList.canvas['player'].height + (2 * this.app.map.marginTop);
 		if (this.app.map.left < 0)
 			this.app.map.left = 0;
-		else if (this.app.map.left > this.app.map.image.file.width - this.app. canvasList.canvas['player'].width + (2 * this.app.map.marginLeft))
-			this.app.map.left = this.app.map.image.file.width - this.app. canvasList.canvas['player'].width + (2 * this.app.map.marginLeft);
+		else if (this.app.map.left > this.app.map.image.file.width - this.app.canvasList.canvas['player'].width + (2 * this.app.map.marginLeft))
+			this.app.map.left = this.app.map.image.file.width - this.app.canvasList.canvas['player'].width + (2 * this.app.map.marginLeft);
 
 		if ((this.app.map.left != old_map_left) || (this.app.map.top != old_map_top))
 			this.app.map.draw();
 
 	} else {
 		// change direction without moving (e.g. under a wall)
-		if (isKeyDown('right'))
+		if ( // skip corners (otherwise they default to horizontal axis, which is bad)
+			(isKeyDown('left') && isKeyDown('up') && this.posX <= 0 && this.posY <= 0) ||
+			(isKeyDown('left') && isKeyDown('down') && this.posX <= 0 && this.posY >= this.app.map.image.file.height - this.data.file.height) ||
+			(isKeyDown('right') && isKeyDown('up') && this.posX >= this.app.map.image.file.width - this.data.file.width && this.posY <= 0) ||
+			(isKeyDown('right') && isKeyDown('down') && this.posX >= this.app.map.image.file.width - this.data.file.width && this.posY >= this.app.map.image.file.height - this.data.file.height)
+		)
+			; // yep, a single semicolon, 'no operation'
+			 // (if something doesn't work, you can replace it with $.noop(); or (function(){})();)
+		else if (isKeyDown('right'))
 			this.direction = this.app.config.player.direction.right;
 		else if (isKeyDown('left'))
 			this.direction = this.app.config.player.direction.left;

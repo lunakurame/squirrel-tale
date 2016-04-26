@@ -20,6 +20,7 @@ var Entity = function (application, name, variant) {
 	this.posX = 0;
 	this.posY = 0;
 	this.posZ = 'under';
+	this.enableCollisions;
 };
 
 Entity.prototype.clear = function () {
@@ -42,6 +43,19 @@ Entity.prototype.draw = function () {
 		this.data.file.width,
 		this.data.file.height
 	);
+
+	// drawing collision boxes
+	if (this.app.config.debug.collisions.draw && this.enableCollisions) {
+		context.fillStyle = this.app.config.debug.collisions.color;
+		for (var i in this.data.file.collisions) {
+			context.fillRect(
+				parseInt(this.posX - this.app.map.left + this.app.map.marginLeft) + this.data.file.collisions[i].posX,
+				parseInt(this.posY - this.app.map.top + this.app.map.marginTop) + this.data.file.collisions[i].posY,
+				this.data.file.collisions[i].width,
+				this.data.file.collisions[i].height
+			);
+		}
+	}
 };
 
 Entity.prototype.isUnder = function () {

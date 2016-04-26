@@ -89,6 +89,7 @@ Application.prototype.init = function (arg) {
 			this.map.entities[i].context = this.canvasList.context['entity_' + this.map.entities[i].posZ];
 			this.map.entities[i].canvas_under = this.canvasList.canvas['entity_under'];
 			this.map.entities[i].context_under = this.canvasList.context['entity_under'];
+			this.map.entities[i].enableCollisions = (this.map.data.file.entities[i].enableCollisions !== false);
 		}
 
 	case 'setup-window':

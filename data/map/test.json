@@ -8,6 +8,12 @@
 			"posZ": "over"
 		},
 		{
+			"name": "torii",
+			"posX": 300,
+			"posY": 100,
+			"posZ": "over"
+		},
+		{
 			"name": "test",
 			"posX": 100,
 			"posY": 300,
@@ -23,13 +29,15 @@
 			"name": "test",
 			"posX": 200,
 			"posY": 300,
-			"posZ": "over"
+			"posZ": "over",
+			"enableCollisions": false
 		},
 		{
 			"name": "test",
 			"posX": 250,
 			"posY": 300,
-			"posZ": "under"
+			"posZ": "under",
+			"enableCollisions": false
 		},
 		{
 			"name": "test",

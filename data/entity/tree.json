@@ -1,5 +1,13 @@
 {
 	"name": "Tree",
 	"width": 64,
-	"height": 96
+	"height": 96,
+	"collisions": [
+		{
+			"posX": 23,
+			"posY": 83,
+			"width": 20,
+			"height": 13
+		}
+	]
 }

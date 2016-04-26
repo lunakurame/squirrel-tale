@@ -132,3 +132,19 @@ ResourceLoader.prototype.waitForAllFiles = function (callback_ok, callback_error
 		} // else check next interval
 	}, 100);
 };
+
+//ResourceLoader.prototype.cloneResource = function (inputId, outputId) {
+//	console.log('ResourceLoader: cloning resource ' + inputId + ' to ' + outputId);
+//	// check if object with outputId id already exists
+//	if (typeof this.resource[outputId] !== 'undefined')
+//		return 1;
+
+//	// clone object
+//	this.resource[outputId] = $.extend(true, {}, this.resource[inputId]);
+//	// change id
+//	this.resource[outputId].id = outputId;
+//	// remove collisions
+//	delete this.resource[outputId].file.collisions;
+
+//	return 0;
+//};

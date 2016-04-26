@@ -8,6 +8,13 @@ var Config = function (application) {
 
 	this.app = application;
 
+	this.debug = {
+		collisions: {
+			draw: false,
+			color: 'rgba(208, 64, 218, 0.8)'
+		}
+	};
+
 	this.resourcePath = 'data';
 
 	this.window = {
