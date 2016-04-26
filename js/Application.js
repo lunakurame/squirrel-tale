@@ -1,149 +1,146 @@
-function main(arg) {
-	PLAYER_NAME = 'shiro';
-	PLAYER_VARIANT = 'normal';
-	MAP = 'test';
+// prototype: Application //////////////////////////////////////////////////////
+
+var Application = function () {
+	console.log('%c////////////////////////////////////////////////////////////////////////////////', 'background: #3465a4;');
+	console.log('Application instance created');
+
+	this.config = new Config(this);
+	this.loadingScreen = new LoadingScreen(this);
+	this.resourceLoader = new ResourceLoader(this);
+	this.canvasList = new CanvasList(this);
+	this.controls = new Controls(this);
+	this.map = new Map(this, this.config.map.name, this.config.map.variant);
+	this.player = new Player(this, this.config.player.name, this.config.player.variant);
+	this.hud = new Hud(this);
+};
+
+Application.prototype.init = function (arg) {
+	// alias for nested functions
+	var app = this;
 
 	switch (arg) {
-	default:
-	case 'document-ready':
-		// loading screen
-		loadingScreen = new LoadingScreen();
-		loadingScreen.rotateIcon();
-
-		// data loader (for JSON)
-		dataLoader = new DataLoader();
-		dataLoader.load('player-' + PLAYER_NAME, 'data/player/' + PLAYER_NAME + '.json');
-		dataLoader.load('map-' + MAP, 'data/map/' + MAP + '.json');
-
-	case 'check-data':
-		// check if all data files finished loading
-		dataLoader.waitForAllFiles('check-data-ok', 'check-data-error');
+	case 'start':
+	case 'init':
+	case 'load-resources':
+		// load resources
+		this.loadingScreen.rotateIcon();
+		this.resourceLoader.load('image', 'image', 'loading', 'failed');
+		this.resourceLoader.load('json', 'map', this.map.name);
+		this.resourceLoader.load('json', 'player', this.player.name);
+		this.resourceLoader.load('image', 'map', this.map.fullName);
+		this.resourceLoader.load('image', 'player', this.player.fullName);
+		//this.resourceLoader.load('debug', 'debug', 'debug');
+		this.resourceLoader.waitForAllFiles('init-load-resources-ok', 'init-load-resources-error');
 		break;
 
-	case 'check-data-error':
-		loadingScreen.showError('Error – can\'t load all data files.');
-		break;
-
-	case 'check-data-ok':
-
-	case 'canvas': // TODO try catch?
+	case 'setup-environment':
 		// canvas
-		canvas = new Canvas();
-		canvas.add('map', $('#map')[0]);
-		canvas.addContext('map', canvas.canvas['map'].getContext('2d'));
-		canvas.add('player', $('#player')[0]);
-		canvas.addContext('player', canvas.canvas['player'].getContext('2d'));
-		canvas.add('hud', $('#hud')[0]);
-		canvas.addContext('hud', canvas.canvas['hud'].getContext('2d'));
-		canvas.resizeAll();
+		console.log('Application: setting up the canvasList');
+		this.canvasList.add('map', $('#map')[0]);
+		this.canvasList.addContext('map', $('#map')[0].getContext('2d'));
+		this.canvasList.add('entity_under', $('#entity_under')[0]);
+		this.canvasList.addContext('entity_under', $('#entity_under')[0].getContext('2d'));
+		this.canvasList.add('player', $('#player')[0]);
+		this.canvasList.addContext('player', $('#player')[0].getContext('2d'));
+		this.canvasList.add('entity_over', $('#entity_over')[0]);
+		this.canvasList.addContext('entity_over', $('#entity_over')[0].getContext('2d'));
+		this.canvasList.add('hud', $('#hud')[0]);
+		this.canvasList.addContext('hud', $('#hud')[0].getContext('2d'));
+		this.canvasList.resizeAll();
 
-	case 'player':
-		// load player
-		player = new Player();
-		player.fileName = PLAYER_NAME;
-		player.variant = PLAYER_VARIANT;
-		player.data = dataLoader.data['player-' + PLAYER_NAME];
-		player.speed = player.data.defaultSpeed;
-		// TODO position
+		// map
+		console.log('Application: setting up the map');
+		this.map.data = this.resourceLoader.resource['json/map/' + this.map.name];
+		this.map.image = this.resourceLoader.resource['image/map/' + this.map.fullName];
+		this.map.canvas = this.canvasList.canvas['map'];
+		this.map.context = this.canvasList.context['map'];
 
-	case 'map':
-		map = new Map(canvas.canvas['map'], canvas.context['map']);
-		map.data = dataLoader.data['map-' + MAP];
+		// player
+		console.log('Application: setting up the player');
+		this.player.data = this.resourceLoader.resource['json/player/' + this.player.name];
+		this.player.image = this.resourceLoader.resource['image/player/' + this.player.fullName];
+		this.player.canvas = this.canvasList.canvas['player'];
+		this.player.context = this.canvasList.context['player'];
+		this.player.speed = this.player.data.file.defaultSpeed;
 
-	case 'hud':
-		hud = new Hud(canvas.context['hud']);
+		// hud
+		console.log('Application: setting up the hud');
+		this.hud.cavas = this.canvasList.canvas['hud'];
+		this.hud.context = this.canvasList.context['hud'];
 
-	case 'images':
-		// load all images
-		imagesLoader = new ImagesLoader();
-		//imagesLoader.load('loading', 'img/loading.png');
-		imagesLoader.load('loading-failed', 'img/loading-failed.png');
-
-		imagesLoader.load('player', 'data/player/' + player.data.images[player.data.variants.indexOf(player.variant)]);
-		imagesLoader.load('map', 'data/map/' + map.data.image);
-
-		//imagesLoader.load('debug', 'debug');
-
-	case 'check-images':
-		// check if all images finished loading
-		imagesLoader.waitForAllFiles('check-images-ok', 'check-images-error');
+	case 'load-entities':
+		// load entities
+		for (var i in this.map.data.file.entities) {
+			this.map.entities[i] = new Entity(this, this.map.data.file.entities[i].name, this.map.data.file.entities[i].variant);
+			this.map.entities[i].posX = this.map.data.file.entities[i].posX;
+			this.map.entities[i].posY = this.map.data.file.entities[i].posY;
+			this.map.entities[i].posZ = this.map.data.file.entities[i].posZ;
+			this.resourceLoader.loadOnce('json', 'entity', this.map.entities[i].name);
+			this.resourceLoader.loadOnce('image', 'entity', this.map.entities[i].fullName);
+		}
+		this.resourceLoader.waitForAllFiles('init-load-entities-ok', 'init-load-entities-error');
 		break;
 
-	case 'check-images-error':
-		loadingScreen.showError('Error – can\'t load all images.');
-		break;
+	case 'setup-entities':
+		for (var i in this.map.entities) {
+			this.map.entities[i].data = this.resourceLoader.resource['json/entity/' + this.map.entities[i].name];
+			this.map.entities[i].image = this.resourceLoader.resource['image/entity/' + this.map.entities[i].fullName];
+			this.map.entities[i].canvas = this.canvasList.canvas['entity_' + this.map.entities[i].posZ];
+			this.map.entities[i].context = this.canvasList.context['entity_' + this.map.entities[i].posZ];
+			this.map.entities[i].canvas_under = this.canvasList.canvas['entity_under'];
+			this.map.entities[i].context_under = this.canvasList.context['entity_under'];
+		}
 
-	case 'check-images-ok':
-		player.setMaxFrame(imagesLoader.image['player']);
-		map.image = imagesLoader.image['map'];
-		hud.draw();
-
-	case 'controls':
-		// controls
-		controls = new Controls();
-
+	case 'setup-window':
+		//controls
 		$(document).keydown(function (e) {
-			controls.toggleKeyDown(e, true);
+			app.controls.toggleKeyDown(e, true);
 		});
 
 		$(document).keyup(function (e) {
-			controls.toggleKeyDown(e, false);
+			app.controls.toggleKeyDown(e, false);
+		});
+		
+		$(window).resize(function () { // TODO
+//			canvas.context['hud'].clearRect(0, 0, canvas.canvas['hud'].width, canvas.canvas['hud'].height);
+			app.canvasList.resizeAll();
+			app.map.draw();
+			app.player.react(0, true)
+			//app.hud.draw();
 		});
 
-	case 'drawing-loop':
-		// draw the map
-		map.draw();
+	case 'draw':
+		this.map.draw();
+		//this.hud.draw(); // TODO
 
-		// player animations
-		var playerAnimations_interval = setInterval(function () {
-			if (player.moving) {
-				++player.frame;
-				if (player.frame > player.maxFrame)
-					player.frame = 0;
-			} else {
-				player.frame = 0;
-			}
-		}, 250);
-
-		// the drawing loop
-		var drawingLoop_interval = setInterval(function () {
-			// get fps
-			fps = hud.fpsCounter.getValue();
+		var drawingLoop_interval = setInterval(function () { // TODO
 			// adjust speed to fps, so the player will always move the same speed
-			speed = player.speed / fps;
-
-			// if the slow key is down, half the speed
-			if (controls.keysDown.slow)
+			var fps = app.hud.fpsCounter.getValue();
+			var speed = app.player.speed / fps;
+			if (app.controls.keysDown.slow)
 				speed = speed / 2;
 
-			// clear player image
-			canvas.context['player'].clearRect(
-				player.posHor - 1,
-				player.posVer - 1,
-				player.posHor + player.data.width + 1,
-				player.posVer + player.data.height + 1
-			);
+			// clear player
+			app.player.clear();
+			
+			// clear entities
+			for (var i in app.map.entities) {
+				app.map.entities[i].clear();
+			}
 
+			// player react
+			app.player.react(speed);
+
+/////
+/*
+			with (app) {
 			// check if player is moving
 			player.moving = (
-				// if a key is down, the opposite key should not be down
-				(
-					(controls.keysDown.up && !controls.keysDown.down) ||
-					(controls.keysDown.down && !controls.keysDown.up) ||
-					(controls.keysDown.right && !controls.keysDown.left) ||
-					(controls.keysDown.left && !controls.keysDown.right)
-				// if a key is down, but the player has reached the end of the map, the player should not be moving
-				) && (
-					(controls.keysDown.up && player.posVer > 0) ||
-					(controls.keysDown.down && player.posVer < canvas.canvas['player'].height - player.data.height) ||
-					(controls.keysDown.right && player.posHor < canvas.canvas['player'].width - player.data.width) ||
-					(controls.keysDown.left && player.posHor > 0)
-				) &&
-				// some triple keys on canvas border trickery...
-				!(controls.keysDown.up && controls.keysDown.down && controls.keysDown.right && player.posHor >= canvas.canvas['player'].width - player.data.width) &&
-				!(controls.keysDown.up && controls.keysDown.down && controls.keysDown.left && player.posHor <= 0) &&
-				!(controls.keysDown.right && controls.keysDown.left && controls.keysDown.up && player.posVer <= 0) &&
-				!(controls.keysDown.right && controls.keysDown.left && controls.keysDown.down && player.posVer >= canvas.canvas['player'].height - player.data.height)
+				// if a key is down and the opposite key is not down and the player has not reached the end of the map
+				(controls.keysDown.up && !controls.keysDown.down && player.posY > 0) ||
+				(controls.keysDown.down && !controls.keysDown.up && player.posY < canvasList.canvas['player'].height - player.data.file.height) ||
+				(controls.keysDown.right && !controls.keysDown.left && player.posX < canvasList.canvas['player'].width - player.data.file.width) ||
+				(controls.keysDown.left && !controls.keysDown.right && player.posX > 0)
 			);
 
 			// move player
@@ -158,12 +155,12 @@ function main(arg) {
 					player.direction = 0;
 					// if the player is halfway the screen and the map can move, then move the map instead of the player
 					if (
-						(player.posVer <= (canvas.canvas['player'].height - player.data.height) / 2) &&
+						(player.posY <= (canvasList.canvas['player'].height - player.data.file.height) / 2) &&
 						(map.top > 0))
 					{
 						// the next 3 lines are to smooth the transition between moving player and moving map (and vice versa)
-						tmp_pos_diff = ((canvas.canvas['player'].height - player.data.height) / 2) - player.posVer;
-						player.posVer += tmp_pos_diff;
+						tmp_pos_diff = ((canvasList.canvas['player'].height - player.data.file.height) / 2) - player.posY;
+						player.posY += tmp_pos_diff;
 						map.top -= tmp_pos_diff;
 						// move the map
 						map.top -= speed;
@@ -173,24 +170,24 @@ function main(arg) {
 						if (map.top < 0)
 							map.top = 0;
 						// move the player
-						player.posVer -= speed;
+						player.posY -= speed;
 					}
 				// if key down
 				// (I won't comment the rest of this code, it is almost the same as the code above, so if you need help, just look at the comments above)
 				} else if (controls.keysDown.down && !controls.keysDown.up) {
 					player.direction = 1;
 					if (
-						(player.posVer >= (canvas.canvas['player'].height - player.data.height) / 2) &&
-						(map.top < map.image.height - canvas.canvas['player'].height)
+						(player.posY >= (canvasList.canvas['player'].height - player.data.file.height) / 2) &&
+						(map.top < map.image.file.height - canvasList.canvas['player'].height)
 					) {
-						tmp_pos_diff = player.posVer - ((canvas.canvas['player'].height - player.data.height) / 2);
-						player.posVer -= tmp_pos_diff;
+						tmp_pos_diff = player.posY - ((canvasList.canvas['player'].height - player.data.file.height) / 2);
+						player.posY -= tmp_pos_diff;
 						map.top += tmp_pos_diff;
 						map.top += speed;
 					} else {
-						if (map.top > map.image.height - canvas.canvas['player'].height)
-							map.top = map.image.height - canvas.canvas['player'].height;
-						player.posVer += speed;
+						if (map.top > map.image.file.height - canvasList.canvas['player'].height)
+							map.top = map.image.file.height - canvasList.canvas['player'].height;
+						player.posY += speed;
 					}
 				}
 
@@ -199,85 +196,100 @@ function main(arg) {
 				// it fixed the bug when you press left/right and up/down (diagonal movement), but the player already is moving diagonal
 				// normaly diagonal movement uses the left/right animation, but in that case the animation should be up/down instead,
 				// because right/left movement is not allowed through the canvas borders
-				if (controls.keysDown.right && !controls.keysDown.left && player.posHor < canvas.canvas['player'].width - player.data.width) {
+				if (controls.keysDown.right && !controls.keysDown.left && player.posX < canvasList.canvas['player'].width - player.data.file.width) {
 					player.direction = 2;
 					if (
-						(player.posHor >= (canvas.canvas['player'].width - player.data.width) / 2) &&
-						(map.left < map.image.width - canvas.canvas['player'].width)
+						(player.posX >= (canvasList.canvas['player'].width - player.data.file.width) / 2) &&
+						(map.left < map.image.file.width - canvasList.canvas['player'].width)
 					) {
-						tmp_pos_diff = player.posHor - ((canvas.canvas['player'].width - player.data.width) / 2);
-						player.posHor -= tmp_pos_diff;
+						tmp_pos_diff = player.posX - ((canvasList.canvas['player'].width - player.data.file.width) / 2);
+						player.posX -= tmp_pos_diff;
 						map.left += tmp_pos_diff;
 						map.left += speed;
 					} else {
-						if (map.left > map.image.width - canvas.canvas['player'].width)
-							map.left = map.image.width - canvas.canvas['player'].width;
-						player.posHor += speed;
+						if (map.left > map.image.file.width - canvasList.canvas['player'].width)
+							map.left = map.image.file.width - canvasList.canvas['player'].width;
+						player.posX += speed;
 					}
 				// if key left
 				// additional condition - see the explanation above
-				} else if (controls.keysDown.left && !controls.keysDown.right && player.posHor > 0) {
+				} else if (controls.keysDown.left && !controls.keysDown.right && player.posX > 0) {
 					player.direction = 3;
 					if (
-						(player.posHor <= (canvas.canvas['player'].width - player.data.width) / 2) &&
+						(player.posX <= (canvasList.canvas['player'].width - player.data.file.width) / 2) &&
 						(map.left > 0)
 					) {
-						tmp_pos_diff = ((canvas.canvas['player'].width - player.data.width) / 2) - player.posHor;
-						player.posHor += tmp_pos_diff;
+						tmp_pos_diff = ((canvasList.canvas['player'].width - player.data.file.width) / 2) - player.posX;
+						player.posX += tmp_pos_diff;
 						map.left -= tmp_pos_diff;
 						map.left -= speed;
 					} else {
 						if (map.left < 0)
 							map.left = 0;
-						player.posHor -= speed;
+						player.posX -= speed;
 					}
 				}
 
 				// recalibrate player's position if he somehow manages to get out of the map
-				if (player.posHor < 0)
-					player.posHor = 0;
-				else if (player.posHor > canvas.canvas['player'].width - player.data.width)
-					player.posHor = canvas.canvas['player'].width - player.data.width;
-				if (player.posVer < 0)
-					player.posVer = 0;
-				else if (player.posVer > canvas.canvas['player'].height - player.data.height)
-					player.posVer = canvas.canvas['player'].height - player.data.height;
+				if (player.posX < 0)
+					player.posX = 0;
+				else if (player.posX > canvasList.canvas['player'].width - player.data.file.width)
+					player.posX = canvasList.canvas['player'].width - player.data.file.width;
+				if (player.posY < 0)
+					player.posY = 0;
+				else if (player.posY > canvasList.canvas['player'].height - player.data.file.height)
+					player.posY = canvasList.canvas['player'].height - player.data.file.height;
 
 				// if the map's position just changed, it means the map must be redrawed
 				if (map.left != tmp_map_left || map.top != tmp_map_top)
 					map.draw();
 			}
+			}
+*/
+/////
 
-			// draw player's image
-			// it includes animations and directions
-			canvas.context['player'].drawImage(
-				imagesLoader.image['player'],
-				player.frame * player.data.width, player.direction * player.data.height, player.data.width, player.data.height,
-				parseInt(player.posHor), parseInt(player.posVer), player.data.width, player.data.height
-			);
+			// draw player
+			app.player.draw();
+			
+			// draw entities
+			for (var i in app.map.entities) {
+				app.map.entities[i].draw();
+			}
 
 			// reset HUD styles
-			hud.resetTextStyle();
+			app.hud.resetTextStyle();
 
 			// draw debug HUD
-			canvas.context['hud'].clearRect(0, 0, 320, 40);
-			canvas.context['hud'].fillStyle = 'rgba(0, 127, 127, .98)';
-			canvas.context['hud'].fillRect(0, 0, 240, 20);
-			canvas.context['hud'].fillStyle = '#fff';
-			canvas.context['hud'].fillText(fps.toFixed(4) + ' fps, player "' + player.data.name + '"', 6, 2);
-		}, 16); // locked on max 62.5 fps = 1000/16
+			app.canvasList.context['hud'].clearRect(0, 0, 320, 40);
+			app.canvasList.context['hud'].fillStyle = 'rgba(0, 127, 127, .98)';
+			app.canvasList.context['hud'].fillRect(0, 0, 240, 20);
+			app.canvasList.context['hud'].fillStyle = '#fff';
+			app.canvasList.context['hud'].fillText(fps.toFixed(2) + ' fps, screen: ' + app.canvasList.canvas['player'].width + 'x' + app.canvasList.canvas['player'].height + '', 6, 2);
 
-	case 'resize-event': // TODO
-		$(window).resize(function () {
-//			canvas.context['hud'].clearRect(0, 0, canvas.canvas['hud'].width, canvas.canvas['hud'].height);
-			canvas.resizeAll();
-			map.draw(imagesLoader.image['map']);
-			hud.draw();
-		});
+			//clearInterval(drawingLoop_interval);
+		}, 16);	// locked on max 62.5 fps = 1000/16
+
+
+
 
 	case 'done':
-		// turn off the loading screen
-		loadingScreen.fadeOut();
+		this.loadingScreen.fadeOut();
 	}
-}
+};
 
+Application.prototype.callback = function (arg) {
+	switch (arg) {
+	case 'init-load-resources-ok':
+		this.init('setup-environment');
+		break;
+	case 'init-load-resources-error':
+		this.loadingScreen.showError('Error – can\'t load all resources.');
+		break;
+	case 'init-load-entities-ok':
+		this.init('setup-entities');
+		break;
+	case 'init-load-entities-error':
+		this.loadingScreen.showError('Error – can\'t load all resources.');
+		break;
+	}
+};

@@ -8,23 +8,27 @@
 <body>
 	<div id="black-screen" class="fullscreen">
 		<div>
-			<img class="loading-icon" src="img/loading.png" alt="Loading icon">
+			<img class="loading-icon" src="data/image/loading.png" alt="Loading icon">
 		</div>
 	</div>
 
-	<canvas id="map" class="overscreen">Your browser does not support the HTML5 canvas tag.</canvas>
-	<canvas id="player" class="fullscreen"></canvas>
-	<canvas id="hud" class="fullscreen"></canvas>
+	<canvas id="map"></canvas>
+	<canvas id="entity_under"></canvas>
+	<canvas id="player"></canvas>
+	<canvas id="entity_over"></canvas>
+	<canvas id="hud">Your browser does not support the HTML5 canvas tag.</canvas>
 
 	<script src="js/jquery/jquery-1.11.3.min.js"></script>
 	<script src="js/jquery/jQueryRotate.js"></script>
 	<!-- TODO PHP join -->
 	<script src="js/Application.js"></script>
+	<script src="js/Config.js"></script>
 	<script src="js/LoadingScreen.js"></script>
 	<script src="js/ResourceLoader.js"></script>
-	<script src="js/Canvas.js"></script>
+	<script src="js/CanvasList.js"></script>
 	<script src="js/Controls.js"></script>
 	<script src="js/Map.js"></script>
+	<script src="js/Entity.js"></script>
 	<script src="js/Player.js"></script>
 	<script src="js/Hud.js"></script>
 	<script src="js/main.js"></script>

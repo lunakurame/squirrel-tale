@@ -1,7 +1,12 @@
 // prototype: Controls /////////////////////////////////////////////////////////
 
-var Controls = function () {
+var Controls = function (application) {
 	console.log('Controls instance created');
+
+	if (typeof application !== 'object' || application == null)
+		throw Error('Controls: constructor: application is required');
+
+	this.app = application;
 
 	this.keys = {
 		// primary keys

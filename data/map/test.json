@@ -1,4 +1,84 @@
 {
 	"name": "Test Map #1",
-	"image": "test.png"
+	"entities": [
+		{
+			"name": "tree",
+			"posX": 150,
+			"posY": 100,
+			"posZ": "over"
+		},
+		{
+			"name": "test",
+			"posX": 100,
+			"posY": 300,
+			"posZ": "over"
+		},
+		{
+			"name": "test",
+			"posX": 150,
+			"posY": 300,
+			"posZ": "under"
+		},
+		{
+			"name": "test",
+			"posX": 200,
+			"posY": 300,
+			"posZ": "over"
+		},
+		{
+			"name": "test",
+			"posX": 250,
+			"posY": 300,
+			"posZ": "under"
+		},
+		{
+			"name": "test",
+			"posX": 300,
+			"posY": 300,
+			"posZ": "over"
+		},
+		{
+			"name": "flower",
+			"variant": "blue",
+			"posX": 100,
+			"posY": 140,
+			"posZ": "over"
+		},
+		{
+			"name": "flower",
+			"posX": 115,
+			"posY": 145,
+			"posZ": "over"
+		},
+		{
+			"name": "flower",
+			"posX": 80,
+			"posY": 145,
+			"posZ": "over"
+		},
+		{
+			"name": "flower",
+			"posX": 90,
+			"posY": 130,
+			"posZ": "over"
+		},
+		{
+			"name": "flower",
+			"posX": 92,
+			"posY": 155,
+			"posZ": "over"
+		},
+		{
+			"name": "flower",
+			"posX": 107,
+			"posY": 160,
+			"posZ": "over"
+		},
+		{
+			"name": "flower",
+			"posX": 110,
+			"posY": 130,
+			"posZ": "over"
+		}
+	]
 }

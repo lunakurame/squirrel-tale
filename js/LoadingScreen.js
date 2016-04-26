@@ -1,11 +1,20 @@
-// prototype: loadingScreen ////////////////////////////////////////////////////
+// prototype: LoadingScreen ////////////////////////////////////////////////////
+//
+// This prototype is so wrong *by design*.
+// It is supposed to be simple and work even when nothing works.
+//
 
-var LoadingScreen = function () {
+var LoadingScreen = function (application) {
 	console.log('LoadingScreen instance created');
+
+//	if (typeof application !== 'object' || application == null)
+//		throw Error('LoadingScreen: constructor: application is required');
+
+	this.app = application;
 };
 
 LoadingScreen.prototype.rotateIcon = function () {
-	parent_obj = this;
+	var parent_obj = this;
 
 	// if black screen is visible and is loading, then rotate the loading icon (loop)
 	if ($('#black-screen').css('display') != 'none' && $('#black-screen .loading-icon').attr('alt').indexOf('fail') < 0) {
@@ -31,7 +40,7 @@ LoadingScreen.prototype.fadeOut = function () {
 LoadingScreen.prototype.showError = function (message) {
 	$('#black-screen > div').fadeOut(300, function() {
 		$('#black-screen .loading-icon').attr({
-			'src': 'img/loading-failed.png',
+			'src': 'data/image/loading-failed.png',
 			'alt': 'Loading failed icon'
 		});
 		$('#black-screen > div').append('<p>' + message + '</p>').css({
