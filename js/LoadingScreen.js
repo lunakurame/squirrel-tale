@@ -10,11 +10,12 @@ var LoadingScreen = function (application) {
 //	if (typeof application !== 'object' || application == null)
 //		throw Error('LoadingScreen: constructor: application is required');
 
+	// technical
 	this.app = application;
 };
 
 LoadingScreen.prototype.rotateIcon = function () {
-	var parent_obj = this;
+	var that = this;
 
 	// if black screen is visible and is loading, then rotate the loading icon (loop)
 	if ($('#black-screen').css('display') != 'none' && $('#black-screen .loading-icon').attr('alt').indexOf('fail') < 0) {
@@ -22,7 +23,7 @@ LoadingScreen.prototype.rotateIcon = function () {
 			duration: 1000,
 			angle: 0,
 			animateTo: 180,
-			callback: parent_obj.rotateIcon
+			callback: that.rotateIcon
 		});
 	}
 };

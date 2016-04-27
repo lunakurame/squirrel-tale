@@ -1,5 +1,5 @@
 {
-	"name": "Test Entity",
+	"label": "Test Entity",
 	"width": 20,
 	"height": 20,
 	"collisions": [

@@ -50,47 +50,29 @@ Application.prototype.init = function (arg) {
 
 		// map
 		console.log('Application: setting up the map');
-		this.map.data = this.resourceLoader.resource['json/map/' + this.map.name];
-		this.map.image = this.resourceLoader.resource['image/map/' + this.map.fullName];
-		this.map.canvas = this.canvasList.canvas['map'];
-		this.map.context = this.canvasList.context['map'];
+		this.map.load(
+			this.resourceLoader.resource['json/map/' + this.map.name],
+			this.resourceLoader.resource['image/map/' + this.map.fullName]
+		);
 
 		// player
 		console.log('Application: setting up the player');
-		this.player.data = this.resourceLoader.resource['json/player/' + this.player.name];
-		this.player.image = this.resourceLoader.resource['image/player/' + this.player.fullName];
-		this.player.canvas = this.canvasList.canvas['player'];
-		this.player.context = this.canvasList.context['player'];
-		this.player.speed = this.player.data.file.defaultSpeed;
+		this.player.load(
+			this.resourceLoader.resource['json/player/' + this.player.name],
+			this.resourceLoader.resource['image/player/' + this.player.fullName]
+		);
 
 		// hud
 		console.log('Application: setting up the hud');
-		this.hud.cavas = this.canvasList.canvas['hud'];
-		this.hud.context = this.canvasList.context['hud'];
+		this.hud.load();
 
 	case 'load-entities':
 		// load entities
-		for (var i in this.map.data.file.entities) {
-			this.map.entities[i] = new Entity(this, this.map.data.file.entities[i].name, this.map.data.file.entities[i].variant);
-			this.map.entities[i].posX = this.map.data.file.entities[i].posX;
-			this.map.entities[i].posY = this.map.data.file.entities[i].posY;
-			this.map.entities[i].posZ = this.map.data.file.entities[i].posZ;
-			this.resourceLoader.loadOnce('json', 'entity', this.map.entities[i].name);
-			this.resourceLoader.loadOnce('image', 'entity', this.map.entities[i].fullName);
-		}
-		this.resourceLoader.waitForAllFiles('init-load-entities-ok', 'init-load-entities-error');
+		this.map.loadEntities();
 		break;
 
 	case 'setup-entities':
-		for (var i in this.map.entities) {
-			this.map.entities[i].data = this.resourceLoader.resource['json/entity/' + this.map.entities[i].name];
-			this.map.entities[i].image = this.resourceLoader.resource['image/entity/' + this.map.entities[i].fullName];
-			this.map.entities[i].canvas = this.canvasList.canvas['entity_' + this.map.entities[i].posZ];
-			this.map.entities[i].context = this.canvasList.context['entity_' + this.map.entities[i].posZ];
-			this.map.entities[i].canvas_under = this.canvasList.canvas['entity_under'];
-			this.map.entities[i].context_under = this.canvasList.context['entity_under'];
-			this.map.entities[i].enableCollisions = (this.map.data.file.entities[i].enableCollisions !== false);
-		}
+		this.map.setupEntities();
 
 	case 'setup-window':
 		//controls
@@ -102,12 +84,11 @@ Application.prototype.init = function (arg) {
 			app.controls.toggleKeyDown(e, false);
 		});
 		
-		$(window).resize(function () { // TODO
-//			canvas.context['hud'].clearRect(0, 0, canvas.canvas['hud'].width, canvas.canvas['hud'].height);
+		$(window).resize(function () {
 			app.canvasList.resizeAll();
 			app.map.draw();
-			app.player.react(0, true)
-			//app.hud.draw();
+			app.player.react(0, true);
+			//app.hud.draw(); // TODO
 		});
 
 	case 'draw':
@@ -131,123 +112,6 @@ Application.prototype.init = function (arg) {
 
 			// player react
 			app.player.react(speed);
-
-/////
-/*
-			with (app) {
-			// check if player is moving
-			player.moving = (
-				// if a key is down and the opposite key is not down and the player has not reached the end of the map
-				(controls.keysDown.up && !controls.keysDown.down && player.posY > 0) ||
-				(controls.keysDown.down && !controls.keysDown.up && player.posY < canvasList.canvas['player'].height - player.data.file.height) ||
-				(controls.keysDown.right && !controls.keysDown.left && player.posX < canvasList.canvas['player'].width - player.data.file.width) ||
-				(controls.keysDown.left && !controls.keysDown.right && player.posX > 0)
-			);
-
-			// move player
-			if (player.moving) {
-				// remember surrend map position to know if the map requires to be redrawed
-				tmp_map_left = map.left;
-				tmp_map_top = map.top;
-
-				// if key up
-				if (controls.keysDown.up && !controls.keysDown.down) {
-					// set player direction (direction codes can bee seen in the Player prototype object)
-					player.direction = 0;
-					// if the player is halfway the screen and the map can move, then move the map instead of the player
-					if (
-						(player.posY <= (canvasList.canvas['player'].height - player.data.file.height) / 2) &&
-						(map.top > 0))
-					{
-						// the next 3 lines are to smooth the transition between moving player and moving map (and vice versa)
-						tmp_pos_diff = ((canvasList.canvas['player'].height - player.data.file.height) / 2) - player.posY;
-						player.posY += tmp_pos_diff;
-						map.top -= tmp_pos_diff;
-						// move the map
-						map.top -= speed;
-					// if the player is somewhere else or the map no longer can move, then move the player
-					} else {
-						// recalibrate the map's position
-						if (map.top < 0)
-							map.top = 0;
-						// move the player
-						player.posY -= speed;
-					}
-				// if key down
-				// (I won't comment the rest of this code, it is almost the same as the code above, so if you need help, just look at the comments above)
-				} else if (controls.keysDown.down && !controls.keysDown.up) {
-					player.direction = 1;
-					if (
-						(player.posY >= (canvasList.canvas['player'].height - player.data.file.height) / 2) &&
-						(map.top < map.image.file.height - canvasList.canvas['player'].height)
-					) {
-						tmp_pos_diff = player.posY - ((canvasList.canvas['player'].height - player.data.file.height) / 2);
-						player.posY -= tmp_pos_diff;
-						map.top += tmp_pos_diff;
-						map.top += speed;
-					} else {
-						if (map.top > map.image.file.height - canvasList.canvas['player'].height)
-							map.top = map.image.file.height - canvasList.canvas['player'].height;
-						player.posY += speed;
-					}
-				}
-
-				// if key right
-				// there is an additional condition in this 'if',
-				// it fixed the bug when you press left/right and up/down (diagonal movement), but the player already is moving diagonal
-				// normaly diagonal movement uses the left/right animation, but in that case the animation should be up/down instead,
-				// because right/left movement is not allowed through the canvas borders
-				if (controls.keysDown.right && !controls.keysDown.left && player.posX < canvasList.canvas['player'].width - player.data.file.width) {
-					player.direction = 2;
-					if (
-						(player.posX >= (canvasList.canvas['player'].width - player.data.file.width) / 2) &&
-						(map.left < map.image.file.width - canvasList.canvas['player'].width)
-					) {
-						tmp_pos_diff = player.posX - ((canvasList.canvas['player'].width - player.data.file.width) / 2);
-						player.posX -= tmp_pos_diff;
-						map.left += tmp_pos_diff;
-						map.left += speed;
-					} else {
-						if (map.left > map.image.file.width - canvasList.canvas['player'].width)
-							map.left = map.image.file.width - canvasList.canvas['player'].width;
-						player.posX += speed;
-					}
-				// if key left
-				// additional condition - see the explanation above
-				} else if (controls.keysDown.left && !controls.keysDown.right && player.posX > 0) {
-					player.direction = 3;
-					if (
-						(player.posX <= (canvasList.canvas['player'].width - player.data.file.width) / 2) &&
-						(map.left > 0)
-					) {
-						tmp_pos_diff = ((canvasList.canvas['player'].width - player.data.file.width) / 2) - player.posX;
-						player.posX += tmp_pos_diff;
-						map.left -= tmp_pos_diff;
-						map.left -= speed;
-					} else {
-						if (map.left < 0)
-							map.left = 0;
-						player.posX -= speed;
-					}
-				}
-
-				// recalibrate player's position if he somehow manages to get out of the map
-				if (player.posX < 0)
-					player.posX = 0;
-				else if (player.posX > canvasList.canvas['player'].width - player.data.file.width)
-					player.posX = canvasList.canvas['player'].width - player.data.file.width;
-				if (player.posY < 0)
-					player.posY = 0;
-				else if (player.posY > canvasList.canvas['player'].height - player.data.file.height)
-					player.posY = canvasList.canvas['player'].height - player.data.file.height;
-
-				// if the map's position just changed, it means the map must be redrawed
-				if (map.left != tmp_map_left || map.top != tmp_map_top)
-					map.draw();
-			}
-			}
-*/
-/////
 
 			// draw player
 			app.player.draw();

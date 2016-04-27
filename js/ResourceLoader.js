@@ -6,7 +6,10 @@ var ResourceLoader = function (application) {
 	if (typeof application !== 'object' || application == null)
 		throw Error('ResourceLoader: constructor: application is required');
 
+	// technical
 	this.app = application;
+
+	// data
 	this.resource = {
 		/* object-array of {
 		 * 	id: string
@@ -57,7 +60,7 @@ ResourceLoader.prototype.load = function (format, type, name, variant) {
 		// set parent to be able to access resourceStatus from event functions
 		this.resource[id].file.parent = this.resource[id];
 
-		// when it is loaded, check if the image is OK
+		// when it's loaded, check if the image is OK
 		// if it is, then set the status to 'completed', otherwise 'error'
 		this.resource[id].file.onload = function () {
 			if ('naturalHeight' in this) {
@@ -91,12 +94,12 @@ ResourceLoader.prototype.load = function (format, type, name, variant) {
 		this.resourceStatus[id] = this.app.config.loaderStatus.loading;
 
 		// load the file
-		var parent_obj = this;
+		var that = this;
 		$.getJSON(this.resource[id].src, function (json) {
-			parent_obj.resource[id].file = json;
-			parent_obj.resourceStatus[id] = parent_obj.app.config.loaderStatus.completed;
+			that.resource[id].file = json;
+			that.resourceStatus[id] = that.app.config.loaderStatus.completed;
 		}).fail(function () {
-			parent_obj.resourceStatus[id] = parent_obj.app.config.loaderStatus.error;
+			that.resourceStatus[id] = that.app.config.loaderStatus.error;
 		});
 
 		break;
@@ -105,30 +108,30 @@ ResourceLoader.prototype.load = function (format, type, name, variant) {
 
 ResourceLoader.prototype.waitForAllFiles = function (callback_ok, callback_error) {
 	// check if all files finished loading
-	var parent_obj = this;
+	var that = this;
 	var status = this.app.config.loaderStatus.loading;
 	var interval = setInterval(function () {
-		status = parent_obj.app.config.loaderStatus.completed;
+		status = that.app.config.loaderStatus.completed;
 		// loop through all imageStatuses
-		for (var property in parent_obj.resourceStatus) {
-			if (parent_obj.resourceStatus.hasOwnProperty(property)) {
+		for (var property in that.resourceStatus) {
+			if (that.resourceStatus.hasOwnProperty(property)) {
 				// halt on error
-				if (parent_obj.resourceStatus[property] == parent_obj.app.config.loaderStatus.error) {
-					status = parent_obj.app.config.loaderStatus.error;
+				if (that.resourceStatus[property] == that.app.config.loaderStatus.error) {
+					status = that.app.config.loaderStatus.error;
 					break;
-				} else if (parent_obj.resourceStatus[property] == parent_obj.app.config.loaderStatus.loading) {
-					status = parent_obj.app.config.loaderStatus.loading;
+				} else if (that.resourceStatus[property] == that.app.config.loaderStatus.loading) {
+					status = that.app.config.loaderStatus.loading;
 				}
 			}
 		}
 
 		// check if there was any error
-		if (status == parent_obj.app.config.loaderStatus.error) {
+		if (status == that.app.config.loaderStatus.error) {
 			clearInterval(interval);
-			parent_obj.app.callback(callback_error);
-		} else if (status == parent_obj.app.config.loaderStatus.completed) {
+			that.app.callback(callback_error);
+		} else if (status == that.app.config.loaderStatus.completed) {
 			clearInterval(interval);
-			parent_obj.app.callback(callback_ok);
+			that.app.callback(callback_ok);
 		} // else check next interval
 	}, 100);
 };

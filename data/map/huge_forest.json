@@ -1,5 +1,12 @@
 {
-	"name": "Test Map #2 – Huge Forest",
+	"label": "Test Map #2 – Huge Forest",
+	"entrances": {
+		"start": {
+			"posX": 50,
+			"posY": 50,
+			"direction": "down"
+		}
+	},
 	"entities": [
 		{
 			"name": "tree",

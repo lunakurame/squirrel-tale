@@ -4,12 +4,14 @@ var Hud = function (application) {
 	console.log('Hud instance created');
 
 	if (typeof application !== 'object' || application == null)
-		throw Error('Player: constructor: application is required');
+		throw Error('Hud: constructor: application is required');
 
+	// technical
 	this.app = application;
 	this.canvas;
 	this.context;
 
+	// fpsCounter
 	this.fpsCounter = {};
 	this.fpsCounter.startTime = 0;
 	this.fpsCounter.frameNumber = 0;
@@ -26,6 +28,12 @@ var Hud = function (application) {
 		}
 		return result;
 	};
+};
+
+Hud.prototype.load = function () {
+	// get canvas
+	this.cavas = this.app.canvasList.canvas['hud'];
+	this.context = this.app.canvasList.context['hud'];
 };
 
 Hud.prototype.resetTextStyle = function () {

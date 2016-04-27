@@ -1,11 +1,35 @@
 {
-	"name": "Test Map #1",
+	"label": "Test Map #1",
+	"entrances": {
+		"start": {
+			"posX": 250,
+			"posY": 50,
+			"direction": "down"
+		},
+		"center": {
+			"posX": 300,
+			"posY": 178,
+			"direction": "up"
+		}
+	},
 	"entities": [
 		{
 			"name": "tree",
 			"posX": 150,
 			"posY": 100,
 			"posZ": "over"
+		},
+		{
+			"name": "tree",
+			"label": "Weird tree",
+			"posX": 220,
+			"posY": 100,
+			"posZ": "over",
+			"enableAutoPosZ": false,
+			"flipImageX": true,
+			"flipImageY": true,
+			"flipCollisionsX": true,
+			"flipCollisionsY": true
 		},
 		{
 			"name": "torii",
@@ -68,7 +92,8 @@
 			"name": "flower",
 			"posX": 90,
 			"posY": 130,
-			"posZ": "over"
+			"posZ": "over",
+			"flipImageX": true
 		},
 		{
 			"name": "flower",
