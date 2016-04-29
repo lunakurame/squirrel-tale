@@ -12,8 +12,17 @@ var Config = function (application) {
 	//data
 	this.debug = {
 		collisions: {
-			draw: false,
+			draw: true,
 			color: 'rgba(208, 64, 218, 0.8)'
+		},
+		objects: {
+			draw: true,
+			color: 'rgba(26, 152, 152, 0.3)',
+			ghostColor: 'rgba(26, 152, 152, 0.1)'
+		},
+		centers: {
+			draw: true,
+			color: 'rgba(255, 0, 0, 1)'
 		}
 	};
 	this.resourcePath = 'data';

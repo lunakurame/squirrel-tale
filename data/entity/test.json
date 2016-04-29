@@ -2,6 +2,8 @@
 	"label": "Test Entity",
 	"width": 20,
 	"height": 20,
+	"centerX": 10,
+	"centerY": 10,
 	"collisions": [
 		{
 			"posX": 0,

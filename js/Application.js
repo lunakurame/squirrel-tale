@@ -36,15 +36,15 @@ Application.prototype.init = function (arg) {
 	case 'setup-environment':
 		// canvas
 		console.log('Application: setting up the canvasList');
-		this.canvasList.add('map', $('#map')[0]);
+		this.canvasList.addCanvas('map', $('#map')[0]);
 		this.canvasList.addContext('map', $('#map')[0].getContext('2d'));
-		this.canvasList.add('entity_under', $('#entity_under')[0]);
+		this.canvasList.addCanvas('entity_under', $('#entity_under')[0]);
 		this.canvasList.addContext('entity_under', $('#entity_under')[0].getContext('2d'));
-		this.canvasList.add('player', $('#player')[0]);
+		this.canvasList.addCanvas('player', $('#player')[0]);
 		this.canvasList.addContext('player', $('#player')[0].getContext('2d'));
-		this.canvasList.add('entity_over', $('#entity_over')[0]);
+		this.canvasList.addCanvas('entity_over', $('#entity_over')[0]);
 		this.canvasList.addContext('entity_over', $('#entity_over')[0].getContext('2d'));
-		this.canvasList.add('hud', $('#hud')[0]);
+		this.canvasList.addCanvas('hud', $('#hud')[0]);
 		this.canvasList.addContext('hud', $('#hud')[0].getContext('2d'));
 		this.canvasList.resizeAll();
 

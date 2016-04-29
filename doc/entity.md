@@ -6,6 +6,8 @@
 		"label": "Some human-friendly name",
 		"width": 60,
 		"height": 120,
+		"centerX": 32,
+		"centerY": 85,
 		"collisions": [
 			{
 				"posX": 23,

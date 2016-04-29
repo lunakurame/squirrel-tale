@@ -247,10 +247,10 @@ Player.prototype.react = function (speed, resizeWindow) {
 
 				// ignore off-screen collisions
 				if (
-					entity.posX > this.app.canvasList.canvas['map'].width + this.app.map.left ||
-					entity.posX < this.app.map.left - entity.width ||
-					entity.posY > this.app.canvasList.canvas['map'].height + this.app.map.top ||
-					entity.posY < this.app.map.top - entity.height
+					entity.posX - entity.centerX > this.app.canvasList.canvas['map'].width + this.app.map.left ||
+					entity.posX + entity.centerX < this.app.map.left - entity.width ||
+					entity.posY - entity.centerY > this.app.canvasList.canvas['map'].height + this.app.map.top ||
+					entity.posY + entity.centerY < this.app.map.top - entity.height
 				)
 					break;
 
@@ -265,33 +265,33 @@ Player.prototype.react = function (speed, resizeWindow) {
 				var collides_horizontally = (
 					(
 						// this part checks if player just stepped on a collision
-						this.posX + this.collision.posX > entity.posX + collision.posX - this.collision.width &&
-						this.posX + this.collision.posX < entity.posX + collision.posX + collision.width
+						this.posX + this.collision.posX > entity.posX - entity.centerX + collision.posX - this.collision.width &&
+						this.posX + this.collision.posX < entity.posX - entity.centerX + collision.posX + collision.width
 					) || (
 						// this part checks if player just jumped over a collision
 						// it is possible to jump over when the game is lagging (low FPS = long jumps)
 						// this code detects those jumps
 						// (protip: you can emulate low FPS by changing the FPS cap)
 						(
-							old_player_posX + this.collision.posX + this.collision.width <= entity.posX + collision.posX &&
-							this.posX + this.collision.posX >= entity.posX + collision.posX + collision.width
+							old_player_posX + this.collision.posX + this.collision.width <= entity.posX - entity.centerX + collision.posX &&
+							this.posX + this.collision.posX >= entity.posX - entity.centerX + collision.posX + collision.width
 						) || (
-							this.posX + this.collision.posX + this.collision.width <= entity.posX + collision.posX &&
-							old_player_posX + this.collision.posX >= entity.posX + collision.posX + collision.width
+							this.posX + this.collision.posX + this.collision.width <= entity.posX - entity.centerX + collision.posX &&
+							old_player_posX + this.collision.posX >= entity.posX - entity.centerX + collision.posX + collision.width
 						)
 					)
 				);
 				var collides_vertically = (
 					(
-						this.posY + this.collision.posY > entity.posY + collision.posY - this.collision.height &&
-						this.posY + this.collision.posY < entity.posY + collision.posY + collision.height
+						this.posY + this.collision.posY > entity.posY - entity.centerY + collision.posY - this.collision.height &&
+						this.posY + this.collision.posY < entity.posY - entity.centerY + collision.posY + collision.height
 					) || (
 						(
-							old_player_posY + this.collision.posY + this.collision.height <= entity.posY + collision.posY &&
-							this.posY + this.collision.posY >= entity.posY + collision.posY + collision.height
+							old_player_posY + this.collision.posY + this.collision.height <= entity.posY - entity.centerY + collision.posY &&
+							this.posY + this.collision.posY >= entity.posY - entity.centerY + collision.posY + collision.height
 						) || (
-							this.posY + this.collision.posY + this.collision.height <= entity.posY + collision.posY &&
-							old_player_posY + this.collision.posY >= entity.posY + collision.posY + collision.height
+							this.posY + this.collision.posY + this.collision.height <= entity.posY - entity.centerY + collision.posY &&
+							old_player_posY + this.collision.posY >= entity.posY - entity.centerY + collision.posY + collision.height
 						)
 					)
 				);
@@ -300,17 +300,17 @@ Player.prototype.react = function (speed, resizeWindow) {
 				if (collides_horizontally && collides_vertically) {
 					// check if player collided it a move ago too
 					var collided_horizontally = (
-						old_player_posX + this.collision.posX > entity.posX + collision.posX - this.collision.width &&
-						old_player_posX + this.collision.posX < entity.posX + collision.posX + collision.width
+						old_player_posX + this.collision.posX > entity.posX - entity.centerX + collision.posX - this.collision.width &&
+						old_player_posX + this.collision.posX < entity.posX - entity.centerX + collision.posX + collision.width
 					);
 					var collided_vertically = (
-						old_player_posY + this.collision.posY > entity.posY + collision.posY - this.collision.height &&
-						old_player_posY + this.collision.posY < entity.posY + collision.posY + collision.height
+						old_player_posY + this.collision.posY > entity.posY - entity.centerY + collision.posY - this.collision.height &&
+						old_player_posY + this.collision.posY < entity.posY - entity.centerY + collision.posY + collision.height
 					);
 
 					// move player's position if necessary, also fix direction and moving animation
 					if (isKeyDown('right') && collides_vertically && collided_vertically) {
-						this.posX = entity.posX + collision.posX - this.collision.width - this.collision.posX;
+						this.posX = entity.posX - entity.centerX + collision.posX - this.collision.width - this.collision.posX;
 						if (isKeyDown('up'))
 							this.direction = this.app.config.player.direction.up;
 						else if (isKeyDown('down'))
@@ -318,7 +318,7 @@ Player.prototype.react = function (speed, resizeWindow) {
 						else
 							this.moving = false;
 					} else if (isKeyDown('left') && collides_vertically && collided_vertically) {
-						this.posX = entity.posX + collision.posX + collision.width - this.collision.posX;
+						this.posX = entity.posX - entity.centerX + collision.posX + collision.width - this.collision.posX;
 						if (isKeyDown('up'))
 							this.direction = this.app.config.player.direction.up;
 						else if (isKeyDown('down'))
@@ -326,7 +326,7 @@ Player.prototype.react = function (speed, resizeWindow) {
 						else
 							this.moving = false;
 					} else if (isKeyDown('up') && collides_horizontally && collided_horizontally) {
-						this.posY = entity.posY + collision.posY + collision.height - this.collision.posY;
+						this.posY = entity.posY - entity.centerY + collision.posY + collision.height - this.collision.posY;
 						if (isKeyDown('right'))
 							this.direction = this.app.config.player.direction.right;
 						else if (isKeyDown('left'))
@@ -334,7 +334,7 @@ Player.prototype.react = function (speed, resizeWindow) {
 						else
 							this.moving = false;
 					} else if (isKeyDown('down') && collides_horizontally && collided_horizontally) {
-						this.posY = entity.posY + collision.posY - this.collision.height - this.collision.posY;
+						this.posY = entity.posY - entity.centerY + collision.posY - this.collision.height - this.collision.posY;
 						if (isKeyDown('right'))
 							this.direction = this.app.config.player.direction.right;
 						else if (isKeyDown('left'))

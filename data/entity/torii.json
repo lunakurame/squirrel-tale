@@ -2,6 +2,8 @@
 	"label": "Torii gate",
 	"width": 110,
 	"height": 79,
+	"centerX": 55,
+	"centerY": 78,
 	"collisions": [
 		{
 			"posX": 19,

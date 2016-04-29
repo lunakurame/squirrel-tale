@@ -35,6 +35,7 @@
 				"posX": 220,
 				"posY": 100,
 				"posZ": "over",
+				"rotate": 0.1,
 				"enableAutoPosZ": false,
 				"enableCollisions": false,
 				"flipImageX": true,

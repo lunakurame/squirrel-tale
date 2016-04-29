@@ -1,5 +1,7 @@
 {
 	"label": "Flower",
 	"width": 11,
-	"height": 22
+	"height": 22,
+	"centerX": 5,
+	"centerY": 21
 }

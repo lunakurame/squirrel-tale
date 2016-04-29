@@ -15,16 +15,17 @@
 	"entities": [
 		{
 			"name": "tree",
-			"posX": 150,
-			"posY": 100,
+			"posX": 182,
+			"posY": 185,
 			"posZ": "over"
 		},
 		{
 			"name": "tree",
 			"label": "Weird tree",
-			"posX": 220,
-			"posY": 100,
+			"posX": 252,
+			"posY": 185,
 			"posZ": "over",
+			"rotate": 0.2,
 			"enableAutoPosZ": false,
 			"flipImageX": true,
 			"flipImageY": true,
@@ -33,8 +34,8 @@
 		},
 		{
 			"name": "torii",
-			"posX": 300,
-			"posY": 100,
+			"posX": 380,
+			"posY": 178,
 			"posZ": "over"
 		},
 		{
@@ -72,45 +73,45 @@
 		{
 			"name": "flower",
 			"variant": "blue",
-			"posX": 100,
-			"posY": 140,
+			"posX": 105,
+			"posY": 161,
 			"posZ": "over"
 		},
 		{
 			"name": "flower",
-			"posX": 115,
-			"posY": 145,
+			"posX": 120,
+			"posY": 166,
 			"posZ": "over"
 		},
 		{
 			"name": "flower",
-			"posX": 80,
-			"posY": 145,
+			"posX": 85,
+			"posY": 166,
 			"posZ": "over"
 		},
 		{
 			"name": "flower",
-			"posX": 90,
-			"posY": 130,
+			"posX": 95,
+			"posY": 151,
 			"posZ": "over",
 			"flipImageX": true
 		},
 		{
 			"name": "flower",
-			"posX": 92,
-			"posY": 155,
+			"posX": 97,
+			"posY": 176,
 			"posZ": "over"
 		},
 		{
 			"name": "flower",
-			"posX": 107,
-			"posY": 160,
+			"posX": 112,
+			"posY": 181,
 			"posZ": "over"
 		},
 		{
 			"name": "flower",
-			"posX": 110,
-			"posY": 130,
+			"posX": 115,
+			"posY": 151,
 			"posZ": "over"
 		}
 	]
