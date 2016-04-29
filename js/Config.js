@@ -11,6 +11,7 @@ var Config = function (application) {
 
 	//data
 	this.debug = {
+		enabled: false,
 		collisions: {
 			draw: true,
 			color: 'rgba(208, 64, 218, 0.8)'

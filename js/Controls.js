@@ -12,6 +12,7 @@ var Controls = function (application) {
 	// config	TODO move to Config?
 	this.keys = {
 		// primary keys
+		debug: 192,
 		up   : 87,
 		down : 83,
 		right: 68,
@@ -19,6 +20,7 @@ var Controls = function (application) {
 		slow : 16,
 
 		// secondary keys
+		debug_alt: 192,
 		up_alt   : 38,
 		down_alt : 40,
 		right_alt: 39,
@@ -29,6 +31,7 @@ var Controls = function (application) {
 	// states
 	this.keysDown = {
 		// primary keys
+		debug: false,
 		up   : false,
 		down : false,
 		right: false,
@@ -36,6 +39,7 @@ var Controls = function (application) {
 		slow : false,
 
 		// secondary keys
+		debug_alt: false,
 		up_alt   : false,
 		down_alt : false,
 		right_alt: false,
@@ -45,8 +49,15 @@ var Controls = function (application) {
 };
 
 Controls.prototype.toggleKeyDown = function (e, state) {
+	this.app.debugKey = e.which;
 	// set key state
 	switch(e.which) {
+	case this.keys.debug:
+		this.keysDown.debug = state;
+		break;
+	case this.keys.debug_alt:
+		this.keysDown.debug_alt = state;
+		break;
 	case this.keys.up:
 		this.keysDown.up = state;
 		break;

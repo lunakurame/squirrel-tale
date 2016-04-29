@@ -89,7 +89,7 @@ Player.prototype.draw = function () {
 	);
 
 	// drawing collision boxes
-	if (this.app.config.debug.collisions.draw) {
+	if (this.app.config.debug.enabled && this.app.config.debug.collisions.draw) {
 		this.context.fillStyle = this.app.config.debug.collisions.color;
 		this.context.fillRect(
 			parseInt(this.posX - this.app.map.left + this.app.map.marginLeft) + this.collision.posX,

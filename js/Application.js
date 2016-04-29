@@ -4,6 +4,8 @@ var Application = function () {
 	console.log('%c////////////////////////////////////////////////////////////////////////////////', 'background: #3465a4;');
 	console.log('Application instance created');
 
+	this.debugKey = 0;	// TODO move to Hud
+
 	this.config = new Config(this);
 	this.loadingScreen = new LoadingScreen(this);
 	this.resourceLoader = new ResourceLoader(this);
@@ -95,7 +97,33 @@ Application.prototype.init = function (arg) {
 		this.map.draw();
 		//this.hud.draw(); // TODO
 
+		var debugKeyState = false;
+
 		var drawingLoop_interval = setInterval(function () { // TODO
+			// debug mode
+			if (debugKeyState && !(app.controls.keysDown.debug || app.controls.keysDown.debug_alt)) {
+				debugKeyState = false;
+				app.config.debug.enabled = !app.config.debug.enabled;
+				for (var i in app.canvasList.context)
+					app.canvasList.render(
+						app.canvasList.context[i],
+						'clear',
+						0,
+						0,
+						0,
+						0,
+						app.canvasList.canvas[i].width,
+						app.canvasList.canvas[i].height,
+						false,
+						false,
+						0
+					);
+				app.map.draw();
+				//this.hud.draw(); // TODO
+			} else if (!debugKeyState && (app.controls.keysDown.debug || app.controls.keysDown.debug_alt)) {
+				debugKeyState = true;
+			}
+
 			// adjust speed to fps, so the player will always move the same speed
 			var fps = app.hud.fpsCounter.getValue();
 			var speed = app.player.speed / fps;
@@ -127,9 +155,9 @@ Application.prototype.init = function (arg) {
 			// draw debug HUD
 			app.canvasList.context['hud'].clearRect(0, 0, 320, 40);
 			app.canvasList.context['hud'].fillStyle = 'rgba(0, 127, 127, .98)';
-			app.canvasList.context['hud'].fillRect(0, 0, 240, 20);
+			app.canvasList.context['hud'].fillRect(0, 0, 300, 20);
 			app.canvasList.context['hud'].fillStyle = '#fff';
-			app.canvasList.context['hud'].fillText(fps.toFixed(2) + ' fps, screen: ' + app.canvasList.canvas['player'].width + 'x' + app.canvasList.canvas['player'].height + '', 6, 2);
+			app.canvasList.context['hud'].fillText(fps.toFixed(2) + ' fps, screen: ' + app.canvasList.canvas['player'].width + 'x' + app.canvasList.canvas['player'].height + ', key: ' + app.debugKey, 6, 2);
 
 			//clearInterval(drawingLoop_interval);
 		}, 16);	// locked on max 62.5 fps = 1000/16

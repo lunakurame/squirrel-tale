@@ -112,7 +112,7 @@ Entity.prototype.clear = function () {
 	);
 
 	// debug mode - clear ghost sprite
-	if (this.app.config.debug.objects.draw && (this.flipImageX || this.flipImageY || this.rotate != 0))
+	if (this.app.config.debug.enabled && this.app.config.debug.objects.draw && (this.flipImageX || this.flipImageY || this.rotate != 0))
 		context.clearRect(
 			parseInt(this.posX - this.app.map.left + this.app.map.marginLeft) - this.centerX,
 			parseInt(this.posY - this.app.map.top + this.app.map.marginTop) - this.centerY,
@@ -120,7 +120,7 @@ Entity.prototype.clear = function () {
 			this.height
 		);
 	// debug mode - clear flipped collisions
-	if (this.app.config.debug.collisions.draw && this.flipCollisionsY)
+	if (this.app.config.debug.enabled && this.app.config.debug.collisions.draw && this.flipCollisionsY)
 		context.clearRect(
 			parseInt(this.posX - this.app.map.left + this.app.map.marginLeft) - this.centerX,
 			parseInt(this.posY - this.app.map.top + this.app.map.marginTop),
@@ -159,7 +159,7 @@ Entity.prototype.draw = function () {
 	);
 
 	// debug mode - draw collision boxes
-	if (this.app.config.debug.collisions.draw) {
+	if (this.app.config.debug.enabled && this.app.config.debug.collisions.draw) {
 		context.fillStyle = this.app.config.debug.collisions.color;
 		for (var i in this.collisions) {
 			context.fillRect(
@@ -172,7 +172,7 @@ Entity.prototype.draw = function () {
 	}
 
 	// debug mode - draw object boxes
-	if (this.app.config.debug.objects.draw) {
+	if (this.app.config.debug.enabled && this.app.config.debug.objects.draw) {
 		// ghost sprite
 		context.fillStyle = this.app.config.debug.objects.ghostColor;
 		context.fillRect(
@@ -200,7 +200,7 @@ Entity.prototype.draw = function () {
 	}
 
 	// debug mode - draw center
-	if (this.app.config.debug.centers.draw) {
+	if (this.app.config.debug.enabled && this.app.config.debug.centers.draw) {
 		context.fillStyle = this.app.config.debug.centers.color;
 		context.fillRect(
 			parseInt(this.posX - this.app.map.left + this.app.map.marginLeft),
