@@ -1,7 +1,13 @@
 {
 	"label": "Flower",
-	"width": 11,
-	"height": 22,
-	"centerX": 5,
-	"centerY": 21
+	"views": {
+		"master": [
+			{
+				"width": 11,
+				"height": 22,
+				"centerX": 5,
+				"centerY": 21
+			}
+		]
+	}
 }

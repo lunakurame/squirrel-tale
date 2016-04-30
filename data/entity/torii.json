@@ -1,21 +1,27 @@
 {
 	"label": "Torii gate",
-	"width": 110,
-	"height": 79,
-	"centerX": 55,
-	"centerY": 78,
-	"collisions": [
-		{
-			"posX": 19,
-			"posY": 71,
-			"width": 11,
-			"height": 8
-		},
-		{
-			"posX": 80,
-			"posY": 71,
-			"width": 11,
-			"height": 8
-		}
-	]
+	"views": {
+		"master": [
+			{
+				"width": 110,
+				"height": 79,
+				"centerX": 55,
+				"centerY": 78,
+				"collisions": [
+					{
+						"posX": 19,
+						"posY": 71,
+						"width": 11,
+						"height": 8
+					},
+					{
+						"posX": 80,
+						"posY": 71,
+						"width": 11,
+						"height": 8
+					}
+				]
+			}
+		]
+	}
 }

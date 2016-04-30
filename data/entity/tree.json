@@ -1,15 +1,49 @@
 {
 	"label": "Tree",
-	"width": 64,
-	"height": 96,
-	"centerX": 32,
-	"centerY": 85,
-	"collisions": [
-		{
-			"posX": 23,
-			"posY": 83,
-			"width": 20,
-			"height": 13
-		}
-	]
+	"views": {
+		"master": [
+			{
+				"width": 64,
+				"height": 96,
+				"centerX": 32,
+				"centerY": 85,
+				"collisions": [
+					{
+						"posX": 23,
+						"posY": 83,
+						"width": 20,
+						"height": 13
+					}
+				]
+			},
+			{
+				"width": 128,
+				"height": 192,
+				"centerX": 64,
+				"centerY": 170,
+				"collisions": [
+					{
+						"posX": 48,
+						"posY": 166,
+						"width": 40,
+						"height": 26
+					}
+				]
+			},
+			{
+				"width": 32,
+				"height": 48,
+				"centerX": 16,
+				"centerY": 42,
+				"collisions": [
+					{
+						"posX": 11,
+						"posY": 41,
+						"width": 10,
+						"height": 6
+					}
+				]
+			}
+		]
+	}
 }

@@ -21,13 +21,17 @@
 				"name": "tree",
 				"posX": 150,
 				"posY": 100,
-				"posZ": "over"
+				"posZ": "over",
+				"view": "master",
+				"frame": 0
 			},
 			{
 				"name": "test",
 				"posX": 150,
 				"posY": 300,
-				"posZ": "under"
+				"posZ": "under",
+				"view": "wanky",
+				"frame": 3
 			},
 			{
 				"name": "tree",
@@ -35,6 +39,8 @@
 				"posX": 220,
 				"posY": 100,
 				"posZ": "over",
+				"view": "master",
+				"frame": 1,
 				"rotate": 0.1,
 				"enableAutoPosZ": false,
 				"enableCollisions": false,

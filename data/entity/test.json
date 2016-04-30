@@ -1,15 +1,21 @@
 {
 	"label": "Test Entity",
-	"width": 20,
-	"height": 20,
-	"centerX": 10,
-	"centerY": 10,
-	"collisions": [
-		{
-			"posX": 0,
-			"posY": 15,
-			"width": 20,
-			"height": 5
-		}
-	]
+	"views": {
+		"master": [
+			{
+				"width": 20,
+				"height": 20,
+				"centerX": 10,
+				"centerY": 10,
+				"collisions": [
+					{
+						"posX": 0,
+						"posY": 15,
+						"width": 20,
+						"height": 5
+					}
+				]
+			}
+		]
+	}
 }

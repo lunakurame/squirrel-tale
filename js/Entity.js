@@ -19,17 +19,16 @@ var Entity = function (application, name, variant) {
 	this.context_under;
 
 	// from JSON (may be overrided!)
-	this.label      = '';
-	this.width      = 0;
-	this.height     = 0;
-	this.centerX    = 0;
-	this.centerY    = 0;
-	this.collisions = [];
+	this.label = '';
+	this.views = {};
 
 	// from map's JSON (may be overrided!)
+	// this.label = [see 'from JSON']
 	this.posX             = 0;
 	this.posY             = 0;
 	this.posZ             = 'under';
+	this.view             = 'master';
+	this.frame            = 0;
 	this.rotate           = 0;
 	this.enableAutoPosZ   = true;
 	this.enableCollisions = true;
@@ -39,7 +38,12 @@ var Entity = function (application, name, variant) {
 	this.flipCollisionsY  = false;
 
 	// generated on runtime
-	this.fullName = name + (typeof variant === 'undefined' ? '' : '-' + variant);
+	this.fullName   = name + (typeof variant === 'undefined' ? '' : '-' + variant);
+	this.width      = 0;	// -\ 
+	this.height     = 0;	//  |
+	this.centerX    = 0;	//   > these things are loaded from views, see this.setFrame()
+	this.centerY    = 0;	//  |
+	this.collisions = [];	// -/
 };
 
 Entity.prototype.load = function (mapData, data, image) {
@@ -49,9 +53,11 @@ Entity.prototype.load = function (mapData, data, image) {
 	this.image   = image;
 
 	// load info from map's JSON
-	this.posX = this.mapData.posX;
-	this.posY = this.mapData.posY;
-	this.posZ = this.mapData.posZ;
+	this.posX   = this.mapData.posX;
+	this.posY   = this.mapData.posY;
+	this.posZ   = this.mapData.posZ;
+	this.view   = this.mapData.view;
+	this.frame  = this.mapData.frame;
 	this.rotate = (typeof this.mapData.rotate === 'undefined' ? 0 : this.mapData.rotate);
 
 	this.enableAutoPosZ   = this.mapData.enableAutoPosZ   !== false;
@@ -67,13 +73,43 @@ Entity.prototype.load = function (mapData, data, image) {
 
 	// load info from JSON
 	//this.label = [see JSON overrides]
-	this.width   = this.data.file.width;
-	this.height  = this.data.file.height;
-	this.centerX = this.data.file.centerX;
-	this.centerY = this.data.file.centerY;
 
-	if (typeof this.data.file.collisions !== 'undefined' && this.enableCollisions)
-		this.collisions = $.map(this.data.file.collisions, function (obj) {
+	for (var i in this.data.file.views) {
+		this.views[i] = [];
+		this.views[i] = $.map(this.data.file.views[i], function (obj) {
+			return $.extend(true, {}, obj);
+		});
+	}
+	// XXX ^ this may not clone views[view][frame].collisions, but it seem
+	// to work for now...? fix it in case something's wrong
+
+	// set frame
+	this.setFrame();
+
+	// get canvas
+	this.canvas        = this.app.canvasList.canvas['entity_' + this.posZ];
+	this.context       = this.app.canvasList.context['entity_' + this.posZ];
+	this.canvas_under  = this.app.canvasList.canvas['entity_under'];
+	this.context_under = this.app.canvasList.context['entity_under'];
+};
+
+Entity.prototype.setFrame = function (view, frame) {
+	// set view and frame
+	if (typeof view !== 'undefined')
+		this.view = view;
+	if (typeof frameNum !== 'undefined')
+		this.frame = frame;
+
+	// get pointer to frame
+	var framePointer = this.views[this.view][this.frame];
+
+	// set data
+	this.width   = framePointer.width;
+	this.height  = framePointer.height;
+	this.centerX = framePointer.centerX;
+	this.centerY = framePointer.centerY;
+	if (typeof framePointer.collisions !== 'undefined' && this.enableCollisions)
+		this.collisions = $.map(framePointer.collisions, function (obj) {
 			return $.extend(true, {}, obj);
 		});
 
@@ -84,12 +120,6 @@ Entity.prototype.load = function (mapData, data, image) {
 	if (this.flipCollisionsY)
 		for (var j in this.collisions)
 			this.collisions[j].posY = this.centerY - this.collisions[j].height + this.centerY - this.collisions[j].posY;
-
-	// get canvas
-	this.canvas        = this.app.canvasList.canvas['entity_' + this.posZ];
-	this.context       = this.app.canvasList.context['entity_' + this.posZ];
-	this.canvas_under  = this.app.canvasList.canvas['entity_under'];
-	this.context_under = this.app.canvasList.context['entity_under'];
 };
 
 Entity.prototype.clear = function () {

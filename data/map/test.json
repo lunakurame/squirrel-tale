@@ -17,7 +17,9 @@
 			"name": "tree",
 			"posX": 182,
 			"posY": 185,
-			"posZ": "over"
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
 		},
 		{
 			"name": "tree",
@@ -25,6 +27,8 @@
 			"posX": 252,
 			"posY": 185,
 			"posZ": "over",
+			"view": "master",
+			"frame": 2,
 			"rotate": 0.2,
 			"enableAutoPosZ": false,
 			"flipImageX": true,
@@ -36,25 +40,33 @@
 			"name": "torii",
 			"posX": 380,
 			"posY": 178,
-			"posZ": "over"
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
 		},
 		{
 			"name": "test",
 			"posX": 100,
 			"posY": 300,
-			"posZ": "over"
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
 		},
 		{
 			"name": "test",
 			"posX": 150,
 			"posY": 300,
-			"posZ": "under"
+			"posZ": "under",
+			"view": "master",
+			"frame": 0
 		},
 		{
 			"name": "test",
 			"posX": 200,
 			"posY": 300,
 			"posZ": "over",
+			"view": "master",
+			"frame": 0,
 			"enableCollisions": false
 		},
 		{
@@ -62,57 +74,75 @@
 			"posX": 250,
 			"posY": 300,
 			"posZ": "under",
+			"view": "master",
+			"frame": 0,
 			"enableCollisions": false
 		},
 		{
 			"name": "test",
 			"posX": 300,
 			"posY": 300,
-			"posZ": "over"
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
 		},
 		{
 			"name": "flower",
 			"variant": "blue",
 			"posX": 105,
 			"posY": 161,
-			"posZ": "over"
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
 		},
 		{
 			"name": "flower",
 			"posX": 120,
 			"posY": 166,
-			"posZ": "over"
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
 		},
 		{
 			"name": "flower",
 			"posX": 85,
 			"posY": 166,
-			"posZ": "over"
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
 		},
 		{
 			"name": "flower",
 			"posX": 95,
 			"posY": 151,
 			"posZ": "over",
+			"view": "master",
+			"frame": 0,
 			"flipImageX": true
 		},
 		{
 			"name": "flower",
 			"posX": 97,
 			"posY": 176,
-			"posZ": "over"
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
 		},
 		{
 			"name": "flower",
 			"posX": 112,
 			"posY": 181,
-			"posZ": "over"
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
 		},
 		{
 			"name": "flower",
 			"posX": 115,
 			"posY": 151,
-			"posZ": "over"
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
 		}
 	]
 }
