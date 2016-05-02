@@ -103,11 +103,16 @@ Application.prototype.init = function (arg) {
 			// debug mode
 			if (debugKeyState && !(app.controls.keysDown.debug || app.controls.keysDown.debug_alt)) {
 				debugKeyState = false;
+
+				// toggle debug mode
 				app.config.debug.enabled = !app.config.debug.enabled;
+
+				// clear all canvases
 				for (var i in app.canvasList.context)
 					app.canvasList.render(
 						app.canvasList.context[i],
 						'clear',
+						0, 0, 0, 0,
 						0,
 						0,
 						0,
