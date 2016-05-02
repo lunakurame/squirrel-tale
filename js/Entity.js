@@ -39,9 +39,13 @@ var Entity = function (application, name, variant) {
 
 	// generated on runtime
 	this.fullName   = name + (typeof variant === 'undefined' ? '' : '-' + variant);
-	this.width      = 0;	// -\ 
+	this.cropX      = 0;	// -\ 
+	this.cropY      = 0;	//  |
+	this.cropWidth  = 0;	//  |
+	this.cropHeight = 0;	//  |
+	this.width      = 0;	//   > these things are loaded from views, see this.setFrame()
 	this.height     = 0;	//  |
-	this.centerX    = 0;	//   > these things are loaded from views, see this.setFrame()
+	this.centerX    = 0;	//  |
 	this.centerY    = 0;	//  |
 	this.collisions = [];	// -/
 };
@@ -104,10 +108,14 @@ Entity.prototype.setFrame = function (view, frame) {
 	var framePointer = this.views[this.view][this.frame];
 
 	// set data
-	this.width   = framePointer.width;
-	this.height  = framePointer.height;
-	this.centerX = framePointer.centerX;
-	this.centerY = framePointer.centerY;
+	this.cropX      = framePointer.cropX;
+	this.cropY      = framePointer.cropY;
+	this.cropWidth  = framePointer.cropWidth;
+	this.cropHeight = framePointer.cropHeight;
+	this.width      = framePointer.width;
+	this.height     = framePointer.height;
+	this.centerX    = framePointer.centerX;
+	this.centerY    = framePointer.centerY;
 	if (typeof framePointer.collisions !== 'undefined' && this.enableCollisions)
 		this.collisions = $.map(framePointer.collisions, function (obj) {
 			return $.extend(true, {}, obj);
@@ -130,6 +138,7 @@ Entity.prototype.clear = function () {
 	this.app.canvasList.render(
 		context,
 		'clear',
+		0, 0, 0, 0,
 		this.centerX,
 		this.centerY,
 		parseInt(this.posX - this.app.map.left + this.app.map.marginLeft),
@@ -176,6 +185,10 @@ Entity.prototype.draw = function () {
 	this.app.canvasList.render(
 		context,
 		this.image.file,
+		this.cropX,
+		this.cropY,
+		this.cropWidth,
+		this.cropHeight,
 		this.centerX,
 		this.centerY,
 		// draw at position:
@@ -216,6 +229,7 @@ Entity.prototype.draw = function () {
 		this.app.canvasList.render(
 			context,
 			'fill',
+			0, 0, 0, 0,
 			this.centerX,
 			this.centerY,
 			// draw at position:

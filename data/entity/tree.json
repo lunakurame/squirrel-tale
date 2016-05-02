@@ -3,6 +3,10 @@
 	"views": {
 		"master": [
 			{
+				"cropX": 0,
+				"cropY": 0,
+				"cropWidth": 64,
+				"cropHeight": 96,
 				"width": 64,
 				"height": 96,
 				"centerX": 32,
@@ -17,6 +21,10 @@
 				]
 			},
 			{
+				"cropX": 0,
+				"cropY": 0,
+				"cropWidth": 64,
+				"cropHeight": 96,
 				"width": 128,
 				"height": 192,
 				"centerX": 64,
@@ -31,6 +39,10 @@
 				]
 			},
 			{
+				"cropX": 0,
+				"cropY": 0,
+				"cropWidth": 64,
+				"cropHeight": 96,
 				"width": 32,
 				"height": 48,
 				"centerX": 16,

@@ -3,6 +3,10 @@
 	"views": {
 		"master": [
 			{
+				"cropX": 0,
+				"cropY": 0,
+				"cropWidth": 20,
+				"cropHeight": 20,
 				"width": 20,
 				"height": 20,
 				"centerX": 10,

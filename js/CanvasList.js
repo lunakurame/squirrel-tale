@@ -96,7 +96,7 @@ CanvasList.prototype.resizeAllWithoutFlicker = function (ignoreHud) {
 	}
 };
 
-CanvasList.prototype.render = function (context, data, centerX, centerY, posX, posY, width, height, flipX, flipY, rotate) {
+CanvasList.prototype.render = function (context, data, cropX, cropY, cropWidth, cropHeight, centerX, centerY, posX, posY, width, height, flipX, flipY, rotate) {
 	// check if translating, saving and restoring context is necessary
 	if (flipX || flipY || rotate != 0) {
 		// transform context
@@ -111,6 +111,10 @@ CanvasList.prototype.render = function (context, data, centerX, centerY, posX, p
 		if (typeof data === 'object') {
 			context.drawImage(
 				data,
+				cropX,
+				cropY,
+				cropWidth,
+				cropHeight,
 				-centerX,
 				-centerY,
 				width,
@@ -152,6 +156,10 @@ CanvasList.prototype.render = function (context, data, centerX, centerY, posX, p
 		if (typeof data === 'object') {
 			context.drawImage(
 				data,
+				cropX,
+				cropY,
+				cropWidth,
+				cropHeight,
 				posX - centerX,
 				posY - centerY,
 				width,
