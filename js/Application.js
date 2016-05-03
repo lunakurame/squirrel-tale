@@ -10,6 +10,7 @@ var Application = function () {
 	this.loadingScreen = new LoadingScreen(this);
 	this.resourceLoader = new ResourceLoader(this);
 	this.canvasList = new CanvasList(this);
+	this.animationList = new AnimationList(this);
 	this.controls = new Controls(this);
 	this.map = new Map(this, this.config.map.name, this.config.map.variant);
 	this.player = new Player(this, this.config.player.name, this.config.player.variant);
@@ -76,6 +77,9 @@ Application.prototype.init = function (arg) {
 	case 'setup-entities':
 		this.map.setupEntities();
 
+	case 'animations':
+		this.animationList.load();
+
 	case 'setup-window':
 		//controls
 		$(document).keydown(function (e) {
@@ -109,19 +113,11 @@ Application.prototype.init = function (arg) {
 
 				// clear all canvases
 				for (var i in app.canvasList.context)
-					app.canvasList.render(
-						app.canvasList.context[i],
-						'clear',
-						0, 0, 0, 0,
-						0,
-						0,
+					app.canvasList.context[i].clearRect(
 						0,
 						0,
 						app.canvasList.canvas[i].width,
-						app.canvasList.canvas[i].height,
-						false,
-						false,
-						0
+						app.canvasList.canvas[i].height
 					);
 				app.map.draw();
 				//this.hud.draw(); // TODO
@@ -143,12 +139,19 @@ Application.prototype.init = function (arg) {
 				app.map.entities[i].clear();
 			}
 
+			// exec entities queue
+			for (var i in app.map.entities) {
+				app.map.entities[i].execQueue();
+			}
+// TODO bugfix: when animation changes collisions while player is not moving,
+// then player can appear inside the collision, and then teleport though it
+// when walking inside
 			// player react
 			app.player.react(speed);
 
 			// draw player
 			app.player.draw();
-			
+
 			// draw entities
 			for (var i in app.map.entities) {
 				app.map.entities[i].draw();

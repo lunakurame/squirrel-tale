@@ -56,6 +56,56 @@
 					}
 				]
 			}
+		],
+		"dance": [
+			{
+				"cropX": 0,
+				"cropY": 0,
+				"cropWidth": 64,
+				"cropHeight": 96,
+				"width": 64,
+				"height": 96,
+				"centerX": 32,
+				"centerY": 85,
+				"collisions": [
+					{
+						"posX": 23,
+						"posY": 83,
+						"width": 20,
+						"height": 13
+					}
+				]
+			},
+			{
+				"cropX": 64,
+				"cropY": 0,
+				"cropWidth": 64,
+				"cropHeight": 96,
+				"width": 64,
+				"height": 96,
+				"centerX": 32,
+				"centerY": 85,
+				"collisions": [
+					{
+						"posX": 23,
+						"posY": 83,
+						"width": 20,
+						"height": 13
+					}
+				]
+			}
 		]
-	}
+	},
+	"animations": [
+		{
+			"type": "auto",
+			"script": [
+				"sleep 500",
+				"frame dance 0",
+				"sleep 500",
+				"frame dance 1",
+				"goto 0"
+			]
+		}
+	]
 }

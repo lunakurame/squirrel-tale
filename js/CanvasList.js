@@ -122,10 +122,10 @@ CanvasList.prototype.render = function (context, data, cropX, cropY, cropWidth, 
 			);
 		} else if (data === 'fill') {
 			context.fillRect(
-				-centerX,
-				-centerY,
-				width,
-				height
+				-centerX + (cropX > 0 ? cropX : 0),
+				-centerY + (cropY > 0 ? cropY : 0),
+				(cropWidth > 0 ? cropWidth : 0),
+				(cropHeight > 0 ? cropHeight : 0)
 			);
 		} else if (data === 'clear') {
 			// if the sprite is rotated, add some extra pixels on
@@ -134,17 +134,17 @@ CanvasList.prototype.render = function (context, data, cropX, cropY, cropWidth, 
 			// so the result is shitty and may be slightly larger
 			if (rotate != 0) {
 				context.clearRect(
-					-centerX - 1,
-					-centerY - 1,
-					width + 2,
-					height + 2
+					-centerX + (cropX > 0 ? cropX : 0) - 1,
+					-centerY + (cropY > 0 ? cropY : 0) - 1,
+					(cropWidth > 0 ? cropWidth : 0) + 2,
+					(cropHeight > 0 ? cropHeight : 0) + 2
 				);
 			} else {
 				context.clearRect(
-					-centerX,
-					-centerY,
-					width,
-					height
+					-centerX + cropX,
+					-centerY + cropY,
+					cropWidth,
+					cropHeight
 				);
 			}
 		} else {
@@ -167,17 +167,17 @@ CanvasList.prototype.render = function (context, data, cropX, cropY, cropWidth, 
 			);
 		} else if (data === 'fill') {
 			context.fillRect(
-				posX - centerX,
-				posY - centerY,
-				width,
-				height
+				posX - centerX + (cropX > 0 ? cropX : 0),
+				posY - centerY + (cropY > 0 ? cropY : 0),
+				(cropWidth > 0 ? cropWidth : 0),
+				(cropHeight > 0 ? cropHeight : 0)
 			);
 		} else if (data === 'clear') {
 			context.clearRect(
-				posX - centerX,
-				posY - centerY,
-				width,
-				height
+				posX - centerX + (cropX > 0 ? cropX : 0),
+				posY - centerY + (cropY > 0 ? cropY : 0),
+				(cropWidth > 0 ? cropWidth : 0),
+				(cropHeight > 0 ? cropHeight : 0)
 			);
 		} else {
 			console.log('Error: Can\'t draw object, unrecognized type: ', data);

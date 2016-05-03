@@ -17,10 +17,12 @@ var Entity = function (application, name, variant) {
 	this.context;
 	this.canvas_under;
 	this.context_under;
+	this.queue = [];
 
 	// from JSON (may be overrided!)
-	this.label = '';
-	this.views = {};
+	this.label      = '';
+	this.views      = {};
+	this.animations = [];
 
 	// from map's JSON (may be overrided!)
 	// this.label = [see 'from JSON']
@@ -87,6 +89,11 @@ Entity.prototype.load = function (mapData, data, image) {
 	// XXX ^ this may not clone views[view][frame].collisions, but it seem
 	// to work for now...? fix it in case something's wrong
 
+	if (typeof this.data.file.animations !== 'undefined')
+		this.animations = $.map(this.data.file.animations, function (obj) {
+			return $.extend(true, {}, obj);
+		});
+
 	// set frame
 	this.setFrame();
 
@@ -97,11 +104,16 @@ Entity.prototype.load = function (mapData, data, image) {
 	this.context_under = this.app.canvasList.context['entity_under'];
 };
 
+Entity.prototype.execQueue = function () {
+	for (var i in this.queue)
+		this.queue[i]();
+};
+
 Entity.prototype.setFrame = function (view, frame) {
 	// set view and frame
 	if (typeof view !== 'undefined')
 		this.view = view;
-	if (typeof frameNum !== 'undefined')
+	if (typeof frame !== 'undefined')
 		this.frame = frame;
 
 	// get pointer to frame
@@ -138,7 +150,10 @@ Entity.prototype.clear = function () {
 	this.app.canvasList.render(
 		context,
 		'clear',
-		0, 0, 0, 0,
+		0,
+		0,
+		this.width,
+		this.height,
 		this.centerX,
 		this.centerY,
 		parseInt(this.posX - this.app.map.left + this.app.map.marginLeft),
@@ -165,6 +180,104 @@ Entity.prototype.clear = function () {
 			parseInt(this.posY - this.app.map.top + this.app.map.marginTop),
 			this.width,
 			this.height
+		);
+};
+
+Entity.prototype.clearDifference = function (oldView, oldFrame, newView, newFrame) {
+	var oldFramePointer = this.views[oldView][oldFrame];
+	var newFramePointer = this.views[newView][newFrame];
+
+	// get context
+	var context = this.isUnder() ? this.context_under : this.context;
+
+	// top slice
+	this.app.canvasList.render(
+		context,
+		'clear',
+		0,
+		0,
+		oldFramePointer.width,
+		oldFramePointer.centerY - newFramePointer.centerY,
+		oldFramePointer.centerX,
+		oldFramePointer.centerY,
+		parseInt(this.posX - this.app.map.left + this.app.map.marginLeft),
+		parseInt(this.posY - this.app.map.top + this.app.map.marginTop),
+		oldFramePointer.width,
+		oldFramePointer.height,
+		this.flipImageX,
+		this.flipImageY,
+		this.rotate
+	);
+	// bottom slice
+	this.app.canvasList.render(
+		context,
+		'clear',
+		0,
+		oldFramePointer.centerY + newFramePointer.height - newFramePointer.centerY,
+		oldFramePointer.width,
+		oldFramePointer.height - (oldFramePointer.centerY + newFramePointer.height - newFramePointer.centerY),
+		oldFramePointer.centerX,
+		oldFramePointer.centerY,
+		parseInt(this.posX - this.app.map.left + this.app.map.marginLeft),
+		parseInt(this.posY - this.app.map.top + this.app.map.marginTop),
+		oldFramePointer.width,
+		oldFramePointer.height,
+		this.flipImageX,
+		this.flipImageY,
+		this.rotate
+	);
+	// left slice
+	this.app.canvasList.render(
+		context,
+		'clear',
+		0,
+		oldFramePointer.centerY - newFramePointer.centerY,
+		oldFramePointer.centerX - newFramePointer.centerX,
+		newFramePointer.height,
+		oldFramePointer.centerX,
+		oldFramePointer.centerY,
+		parseInt(this.posX - this.app.map.left + this.app.map.marginLeft),
+		parseInt(this.posY - this.app.map.top + this.app.map.marginTop),
+		oldFramePointer.width,
+		oldFramePointer.height,
+		this.flipImageX,
+		this.flipImageY,
+		this.rotate
+	);
+	// right slice
+	this.app.canvasList.render(
+		context,
+		'clear',
+		oldFramePointer.centerX + (newFramePointer.width - newFramePointer.centerX),
+		oldFramePointer.centerY - newFramePointer.centerY,
+		(oldFramePointer.width - oldFramePointer.centerX) - (newFramePointer.width - newFramePointer.centerX),
+		newFramePointer.height,
+		oldFramePointer.centerX,
+		oldFramePointer.centerY,
+		parseInt(this.posX - this.app.map.left + this.app.map.marginLeft),
+		parseInt(this.posY - this.app.map.top + this.app.map.marginTop),
+		oldFramePointer.width,
+		oldFramePointer.height,
+		this.flipImageX,
+		this.flipImageY,
+		this.rotate
+	);
+
+	// debug mode - clear ghost sprite
+	if (this.app.config.debug.enabled && this.app.config.debug.objects.draw && (this.flipImageX || this.flipImageY || this.rotate != 0))
+		context.clearRect(
+			parseInt(this.posX - this.app.map.left + this.app.map.marginLeft) - oldFramePointer.centerX,
+			parseInt(this.posY - this.app.map.top + this.app.map.marginTop) - oldFramePointer.centerY,
+			oldFramePointer.width,
+			oldFramePointer.height
+		);
+	// debug mode - clear flipped collisions
+	if (this.app.config.debug.enabled && this.app.config.debug.collisions.draw && this.flipCollisionsY)
+		context.clearRect(
+			parseInt(this.posX - this.app.map.left + this.app.map.marginLeft) - oldFramePointer.centerX,
+			parseInt(this.posY - this.app.map.top + this.app.map.marginTop),
+			oldFramePointer.width,
+			oldFramePointer.height
 		);
 };
 
@@ -229,7 +342,10 @@ Entity.prototype.draw = function () {
 		this.app.canvasList.render(
 			context,
 			'fill',
-			0, 0, 0, 0,
+			0,
+			0,
+			this.width,
+			this.height,
 			this.centerX,
 			this.centerY,
 			// draw at position:
