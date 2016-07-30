@@ -11,6 +11,7 @@ var Application = function () {
 	this.resourceLoader = new ResourceLoader(this);
 	this.canvasList = new CanvasList(this);
 	this.animationList = new AnimationList(this);
+	this.fontList = new FontList(this);
 	this.controls = new Controls(this);
 	this.map = new Map(this, this.config.map.name, this.config.map.variant);
 	this.player = new Player(this, this.config.player.name, this.config.player.variant);
@@ -30,8 +31,10 @@ Application.prototype.init = function (arg) {
 		this.resourceLoader.load('image', 'image', 'loading', 'failed');
 		this.resourceLoader.load('json', 'map', this.map.name);
 		this.resourceLoader.load('json', 'player', this.player.name);
+		this.resourceLoader.load('json', 'font', 'basic');
 		this.resourceLoader.load('image', 'map', this.map.fullName);
 		this.resourceLoader.load('image', 'player', this.player.fullName);
+		this.resourceLoader.load('image', 'font', 'basic');
 		//this.resourceLoader.load('debug', 'debug', 'debug');
 		this.resourceLoader.waitForAllFiles('init-load-resources-ok', 'init-load-resources-error');
 		break;
@@ -68,6 +71,7 @@ Application.prototype.init = function (arg) {
 		// hud
 		console.log('Application: setting up the hud');
 		this.hud.load();
+		this.fontList.load();
 
 	case 'load-entities':
 		// load entities
@@ -161,11 +165,26 @@ Application.prototype.init = function (arg) {
 			app.hud.resetTextStyle();
 
 			// draw debug HUD
-			app.canvasList.context['hud'].clearRect(0, 0, 320, 40);
-			app.canvasList.context['hud'].fillStyle = 'rgba(0, 127, 127, .98)';
-			app.canvasList.context['hud'].fillRect(0, 0, 300, 20);
+			app.canvasList.context['hud'].clearRect(0, 0, 108, 40);
+			app.canvasList.context['hud'].fillStyle = 'rgba(0, 127, 127, .8)';
+			app.canvasList.context['hud'].fillRect(0, 0, 108, 40);
 			app.canvasList.context['hud'].fillStyle = '#fff';
-			app.canvasList.context['hud'].fillText(fps.toFixed(2) + ' fps, screen: ' + app.canvasList.canvas['player'].width + 'x' + app.canvasList.canvas['player'].height + ', key: ' + app.debugKey, 6, 2);
+
+			app.fontList.draw(
+				'FPS ' + fps.toFixed(2) +
+				'\nRES ' + app.canvasList.canvas['player'].width + 'x' + app.canvasList.canvas['player'].height +
+				'\nKEY ' + app.debugKey,
+				'basic', 6, 4
+			);
+
+//			app.fontList.draw(
+//				'1234567890\nQWERTYUIOP\nASDFGHJKL\nZXCVBNM\nqwertyuiop\nasdfghjkl\nzxcvbnm\n `-=[]\\;\',./~!@\n#$%^&*()_+{}\n|:"<>?',
+//				'basic', 50, 50
+//			);
+//			app.fontList.draw(
+//				'0123456789\nABCDEFGHIJ\nKLMNOPQRS\nTUVWXYZ\nabcdefghij\nklmnopqrs\ntuvwxyz',
+//				'basic', 150, 50
+//			);
 
 			//clearInterval(drawingLoop_interval);
 		}, 16);	// locked on max 62.5 fps = 1000/16
