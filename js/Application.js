@@ -38,7 +38,9 @@ Application.prototype.init = function (arg) {
 		this.resourceLoader.load('json', 'font', 'basic');
 		this.resourceLoader.load('image', 'map', this.map.fullName);
 		this.resourceLoader.load('image', 'player', this.player.fullName);
-		this.resourceLoader.load('image', 'font', 'basic');
+		this.resourceLoader.load('image', 'font', 'basic', 'white');
+		this.resourceLoader.load('image', 'font', 'basic', 'black');
+		this.resourceLoader.load('image', 'font', 'basic', 'teal');
 		//this.resourceLoader.load('debug', 'debug', 'debug');
 		this.resourceLoader.waitForAllFiles('init-load-resources-ok', 'init-load-resources-error');
 		break;
@@ -155,7 +157,37 @@ Application.prototype.init = function (arg) {
 			// the actual drawing
 
 			if (app.mode == 'pause') {
-				// TODO
+				if (app.controls.keysDown.down || app.controls.keysDown.down_alt) {
+					app.controls.keysDown.down     = false;
+					app.controls.keysDown.down_alt = false;
+
+					if (app.hud.pauseMenu.selected < app.hud.pauseMenu.items.length - 1)
+						++app.hud.pauseMenu.selected;
+
+					app.hud.clear();
+					app.hud.draw();
+				}
+
+				if (app.controls.keysDown.up || app.controls.keysDown.up_alt) {
+					app.controls.keysDown.up     = false;
+					app.controls.keysDown.up_alt = false;
+
+					if (app.hud.pauseMenu.selected > 0)
+						--app.hud.pauseMenu.selected;
+
+					app.hud.clear();
+					app.hud.draw();
+				}
+
+				if (app.controls.keysDown.confirm || app.controls.keysDown.confirm_alt) {
+					app.controls.keysDown.confirm     = false;
+					app.controls.keysDown.confirm_alt = false;
+
+					app.hud.pauseMenu.items[app.hud.pauseMenu.selected].action();
+
+					app.hud.clear();
+					app.hud.draw();
+				}
 			} else if (app.mode == 'game') {
 				// adjust speed to fps, so the player will always move the same speed
 				var speed = app.player.speed / fps;

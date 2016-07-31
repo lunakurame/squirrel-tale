@@ -19,6 +19,7 @@ var Controls = function (application) {
 		left : 65,
 		slow : 16,
 		pause: 27,
+		confirm: 13,
 
 		// secondary keys
 		debug_alt: 192,
@@ -27,7 +28,8 @@ var Controls = function (application) {
 		right_alt: 39,
 		left_alt : 37,
 		slow_alt : 16,
-		pause_alt: 27
+		pause_alt: 27,
+		confirm_alt: 69
 	};
 
 	// states
@@ -40,6 +42,7 @@ var Controls = function (application) {
 		left : false,
 		slow : false,
 		pause: false,
+		confirm: false,
 
 		// secondary keys
 		debug_alt: false,
@@ -48,7 +51,8 @@ var Controls = function (application) {
 		right_alt: false,
 		left_alt : false,
 		slow_alt : false,
-		pause_alt: false
+		pause_alt: false,
+		confirm_alt: false
 	};
 };
 
@@ -97,6 +101,12 @@ Controls.prototype.toggleKeyDown = function (e, state) {
 		break;
 	case this.keys.pause_alt:
 		this.keysDown.pause_alt = state;
+		break;
+	case this.keys.confirm:
+		this.keysDown.confirm = state;
+		break;
+	case this.keys.confirm_alt:
+		this.keysDown.confirm_alt = state;
 		break;
 	}
 };

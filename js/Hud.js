@@ -10,11 +10,29 @@ var Hud = function (application) {
 	this.app = application;
 	this.canvas;
 	this.context;
-	this.jail        = {};
-	this.jail.left   = 0;
-	this.jail.top    = 0;
-	this.jail.width  = 0;
-	this.jail.height = 0;
+
+	// jail
+	this.jail = {
+		'left': 0,
+		'top': 0,
+		'width': 0,
+		'height': 0
+	};
+
+	// pause menu
+	this.pauseMenu = {
+		'selected': 0,
+		'items': [
+			{
+				'label': 'CONTINUE',
+				'action': undefined
+			},
+			{
+				'label': 'OPTIONS',
+				'action': undefined
+			}
+		]
+	};
 
 	// fpsCounter
 	this.fpsCounter = {};
@@ -39,6 +57,16 @@ Hud.prototype.load = function () {
 	// get canvas
 	this.canvas = this.app.canvasList.canvas['hud'];
 	this.context = this.app.canvasList.context['hud'];
+
+	// set up pause menu actions
+	this.pauseMenu.items[0].action = function () {
+		this.app.mode = this.app.modePrev;
+		this.app.hud.clear();
+		this.app.hud.draw();
+	}.bind(this);
+	this.pauseMenu.items[1].action = function () {
+		// TODO
+	}.bind(this);
 
 	this.setJail();
 };
@@ -82,7 +110,7 @@ Hud.prototype.drawDebugInfo = function (fps) {
 	// draw debug HUD
 	this.context.clearRect(0, 0, 108, 40);
 	if (this.app.mode == 'pause')
-		this.context.fillStyle = 'rgba(0, 0, 0, .8)';
+		this.context.fillStyle = 'rgba(0, 0, 0, .9)';
 	else
 		this.context.fillStyle = 'rgba(0, 127, 127, .8)';
 	this.context.fillRect(0, 0, 108, 40);
@@ -91,21 +119,22 @@ Hud.prototype.drawDebugInfo = function (fps) {
 		'FPS ' + fps.toFixed(2) +
 		'\nRES ' + this.app.canvasList.canvas['player'].width + 'x' + this.app.canvasList.canvas['player'].height +
 		'\nKEY ' + this.app.lastPressedKey,
-		'basic', 6, 4
+		'basic', 'white', 6, 4
 	);
 
 //	app.fontList.draw(
 //		'1234567890\nQWERTYUIOP\nASDFGHJKL\nZXCVBNM\nqwertyuiop\nasdfghjkl\nzxcvbnm\n `-=[]\\;\',./~!@\n#$%^&*()_+{}\n|:"<>?',
-//		'basic', 50, 50
+//		'basic', 'white', 50, 50
 //	);
 //	app.fontList.draw(
 //		'0123456789\nABCDEFGHIJ\nKLMNOPQRS\nTUVWXYZ\nabcdefghij\nklmnopqrs\ntuvwxyz',
-//		'basic', 150, 50
+//		'basic', 'white', 150, 50
 //	);
 };
 
 Hud.prototype.drawPauseMenu = function () {
-	this.context.fillStyle = 'rgba(0, 0, 0, .8)';
+	// background
+	this.context.fillStyle = 'rgba(0, 0, 0, .9)';
 	this.context.fillRect(
 		0,
 		0,
@@ -113,8 +142,24 @@ Hud.prototype.drawPauseMenu = function () {
 		this.canvas.height
 	);
 
-	this.app.fontList.draw(
-		'> CONTINUE\n  OPTIONS\n  EXIT',
-		'basic', 100, 150
-	);
+	// calc text size
+	var menuText = '';
+	for (var i in this.pauseMenu.items) {
+		if (i > 0)
+			menuText += '\n';
+		menuText += (this.pauseMenu.selected == i ? '⯈' : ' ') + this.pauseMenu.items[i].label;
+	}
+	var menuTextSize = this.app.fontList.getTextSize(menuText, 'basic');
+
+	// draw text
+	var topMargin = '';
+	for (var i in this.pauseMenu.items) {
+		this.app.fontList.draw(
+			topMargin + (this.pauseMenu.selected == i ? '⯈' : ' ') + this.pauseMenu.items[i].label,
+			'basic', (this.pauseMenu.selected == i ? 'teal' : 'white'),
+			parseInt((this.jail.width - menuTextSize.width) / 2) + this.jail.left,
+			parseInt((this.jail.height - menuTextSize.height) / 2) + this.jail.top
+		);
+		topMargin += '\n';
+	}
 };

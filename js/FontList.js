@@ -15,11 +15,13 @@ var FontList = function (application) {
 	this.fonts = { // READ ONLY!
 		/* object-array of {
 		 * 	parent: object
-		 * 	image: pointer to image resource
+		 * 	image-*: pointer to image resource, * is variant, multiple of images are allowed
 		 * 	json: pointer to json resource
 		 * }
 		 */
 	};
+	this.defaultMarginX = 1;
+	this.defaultMarginY = 4;
 };
 
 FontList.prototype.load = function () {
@@ -42,11 +44,13 @@ FontList.prototype.load = function () {
 		if (res.format == 'json')
 			this.fonts[res.name].json = res.file;
 		else if (res.format == 'image')
-			this.fonts[res.name].image = res.file;
+			this.fonts[res.name]['image-' + res.variant] = res.file;
 	}
 };
 
-FontList.prototype.draw = function (text, fontName, posX, posY, marginX = 1, marginY = 4) {
+FontList.prototype.draw = function (text, fontName, fontVariant, posX, posY, marginX = this.defaultMarginX, marginY = this.defaultMarginY) {
+	// keep in sync with getTextSize()
+
 	var font = this.fonts[fontName];
 	var pX = posX;
 	var pY = posY;
@@ -67,7 +71,7 @@ FontList.prototype.draw = function (text, fontName, posX, posY, marginX = 1, mar
 		// draw sprite
 		this.app.canvasList.render(
 			this.context,
-			font.image,
+			font['image-' + fontVariant],
 			font.json.chars[c].posX,
 			font.json.chars[c].posY,
 			font.json.chars[c].width,
@@ -87,3 +91,38 @@ FontList.prototype.draw = function (text, fontName, posX, posY, marginX = 1, mar
 		pX += font.json.chars[c].width + marginX;
 	}
 };
+
+FontList.prototype.getTextSize = function (text, fontName, marginX = this.defaultMarginX, marginY = this.defaultMarginY) {
+	// keep in sync with draw()
+
+	var font = this.fonts[fontName];
+	var pX = 0;
+	var pY = 0;
+	var maxWidth = 0;
+	var maxHeight = 0;
+
+	for (var i in text) {
+		var c = text[i];
+
+		if (c == '\n') {
+			pX = 0;
+			pY += font.json.height + marginY;
+			continue;
+		}
+
+		if (typeof font.json.chars[c] === 'undefined')
+			c = ' ';
+
+		pX += font.json.chars[c].width + marginX;
+
+		if (pX > maxWidth)
+			maxWidth = pX;
+		if (pY > maxHeight)
+			maxHeight = pY;
+	}
+
+	var result = {};
+	result.width = maxWidth - marginX;
+	result.height = maxHeight + font.json.height;
+	return result;
+}

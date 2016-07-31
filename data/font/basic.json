@@ -570,6 +570,18 @@
 			"posY": 24,
 			"width": 6,
 			"height": 8
+		},
+		"⯈": {
+			"posX": 192,
+			"posY": 24,
+			"width": 8,
+			"height": 8
+		},
+		" ": {
+			"posX": 200,
+			"posY": 24,
+			"width": 8,
+			"height": 8
 		}
 	}
 }
