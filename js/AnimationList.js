@@ -48,6 +48,13 @@ AnimationList.prototype.execAnimationScript = function (animation, lineNum) {
 	if (typeof lineNum === 'undefined')
 		lineNum = 0;
 
+	if (this.app.mode == 'pause') {
+		setTimeout(function () {
+			this.execAnimationScript(animation, lineNum);
+		}.bind(this), 100);
+		return;
+	}
+
 	// check if EOF
 	if (typeof animation.animation.script[lineNum] !== 'undefined') {
 		var line = animation.animation.script[lineNum];

@@ -4,8 +4,12 @@ var Application = function () {
 	console.log('%c////////////////////////////////////////////////////////////////////////////////', 'background: #3465a4;');
 	console.log('Application instance created');
 
-	this.debugKey = 0;	// TODO move to Hud
+	// status
+	this.lastPressedKey = 0;
+	this.mode = 'game';
+	this.modePrev = 'game';
 
+	// modules
 	this.config = new Config(this);
 	this.loadingScreen = new LoadingScreen(this);
 	this.resourceLoader = new ResourceLoader(this);
@@ -98,24 +102,27 @@ Application.prototype.init = function (arg) {
 			app.canvasList.resizeAll();
 			app.map.draw();
 			app.player.react(0, true);
-			//app.hud.draw(); // TODO
+			app.hud.resize();
 		});
 
 	case 'draw':
 		this.map.draw();
-		//this.hud.draw(); // TODO
-
-		var debugKeyState = false;
+		this.hud.draw();
 
 		var drawingLoop_interval = setInterval(function () { // TODO
+			var fps = app.hud.fpsCounter.getValue();
+
+			// global keys
+
 			// debug mode
-			if (debugKeyState && !(app.controls.keysDown.debug || app.controls.keysDown.debug_alt)) {
-				debugKeyState = false;
+			if (app.controls.keysDown.debug || app.controls.keysDown.debug_alt) {
+				app.controls.keysDown.debug     = false;
+				app.controls.keysDown.debug_alt = false;
 
 				// toggle debug mode
 				app.config.debug.enabled = !app.config.debug.enabled;
 
-				// clear all canvases
+				// clear all and redraw
 				for (var i in app.canvasList.context)
 					app.canvasList.context[i].clearRect(
 						0,
@@ -124,73 +131,62 @@ Application.prototype.init = function (arg) {
 						app.canvasList.canvas[i].height
 					);
 				app.map.draw();
-				//this.hud.draw(); // TODO
-			} else if (!debugKeyState && (app.controls.keysDown.debug || app.controls.keysDown.debug_alt)) {
-				debugKeyState = true;
+				app.hud.draw();
+				app.player.draw();
+				for (var i in app.map.entities)
+					app.map.entities[i].draw();
 			}
 
-			// adjust speed to fps, so the player will always move the same speed
-			var fps = app.hud.fpsCounter.getValue();
-			var speed = app.player.speed / fps;
-			if (app.controls.keysDown.slow)
-				speed = speed / 2;
+			// pause menu
+			if (app.controls.keysDown.pause || app.controls.keysDown.pause_alt) {
+				app.controls.keysDown.pause     = false;
+				app.controls.keysDown.pause_alt = false;
+				if (app.mode == 'pause') {
+					app.mode = app.modePrev;
+				} else {
+					app.modePrev = app.mode;
+					app.mode = 'pause';
+				}
 
-			// clear player
-			app.player.clear();
-			
-			// clear entities
-			for (var i in app.map.entities) {
-				app.map.entities[i].clear();
+				app.hud.clear();
+				app.hud.draw();
 			}
 
-			// exec entities queue
-			for (var i in app.map.entities) {
-				app.map.entities[i].execQueue();
+			// the actual drawing
+
+			if (app.mode == 'pause') {
+				// TODO
+			} else if (app.mode == 'game') {
+				// adjust speed to fps, so the player will always move the same speed
+				var speed = app.player.speed / fps;
+				if (app.controls.keysDown.slow)
+					speed = speed / 2;
+
+				// clear
+				app.player.clear();
+				for (var i in app.map.entities)
+					app.map.entities[i].clear();
+
+				// exec entities queue
+				for (var i in app.map.entities)
+					app.map.entities[i].execQueue();
+	// TODO bugfix: when animation changes collisions while player is not moving,
+	// then player can appear inside the collision, and then teleport though it
+	// when walking inside
+				// player react
+				app.player.react(speed);
+
+				// draw
+				app.player.draw();
+				for (var i in app.map.entities)
+					app.map.entities[i].draw();
 			}
-// TODO bugfix: when animation changes collisions while player is not moving,
-// then player can appear inside the collision, and then teleport though it
-// when walking inside
-			// player react
-			app.player.react(speed);
 
-			// draw player
-			app.player.draw();
-
-			// draw entities
-			for (var i in app.map.entities) {
-				app.map.entities[i].draw();
-			}
-
-			// reset HUD styles
-			app.hud.resetTextStyle();
-
-			// draw debug HUD
-			app.canvasList.context['hud'].clearRect(0, 0, 108, 40);
-			app.canvasList.context['hud'].fillStyle = 'rgba(0, 127, 127, .8)';
-			app.canvasList.context['hud'].fillRect(0, 0, 108, 40);
-			app.canvasList.context['hud'].fillStyle = '#fff';
-
-			app.fontList.draw(
-				'FPS ' + fps.toFixed(2) +
-				'\nRES ' + app.canvasList.canvas['player'].width + 'x' + app.canvasList.canvas['player'].height +
-				'\nKEY ' + app.debugKey,
-				'basic', 6, 4
-			);
-
-//			app.fontList.draw(
-//				'1234567890\nQWERTYUIOP\nASDFGHJKL\nZXCVBNM\nqwertyuiop\nasdfghjkl\nzxcvbnm\n `-=[]\\;\',./~!@\n#$%^&*()_+{}\n|:"<>?',
-//				'basic', 50, 50
-//			);
-//			app.fontList.draw(
-//				'0123456789\nABCDEFGHIJ\nKLMNOPQRS\nTUVWXYZ\nabcdefghij\nklmnopqrs\ntuvwxyz',
-//				'basic', 150, 50
-//			);
+			if (app.config.debug.enabled)
+				app.hud.drawDebugInfo(fps);
 
 			//clearInterval(drawingLoop_interval);
 		}, 16);	// locked on max 62.5 fps = 1000/16
-
-
-
 
 	case 'done':
 		this.loadingScreen.fadeOut();
