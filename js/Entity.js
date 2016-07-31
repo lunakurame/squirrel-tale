@@ -105,8 +105,10 @@ Entity.prototype.load = function (mapData, data, image) {
 };
 
 Entity.prototype.execQueue = function () {
-	for (var i in this.queue)
-		this.queue[i]();
+	while (this.queue.length > 0) {
+		this.queue[0]();
+		this.queue.splice(0, 1);
+	}
 };
 
 Entity.prototype.setFrame = function (view, frame) {
