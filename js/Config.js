@@ -26,6 +26,7 @@ var Config = function (application) {
 			color: 'rgba(255, 0, 0, 1)'
 		}
 	};
+	this.fpsCap = 60;
 	this.resourcePath = 'data';
 	this.window = {
 		// These numbers is the optimal (minimum) size.

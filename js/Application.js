@@ -186,7 +186,7 @@ Application.prototype.init = function (arg) {
 				app.hud.drawDebugInfo(fps);
 
 			//clearInterval(drawingLoop_interval);
-		}, 16);	// locked on max 62.5 fps = 1000/16
+		}, (1000 / this.config.fpsCap));
 
 	case 'done':
 		this.loadingScreen.fadeOut();
