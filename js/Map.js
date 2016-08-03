@@ -95,8 +95,8 @@ Map.prototype.draw = function () {
 	this.context.drawImage(
 		this.image.file,
 		// crop image:
-		parseInt(this.left),
-		parseInt(this.top),
+		Math.ceil(this.left),
+		Math.ceil(this.top),
 		width,
 		height,
 		// draw at position:

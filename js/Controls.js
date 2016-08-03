@@ -22,7 +22,7 @@ var Controls = function (application) {
 		confirm: 13,
 
 		// secondary keys
-		debug_alt: 192,
+		debug_alt: 223,	// 192 is 223 on UK keyboards
 		up_alt   : 38,
 		down_alt : 40,
 		right_alt: 39,

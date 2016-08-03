@@ -13,16 +13,16 @@ var Hud = function (application) {
 
 	// jail
 	this.jail = {
-		'left': 0,
-		'top': 0,
-		'width': 0,
-		'height': 0
+		left  : 0,
+		top   : 0,
+		width : 0,
+		height: 0
 	};
 
 	// pause menu
 	this.pauseMenu = {
-		'selected': 0,
-		'items': [
+		selected: 0,
+		items: [
 			{
 				'label': 'CONTINUE',
 				'action': undefined
@@ -78,8 +78,8 @@ Hud.prototype.resize = function () {
 };
 
 Hud.prototype.setJail = function () {
-	this.jail.left   = (this.canvas.width - this.app.config.window.width) / 2;
-	this.jail.top    = (this.canvas.height - this.app.config.window.height) / 2;
+	this.jail.left   = parseInt((this.canvas.width - this.app.config.window.width) / 2);
+	this.jail.top    = parseInt((this.canvas.height - this.app.config.window.height) / 2);
 	this.jail.width  = this.app.config.window.width;
 	this.jail.height = this.app.config.window.height;
 };
@@ -108,12 +108,12 @@ Hud.prototype.draw = function () {
 
 Hud.prototype.drawDebugInfo = function (fps) {
 	// draw debug HUD
-	this.context.clearRect(0, 0, 108, 40);
+	this.context.clearRect(0, 0, 282, 40);
 	if (this.app.mode == 'pause')
 		this.context.fillStyle = 'rgba(0, 0, 0, .9)';
 	else
 		this.context.fillStyle = 'rgba(0, 127, 127, .8)';
-	this.context.fillRect(0, 0, 108, 40);
+	this.context.fillRect(0, 0, 282, 40);
 
 	this.app.fontList.draw(
 		'FPS ' + fps.toFixed(2) +
@@ -122,8 +122,22 @@ Hud.prototype.drawDebugInfo = function (fps) {
 		'basic', 'white', 6, 4
 	);
 
+	this.app.fontList.draw(
+		'MAP NAME   ' +
+		'\nMAP SIZE   ' +
+		'\nMAP OFFSET ',
+		'basic', 'white', 115, 4
+	);
+
+	this.app.fontList.draw(
+		this.app.map.name +
+		'\n' + this.app.map.width + 'x' + this.app.map.height +
+		'\n' + parseInt(this.app.map.left) + 'x' + parseInt(this.app.map.top),
+		'basic', 'white', 210, 4
+	);
+
 //	app.fontList.draw(
-//		'1234567890\nQWERTYUIOP\nASDFGHJKL\nZXCVBNM\nqwertyuiop\nasdfghjkl\nzxcvbnm\n `-=[]\\;\',./~!@\n#$%^&*()_+{}\n|:"<>?',
+//		'1234567890\nQWERTYUIOP\nASDFGHJKL\nZXCVBNM\nqwertyuiop\nasdfghjkl\nzxcvbnm\n `-=[]\\;\',./~!@\n#$%^&*()_+{}\n|:"<>?⯈ ',
 //		'basic', 'white', 50, 50
 //	);
 //	app.fontList.draw(
@@ -157,8 +171,8 @@ Hud.prototype.drawPauseMenu = function () {
 		this.app.fontList.draw(
 			topMargin + (this.pauseMenu.selected == i ? '⯈' : ' ') + this.pauseMenu.items[i].label,
 			'basic', (this.pauseMenu.selected == i ? 'teal' : 'white'),
-			parseInt((this.jail.width - menuTextSize.width) / 2) + this.jail.left,
-			parseInt((this.jail.height - menuTextSize.height) / 2) + this.jail.top
+			(this.jail.width - menuTextSize.width) / 2 + this.jail.left,
+			(this.jail.height - menuTextSize.height) / 2 + this.jail.top
 		);
 		topMargin += '\n';
 	}

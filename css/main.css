@@ -5,7 +5,8 @@ body, div, p, canvas {
 }
 
 body {
-	background: #eeae0c;
+	background: #111;
+	cursor: none;
 }
 
 canvas {
