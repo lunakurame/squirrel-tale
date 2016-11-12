@@ -494,6 +494,11 @@ Player.prototype.react = function (speed, resizeWindow) {
 							else
 								this.moving = false;
 						}
+
+						if (!this.moving) {
+							this.frame = 0;
+							this.setFrame();
+						}
 					}
 				}
 			}
