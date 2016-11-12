@@ -4,11 +4,15 @@
 		"start": {
 			"posX": 250,
 			"posY": 50,
+			"view": "master",
+			"frame": 0,
 			"direction": "down"
 		},
 		"center": {
 			"posX": 300,
 			"posY": 178,
+			"view": "master",
+			"frame": 0,
 			"direction": "up"
 		}
 	},

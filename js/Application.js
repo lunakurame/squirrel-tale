@@ -70,6 +70,7 @@ Application.prototype.init = function (arg) {
 		// player
 		console.log('Application: setting up the player');
 		this.player.load(
+			this.resourceLoader.resource['json/map/' + this.map.name].file.entrances,
 			this.resourceLoader.resource['json/player/' + this.player.name],
 			this.resourceLoader.resource['image/player/' + this.player.fullName]
 		);

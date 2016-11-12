@@ -96,7 +96,7 @@ CanvasList.prototype.resizeAllWithoutFlicker = function (ignoreHud) {
 	}
 };
 
-CanvasList.prototype.render = function (context, data, cropX, cropY, cropWidth, cropHeight, centerX, centerY, posX, posY, width, height, flipX, flipY, rotate) {
+CanvasList.prototype.render = function (context, data, cropX, cropY, cropWidth, cropHeight, centerX, centerY, posX, posY, width, height, flipX = false, flipY = false, rotate = 0) {
 	// check if translating, saving and restoring context is necessary
 	if (flipX || flipY || rotate != 0) {
 		// transform context

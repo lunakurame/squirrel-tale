@@ -379,7 +379,7 @@ Entity.prototype.isUnder = function () {
 		this.context == this.context_under ||
 		(
 			this.enableAutoPosZ &&
-			this.app.player.posY > this.posY - this.centerY + this.height - this.app.player.height
+			this.app.player.posY > this.posY
 		)
 	);
 };
