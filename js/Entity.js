@@ -118,6 +118,11 @@ Entity.prototype.setFrame = function (view, frame) {
 	if (typeof frame !== 'undefined')
 		this.frame = frame;
 
+	if (typeof this.view === 'undefined')
+		this.view = 'master';
+	if (typeof this.frame === 'undefined')
+		this.frame = 0;
+
 	// get pointer to frame
 	var framePointer = this.views[this.view][this.frame];
 

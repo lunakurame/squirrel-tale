@@ -111,16 +111,27 @@ Player.prototype.setFrame = function (view, frame) {
 	if (typeof frame !== 'undefined')
 		this.frame = frame;
 
+	if (typeof this.view === 'undefined')
+		this.view = 'master';
+	if (typeof this.frame === 'undefined')
+		this.frame = 0;
+
 	// include direction
 	this.realView = this.view;
-	if (this.direction == this.app.config.player.direction.down)
+	switch (this.direction) {
+	case this.app.config.player.direction.down:
 		this.realView += '-down';
-	else if (this.direction == this.app.config.player.direction.up)
+		break;
+	case this.app.config.player.direction.up:
 		this.realView += '-up';
-	else if (this.direction == this.app.config.player.direction.right)
+		break;
+	case this.app.config.player.direction.right:
 		this.realView += '-right';
-	else if (this.direction == this.app.config.player.direction.left)
+		break;
+	case this.app.config.player.direction.left:
 		this.realView += '-left';
+		break;
+	}
 
 	// get pointer to frame
 	var framePointer = this.views[this.realView][this.frame];
