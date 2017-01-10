@@ -45,7 +45,7 @@ var Entity = function (application, name, variant) {
 	this.cropY      = 0;	//  |
 	this.cropWidth  = 0;	//  |
 	this.cropHeight = 0;	//  |
-	this.width      = 0;	//   > these things are loaded from views, see this.setFrame()
+	this.width      = 0;	//   > these things are loaded from views, see this.setView()
 	this.height     = 0;	//  |
 	this.centerX    = 0;	//  |
 	this.centerY    = 0;	//  |
@@ -94,8 +94,8 @@ Entity.prototype.load = function (mapData, data, image) {
 			return $.extend(true, {}, obj);
 		});
 
-	// set frame
-	this.setFrame();
+	// set view and frame
+	this.setView();
 
 	// get canvas
 	this.canvas        = this.app.canvasList.canvas['entity_' + this.posZ];
@@ -111,13 +111,14 @@ Entity.prototype.execQueue = function () {
 	}
 };
 
-Entity.prototype.setFrame = function (view, frame) {
+Entity.prototype.setView = function (view, frame) {
 	// set view and frame
 	if (typeof view !== 'undefined')
 		this.view = view;
 	if (typeof frame !== 'undefined')
 		this.frame = frame;
 
+	// defaults
 	if (typeof this.view === 'undefined')
 		this.view = 'master';
 	if (typeof this.frame === 'undefined')
@@ -147,6 +148,10 @@ Entity.prototype.setFrame = function (view, frame) {
 	if (this.flipCollisionsY)
 		for (var j in this.collisions)
 			this.collisions[j].posY = this.centerY - this.collisions[j].height + this.centerY - this.collisions[j].posY;
+};
+
+Entity.prototype.setFrame = function (frame) {
+	this.setView(undefined, frame);
 };
 
 Entity.prototype.clear = function () {

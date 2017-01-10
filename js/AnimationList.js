@@ -56,33 +56,77 @@ AnimationList.prototype.execAnimationScript = function (animation, lineNum) {
 	}
 
 	// check if EOF
-	if (typeof animation.animation.script[lineNum] !== 'undefined') {
-		var line = animation.animation.script[lineNum];
-		var args = line.split(' ');
+	if (typeof animation.animation.script[lineNum] === 'undefined')
+		return;
 
-		// do things
-		switch (args[0]) {
-		case 'echo':
-			console.log(line.slice(5));
-			this.execAnimationScript(animation, lineNum + 1);
+	var line = animation.animation.script[lineNum];
+
+	// skip empty lines and comments
+	if (line.trim() == '' || line.trim().startsWith('#'))
+		return;
+
+	var args = line.split(' ');
+	var jumpNext = () => this.execAnimationScript(animation, lineNum + 1);
+	var jump = n => this.execAnimationScript(animation, n);
+	var addToQueue = f => animation.owner.queue.push(f);
+	var warn = s => console.warn('Nuthead: ' + s + ', ' +
+		'owner "' + animation.owner.data.id + '", ' +
+		'script "' + animation.animation.name + '", ' +
+		'line ' + lineNum);
+
+	// do things
+	switch (args[0]) {
+	case 'lbl':
+		jumpNext();
+		break;
+	case 'log':
+		console.log(line.slice(4));
+		jumpNext();
+		break;
+	case 'jmp':
+		if (typeof args[1] === 'undefined') {
+			warn('Cannot jump to nowhere, missing destination parameter');
+			jumpNext();
+		} else if (window.tools.isNumeric(args[1])) {
+			jump(parseInt(args[1]));
+		} else {
+			var labelPos = animation.animation.script.indexOf('lbl ' + args[1]);
+			if (labelPos === -1) {
+				warn('Cannot jump to a nonexistent label "' + args[1] + '"');
+				jumpNext();
+			} else {
+				jump(labelPos);
+			}
+		}
+		break;
+	case 'nop':
+		if (typeof args[1] !== 'undefined' && window.tools.isNumeric(args[1]))
+			setTimeout(jumpNext, parseInt(args[1]));
+		else
+			jumpNext();
+		break;
+	case 'set':
+		switch (args[1]) {
+		case undefined:
+		case '':
+			warn('Cannot set nothing, missing required parameter');
+			break;
+		case 'view':
+			addToQueue(() => animation.owner.setView(
+				args[2],
+				typeof args[3] === 'undefined' ? undefined : parseInt(args[3])
+			));
 			break;
 		case 'frame':
-			animation.owner.queue.push(function () {
-				animation.owner.setFrame(args[1], parseInt(args[2]));
-			});
-			this.execAnimationScript(animation, lineNum + 1);
+			addToQueue(() => animation.owner.setFrame(
+				typeof args[2] === 'undefined' ? undefined : parseInt(args[2])
+			));
 			break;
-		case 'goto':
-			this.execAnimationScript(animation, parseInt(args[1]));
-			break;
-		case 'sleep':
-			setTimeout(function () {
-				this.execAnimationScript(animation, lineNum + 1);
-			}.bind(this), args[1]);
-			break;
-		default:
-			console.warn('Unrecognized command "' + args[0] + '"');
-			this.execAnimationScript(animation, lineNum + 1);
 		}
+		jumpNext();
+		break;
+	default:
+		warn('Invalid instruction "' + args[0] + '"');
+		jumpNext();
 	}
 };

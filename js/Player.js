@@ -39,7 +39,7 @@ var Player = function (application, name, variant) {
 	this.cropY      = 0;	//  |
 	this.cropWidth  = 0;	//  |
 	this.cropHeight = 0;	//  |
-	this.width      = 0;	//   > these things are loaded from views, see this.setFrame()
+	this.width      = 0;	//   > these things are loaded from views, see this.setView()
 	this.height     = 0;	//  |
 	this.centerX    = 0;	//  |
 	this.centerY    = 0;	//  |
@@ -84,8 +84,8 @@ Player.prototype.load = function (entrances, data, image) {
 			return $.extend(true, {}, obj);
 		});
 
-	// set frame
-	this.setFrame();
+	// set view and frame
+	this.setView();
 
 	// set speed TODO move somewhere? or not
 	this.speed = this.defaultSpeed;
@@ -104,13 +104,14 @@ Player.prototype.execQueue = function () {
 	}
 };
 
-Player.prototype.setFrame = function (view, frame) {
+Player.prototype.setView = function (view, frame) {
 	// set view and frame
 	if (typeof view !== 'undefined')
 		this.view = view;
 	if (typeof frame !== 'undefined')
 		this.frame = frame;
 
+	// defaults
 	if (typeof this.view === 'undefined')
 		this.view = 'master';
 	if (typeof this.frame === 'undefined')
@@ -149,6 +150,10 @@ Player.prototype.setFrame = function (view, frame) {
 		this.collisions = $.map(framePointer.collisions, function (obj) {
 			return $.extend(true, {}, obj);
 		});
+};
+
+Player.prototype.setFrame = function (frame) {
+	this.setView(undefined, frame);
 };
 
 Player.prototype.clear = function () {
@@ -278,7 +283,7 @@ Player.prototype.react = function (speed, resizeWindow) {
 		clearInterval(this.movingAnimationInterval);
 		this.movingAnimationInterval = undefined;
 		this.frame = 0;
-		this.setFrame();
+		this.setView();
 	}
 
 	// check if player is moving (it doesn't check collisions)
@@ -320,12 +325,12 @@ Player.prototype.react = function (speed, resizeWindow) {
 		if (typeof this.movingAnimationInterval === 'undefined') {
 			// player animations
 			this.frame = 1;
-			this.setFrame();
+			this.setView();
 			this.movingAnimationInterval = setInterval(function () {
 				++this.frame;
 				if (this.frame > this.data.file.framesCount - 1)
 					this.frame = 0;
-				this.setFrame();
+				this.setView();
 			}.bind(this), 250);
 
 			// set direction
@@ -508,7 +513,7 @@ Player.prototype.react = function (speed, resizeWindow) {
 
 						if (!this.moving) {
 							this.frame = 0;
-							this.setFrame();
+							this.setView();
 						}
 					}
 				}
@@ -563,5 +568,5 @@ Player.prototype.react = function (speed, resizeWindow) {
 
 	// load direction's view if it changed
 	if (old_direction != this.direction)
-		this.setFrame();
+		this.setView();
 };

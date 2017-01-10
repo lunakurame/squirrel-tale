@@ -1,0 +1,400 @@
+{
+	"label": "Grassland",
+	"entrances": {
+		"start": {
+			"posX": 670,
+			"posY": 476,
+			"view": "master",
+			"frame": 0,
+			"direction": "right"
+		}
+	},
+	"entities": [
+		{
+			"name": "willow_tree",
+			"posX": 640,
+			"posY": 480,
+			"posZ": "over",
+			"view": "master_hole",
+			"frame": 0
+		},
+		{
+			"name": "grass_clump",
+			"posX": 600,
+			"posY": 530,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "grass_clump",
+			"variant": "2",
+			"posX": 650,
+			"posY": 515,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "grass_clump",
+			"variant": "3",
+			"posX": 670,
+			"posY": 570,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 238,
+			"posY": 656,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 220,
+			"posY": 670,
+			"posZ": "over",
+			"view": "master",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 230,
+			"posY": 665,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 225,
+			"posY": 640,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 229,
+			"posY": 652,
+			"posZ": "over",
+			"view": "master",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 218,
+			"posY": 654,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 210,
+			"posY": 630,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 203,
+			"posY": 645,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 190,
+			"posY": 660,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 204,
+			"posY": 675,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 224,
+			"posY": 660,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 222,
+			"posY": 647,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 219,
+			"posY": 636,
+			"posZ": "over",
+			"view": "master",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 213,
+			"posY": 646,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 214,
+			"posY": 678,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 211,
+			"posY": 666,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 204,
+			"posY": 657,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 192,
+			"posY": 677,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 200,
+			"posY": 635,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 188,
+			"posY": 632,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 193,
+			"posY": 648,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 181,
+			"posY": 642,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 182,
+			"posY": 656,
+			"posZ": "over",
+			"view": "master",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 172,
+			"posY": 640,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 158,
+			"posY": 642,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 168,
+			"posY": 652,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 158,
+			"posY": 656,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 173,
+			"posY": 661,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 162,
+			"posY": 666,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 181,
+			"posY": 673,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 174,
+			"posY": 670,
+			"posZ": "over",
+			"view": "master",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 165,
+			"posY": 677,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 154,
+			"posY": 674,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 178,
+			"posY": 682,
+			"posZ": "over",
+			"view": "master",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 166,
+			"posY": 691,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 157,
+			"posY": 687,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 151,
+			"posY": 661,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 142,
+			"posY": 680,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 236,
+			"posY": 638,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 244,
+			"posY": 647,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 254,
+			"posY": 654,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 248,
+			"posY": 662,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 234,
+			"posY": 674,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 276,
+			"posY": 658,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		}
+	]
+}

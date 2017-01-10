@@ -1,0 +1,506 @@
+{
+	"label": "Tree",
+	"views": {
+		"master": [
+			{
+				"cropX": 0,
+				"cropY": 0,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 129,
+				"cropY": 0,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 258,
+				"cropY": 0,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			}
+		],
+		"master_hole": [
+			{
+				"cropX": 0,
+				"cropY": 125,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 129,
+				"cropY": 125,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 258,
+				"cropY": 125,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			}
+		],
+		"squirrel_head": [
+			{
+				"cropX": 0,
+				"cropY": 250,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 129,
+				"cropY": 250,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 258,
+				"cropY": 250,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			}
+		],
+		"squirrel_on_trunk": [
+			{
+				"cropX": 0,
+				"cropY": 375,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 129,
+				"cropY": 375,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 258,
+				"cropY": 375,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			}
+		],
+		"squirrel_coming_out": [
+			{
+				"cropX": 0,
+				"cropY": 250,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 129,
+				"cropY": 625,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 258,
+				"cropY": 625,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 129,
+				"cropY": 375,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 0,
+				"cropY": 375,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			}
+		],
+		"squirrel_coming_in": [
+			{
+				"cropX": 0,
+				"cropY": 375,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 129,
+				"cropY": 500,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 258,
+				"cropY": 500,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 129,
+				"cropY": 125,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			},
+			{
+				"cropX": 0,
+				"cropY": 125,
+				"cropWidth": 129,
+				"cropHeight": 125,
+				"width": 129,
+				"height": 125,
+				"centerX": 64,
+				"centerY": 124,
+				"collisions": [
+					{
+						"posX": 56,
+						"posY": 117,
+						"width": 15,
+						"height": 8
+					}
+				]
+			}
+		]
+	},
+	"animations": [
+		{
+			"name": "squirrel_wind",
+			"type": "auto",
+			"script": [
+			"ekk",
+				"set view master_hole 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 0",
+				"nop 2000",
+
+				"set view squirrel_head 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 0",
+				"nop 2000",
+
+				"set view master_hole 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 0",
+				"nop 2000",
+
+				"set view squirrel_coming_out 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 3",
+				"nop 300",
+				"set frame 4",
+				"nop 2000",
+
+				"set view squirrel_on_trunk 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 0",
+				"nop 2000",
+
+				"set view squirrel_coming_in 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 3",
+				"nop 300",
+				"set frame 4",
+				"nop 2000",
+
+				"jmp 0"
+			]
+		},
+		{
+			"name": "master_wind",
+			"type": "manual",
+			"script": [
+				"set view master 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 0",
+				"nop 2000",
+				"jmp 0"
+			]
+		}
+	]
+}

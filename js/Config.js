@@ -52,7 +52,7 @@ var Config = function (application) {
 		}
 	};
 	this.map = {
-		name: 'test',
+		name: 'grassland',
 		variant: undefined
 	};
 };

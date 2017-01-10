@@ -1,0 +1,69 @@
+{
+	"label": "Papaver flower",
+	"views": {
+		"master": [
+			{
+				"cropX": 0,
+				"cropY": 0,
+				"cropWidth": 6,
+				"cropHeight": 12,
+				"width": 6,
+				"height": 12,
+				"centerX": 1,
+				"centerY": 11
+			},
+			{
+				"cropX": 6,
+				"cropY": 0,
+				"cropWidth": 6,
+				"cropHeight": 12,
+				"width": 6,
+				"height": 12,
+				"centerX": 2,
+				"centerY": 11
+			},
+			{
+				"cropX": 12,
+				"cropY": 0,
+				"cropWidth": 6,
+				"cropHeight": 12,
+				"width": 6,
+				"height": 12,
+				"centerX": 4,
+				"centerY": 11
+			}
+		],
+		"big": [
+			{
+				"cropX": 0,
+				"cropY": 12,
+				"cropWidth": 6,
+				"cropHeight": 12,
+				"width": 6,
+				"height": 12,
+				"centerX": 1,
+				"centerY": 11
+			},
+			{
+				"cropX": 6,
+				"cropY": 12,
+				"cropWidth": 6,
+				"cropHeight": 12,
+				"width": 6,
+				"height": 12,
+				"centerX": 2,
+				"centerY": 11
+			},
+			{
+				"cropX": 12,
+				"cropY": 12,
+				"cropWidth": 6,
+				"cropHeight": 12,
+				"width": 6,
+				"height": 12,
+				"centerX": 4,
+				"centerY": 11
+			}
+		]
+	}
+}
