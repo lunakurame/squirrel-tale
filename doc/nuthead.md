@@ -1,19 +1,23 @@
-# Nuthead script parser
+# Nuthead script interpreter
 
 ## Description
 
-Nuthead is a parser for the scripts used to animate entities (and in the future,
+Nuthead is an interpreter for the scripts used to animate entities (and in the future,
 to script NPCs and interactions with other objects).
 
 ## Example
 
 ```json
 [
+	"log Hello world!",
+	"nop",
 	"set view master 0",
 	"nop 500",
 	"set frame 1",
 	"nop 200",
 	"set view loopy",
+	"",
+	"# this is a comment",
 	"lbl loop",
 	"set frame 2",
 	"nop 100",
@@ -25,7 +29,7 @@ to script NPCs and interactions with other objects).
 
 ## Specification
 
-Nuthead reads the script line by line from an Array of strings, each line is an
+Nuthead reads the script line by line from an array of strings, each line is an
 element of the array.
 
 ### Ignored lines:
@@ -36,7 +40,10 @@ element of the array.
 - lines starting with any number of whitespace characters followed by `#`.
 
 Whitespace is whatever your JavaScript interpreter thinks it is. If in doubt,
-check the documentation of `String.prototype.trim()`.
+check the documentation of `String.prototype.trim()`. Ignored lines still count
+for line numbering (eg. when you jump to a specified line number). During script
+execution, Nuthead just immediately jumps to the next line if the current line
+matches any of the rules for ignored lines.
 
 ### Instructions:
 

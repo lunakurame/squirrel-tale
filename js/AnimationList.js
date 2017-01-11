@@ -60,11 +60,6 @@ AnimationList.prototype.execAnimationScript = function (animation, lineNum) {
 		return;
 
 	var line = animation.animation.script[lineNum];
-
-	// skip empty lines and comments
-	if (line.trim() == '' || line.trim().startsWith('#'))
-		return;
-
 	var args = line.split(' ');
 	var jumpNext = () => this.execAnimationScript(animation, lineNum + 1);
 	var jump = n => this.execAnimationScript(animation, n);
@@ -73,6 +68,12 @@ AnimationList.prototype.execAnimationScript = function (animation, lineNum) {
 		'owner "' + animation.owner.data.id + '", ' +
 		'script "' + animation.animation.name + '", ' +
 		'line ' + lineNum);
+
+	// skip empty lines and comments
+	if (line.trim() == '' || line.trim().startsWith('#')) {
+		jumpNext();
+		return;
+	}
 
 	// do things
 	switch (args[0]) {

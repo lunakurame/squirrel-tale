@@ -415,7 +415,6 @@
 			"name": "squirrel_wind",
 			"type": "auto",
 			"script": [
-			"ekk",
 				"set view master_hole 0",
 				"nop 300",
 				"set frame 1",
