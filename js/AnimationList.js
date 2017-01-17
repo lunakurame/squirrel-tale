@@ -15,6 +15,7 @@ var AnimationList = function (application) {
 		 * 	owner: object
 		 * 	parent: object
 		 * 	animation: pointer to Entity's animation object
+		 * 	timer: animation timer, which can be paused and resumed
 		 * }
 		 */
 	];
@@ -47,13 +48,6 @@ AnimationList.prototype.execAnimationScript = function (animation, lineNum) {
 	// default to lineNum = 0
 	if (typeof lineNum === 'undefined')
 		lineNum = 0;
-
-	if (this.app.mode == 'pause') {
-		setTimeout(function () {
-			this.execAnimationScript(animation, lineNum);
-		}.bind(this), 100);
-		return;
-	}
 
 	// check if EOF
 	if (typeof animation.animation.script[lineNum] === 'undefined')
@@ -102,7 +96,7 @@ AnimationList.prototype.execAnimationScript = function (animation, lineNum) {
 		break;
 	case 'nop':
 		if (typeof args[1] !== 'undefined' && window.tools.isNumeric(args[1]))
-			setTimeout(jumpNext, parseInt(args[1]));
+			animation.timer = new window.tools.Timer(jumpNext, parseInt(args[1]));
 		else
 			jumpNext();
 		break;

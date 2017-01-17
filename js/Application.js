@@ -145,10 +145,18 @@ Application.prototype.init = function (arg) {
 				app.controls.keysDown.pause     = false;
 				app.controls.keysDown.pause_alt = false;
 				if (app.mode == 'pause') {
+					// resume all animations
 					app.mode = app.modePrev;
+					for (var i in app.animationList.animations)
+						if (typeof app.animationList.animations[i].timer !== 'undefined')
+							app.animationList.animations[i].timer.resume();
 				} else {
 					app.modePrev = app.mode;
 					app.mode = 'pause';
+					// pause all animations
+					for (var i in app.animationList.animations)
+						if (typeof app.animationList.animations[i].timer !== 'undefined')
+							app.animationList.animations[i].timer.pause();
 				}
 
 				app.hud.clear();
