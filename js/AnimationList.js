@@ -22,54 +22,46 @@ var AnimationList = function (application) {
 };
 
 AnimationList.prototype.load = function () {
-	// for all entities
-	for (var i in this.app.map.entities) {
-		var entity = this.app.map.entities[i];
-		// for all animations of that entity
-		for (var j in entity.animations) {
-			// add new animation
-			this.animations.push({});
-			var animation = this.animations[this.animations.length - 1];
-
-			// set data
-			animation.owner     = entity;
-			animation.parent    = this;
-			animation.animation = entity.animations[j];
-		}
-	}
+	// get all animations of all entities
+	this.app.map.entities.forEach(entity => {
+		entity.animations.forEach(animation => {
+			this.animations.push({
+				owner: entity,
+				parent: this,
+				animation: animation
+			});
+		});
+	});
 
 	// exec all auto animations
-	for (var i in this.animations)
-		if (this.animations[i].animation.type == 'auto')
-			this.execAnimationScript(this.animations[i]);
+	this.animations.forEach(animation => {
+		if (animation.animation.type === 'auto')
+			this.execAnimationScript(animation);
+	});
 };
 
-AnimationList.prototype.execAnimationScript = function (animation, lineNum) {
-	// default to lineNum = 0
-	if (typeof lineNum === 'undefined')
-		lineNum = 0;
-
+AnimationList.prototype.execAnimationScript = function (animation, lineNum = 0) {
 	// check if EOF
 	if (typeof animation.animation.script[lineNum] === 'undefined')
 		return;
 
-	var line = animation.animation.script[lineNum];
-	var args = line.split(' ');
-	var jumpNext = () => this.execAnimationScript(animation, lineNum + 1);
-	var jump = n => this.execAnimationScript(animation, n);
-	var addToQueue = f => animation.owner.queue.push(f);
-	var warn = s => console.warn('Nuthead: ' + s + ', ' +
+	let line = animation.animation.script[lineNum];
+	let args = line.split(' ');
+	let jump = lineNum => this.execAnimationScript(animation, lineNum);
+	let jumpNext = () => jump(lineNum + 1);
+	let addToQueue = func => animation.owner.queue.push(func);
+	let warn = text => console.warn('Nuthead: ' + text + ', ' +
 		'owner "' + animation.owner.data.id + '", ' +
 		'script "' + animation.animation.name + '", ' +
 		'line ' + lineNum);
 
 	// skip empty lines and comments
-	if (line.trim() == '' || line.trim().startsWith('#')) {
+	if (line.trim() === '' || line.trim().startsWith('#')) {
 		jumpNext();
 		return;
 	}
 
-	// do things
+	// instructions
 	switch (args[0]) {
 	case 'lbl':
 		jumpNext();
@@ -82,10 +74,10 @@ AnimationList.prototype.execAnimationScript = function (animation, lineNum) {
 		if (typeof args[1] === 'undefined') {
 			warn('Cannot jump to nowhere, missing destination parameter');
 			jumpNext();
-		} else if (window.tools.isNumeric(args[1])) {
+		} else if (tools.isNumeric(args[1])) {
 			jump(parseInt(args[1]));
 		} else {
-			var labelPos = animation.animation.script.indexOf('lbl ' + args[1]);
+			let labelPos = animation.animation.script.indexOf('lbl ' + args[1]);
 			if (labelPos === -1) {
 				warn('Cannot jump to a nonexistent label "' + args[1] + '"');
 				jumpNext();
@@ -95,8 +87,8 @@ AnimationList.prototype.execAnimationScript = function (animation, lineNum) {
 		}
 		break;
 	case 'nop':
-		if (typeof args[1] !== 'undefined' && window.tools.isNumeric(args[1]))
-			animation.timer = new window.tools.Timer(jumpNext, parseInt(args[1]));
+		if (typeof args[1] !== 'undefined' && tools.isNumeric(args[1]))
+			animation.timer = new tools.Timer(jumpNext, parseInt(args[1]));
 		else
 			jumpNext();
 		break;

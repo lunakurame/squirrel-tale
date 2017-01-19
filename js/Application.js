@@ -113,7 +113,7 @@ Application.prototype.init = function (arg) {
 		this.hud.draw();
 
 		var drawingLoop_interval = setInterval(function () { // TODO
-			var fps = app.hud.fpsCounter.getValue();
+			let fps = app.hud.fpsCounter.getValue();
 
 			// global keys
 
@@ -145,8 +145,8 @@ Application.prototype.init = function (arg) {
 				app.controls.keysDown.pause     = false;
 				app.controls.keysDown.pause_alt = false;
 				if (app.mode == 'pause') {
-					// resume all animations
 					app.mode = app.modePrev;
+					// resume all animations
 					for (var i in app.animationList.animations)
 						if (typeof app.animationList.animations[i].timer !== 'undefined')
 							app.animationList.animations[i].timer.resume();

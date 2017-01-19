@@ -4,9 +4,9 @@ window.tools = {
 		return !isNaN(parseFloat(n)) && isFinite(n);
 	},
 	Timer: function (callback, delay) {
-		var timeout;
-		var start;
-		var remaining = delay;
+		let timeout;
+		let start;
+		let remaining = delay;
 
 		this.resume = function () {
 			start = new Date();
@@ -23,4 +23,3 @@ window.tools = {
 		this.resume();
 	}
 };
-
