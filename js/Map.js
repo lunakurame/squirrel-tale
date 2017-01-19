@@ -62,15 +62,22 @@ Map.prototype.loadEntities = function () {
 		this.app.resourceLoader.loadOnce('json', 'entity', this.entities[i].name);
 		this.app.resourceLoader.loadOnce('image', 'entity', this.entities[i].fullName);
 	}
-	this.app.resourceLoader.waitForAllFiles('init-load-entities-ok', 'init-load-entities-error');
+	this.app.resourceLoader.waitForAllFiles(
+		() => {
+			this.app.init('setup-entities');
+		},
+		() => {
+			this.app.loadingScreen.showError('Error – can\'t load all resources.');
+		}
+	);
 };
 
 Map.prototype.setupEntities = function () {
 	for (var i in this.entities) {
 		this.entities[i].load(
 			this.data.file.entities[i],
-			this.app.resourceLoader.resource['json/entity/' + this.entities[i].name],
-			this.app.resourceLoader.resource['image/entity/' + this.entities[i].fullName]
+			this.app.resourceLoader.resources['json/entity/' + this.entities[i].name],
+			this.app.resourceLoader.resources['image/entity/' + this.entities[i].fullName]
 		);
 	}
 };

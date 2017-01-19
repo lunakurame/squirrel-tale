@@ -30,8 +30,8 @@ FontList.prototype.load = function () {
 	this.context = this.app.canvasList.context['hud'];
 
 	// find loaded fonts
-	for (var i in this.app.resourceLoader.resource) {
-		var res = this.app.resourceLoader.resource[i];
+	for (var i in this.app.resourceLoader.resources) {
+		var res = this.app.resourceLoader.resources[i];
 		if (res.type != 'font')
 			continue;
 

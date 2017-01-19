@@ -42,7 +42,14 @@ Application.prototype.init = function (arg) {
 		this.resourceLoader.load('image', 'font', 'basic', 'black');
 		this.resourceLoader.load('image', 'font', 'basic', 'teal');
 		//this.resourceLoader.load('debug', 'debug', 'debug');
-		this.resourceLoader.waitForAllFiles('init-load-resources-ok', 'init-load-resources-error');
+		this.resourceLoader.waitForAllFiles(
+			() => {
+				this.init('setup-environment');
+			},
+			() => {
+				this.loadingScreen.showError('Error – can\'t load all resources.');
+			}
+		);
 		break;
 
 	case 'setup-environment':
@@ -63,16 +70,16 @@ Application.prototype.init = function (arg) {
 		// map
 		console.log('Application: setting up the map');
 		this.map.load(
-			this.resourceLoader.resource['json/map/' + this.map.name],
-			this.resourceLoader.resource['image/map/' + this.map.fullName]
+			this.resourceLoader.resources['json/map/' + this.map.name],
+			this.resourceLoader.resources['image/map/' + this.map.fullName]
 		);
 
 		// player
 		console.log('Application: setting up the player');
 		this.player.load(
-			this.resourceLoader.resource['json/map/' + this.map.name].file.entrances,
-			this.resourceLoader.resource['json/player/' + this.player.name],
-			this.resourceLoader.resource['image/player/' + this.player.fullName]
+			this.resourceLoader.resources['json/map/' + this.map.name].file.entrances,
+			this.resourceLoader.resources['json/player/' + this.player.name],
+			this.resourceLoader.resources['image/player/' + this.player.fullName]
 		);
 
 		// hud
@@ -231,22 +238,5 @@ Application.prototype.init = function (arg) {
 
 	case 'done':
 		this.loadingScreen.fadeOut();
-	}
-};
-
-Application.prototype.callback = function (arg) {
-	switch (arg) {
-	case 'init-load-resources-ok':
-		this.init('setup-environment');
-		break;
-	case 'init-load-resources-error':
-		this.loadingScreen.showError('Error – can\'t load all resources.');
-		break;
-	case 'init-load-entities-ok':
-		this.init('setup-entities');
-		break;
-	case 'init-load-entities-error':
-		this.loadingScreen.showError('Error – can\'t load all resources.');
-		break;
 	}
 };

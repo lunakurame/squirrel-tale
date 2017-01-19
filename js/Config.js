@@ -35,12 +35,6 @@ var Config = function (application) {
 		width: 320,
 		height: 240
 	};
-	this.loaderStatus = {
-		// 0 is reserved (I don't know for what, tho)
-		loading: 1,
-		completed: 2,
-		error: 3
-	};
 	this.player = {
 		name: 'shiro',
 		variant: undefined,
