@@ -52,8 +52,8 @@ Map.prototype.load = function (data, image) {
 	this.height = this.image.file.height;
 
 	// get canvas
-	this.canvas  = this.app.canvasList.canvas['map'];
-	this.context = this.app.canvasList.context['map'];
+	this.canvas  = this.app.canvasList.canvases['map'];
+	this.context = this.app.canvasList.contexts['map'];
 };
 
 Map.prototype.loadEntities = function () {

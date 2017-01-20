@@ -98,10 +98,10 @@ Entity.prototype.load = function (mapData, data, image) {
 	this.setView();
 
 	// get canvas
-	this.canvas        = this.app.canvasList.canvas['entity_' + this.posZ];
-	this.context       = this.app.canvasList.context['entity_' + this.posZ];
-	this.canvas_under  = this.app.canvasList.canvas['entity_under'];
-	this.context_under = this.app.canvasList.context['entity_under'];
+	this.canvas        = this.app.canvasList.canvases['entity_' + this.posZ];
+	this.context       = this.app.canvasList.contexts['entity_' + this.posZ];
+	this.canvas_under  = this.app.canvasList.canvases['entity_under'];
+	this.context_under = this.app.canvasList.contexts['entity_under'];
 };
 
 Entity.prototype.execQueue = function () {
@@ -296,9 +296,9 @@ Entity.prototype.clearDifference = function (oldView, oldFrame, newView, newFram
 Entity.prototype.draw = function () {
 	// don't draw off-screen entities
 	if (
-		this.posX - this.centerX > this.app.canvasList.canvas['map'].width + this.app.map.left ||
+		this.posX - this.centerX > this.app.canvasList.canvases['map'].width + this.app.map.left ||
 		this.posX + this.centerX < this.app.map.left - this.width ||
-		this.posY - this.centerY > this.app.canvasList.canvas['map'].height + this.app.map.top ||
+		this.posY - this.centerY > this.app.canvasList.canvases['map'].height + this.app.map.top ||
 		this.posY + this.centerY < this.app.map.top - this.height
 	)
 		return;

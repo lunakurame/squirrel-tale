@@ -91,8 +91,8 @@ Player.prototype.load = function (entrances, data, image) {
 	this.speed = this.defaultSpeed;
 
 	// get canvas
-	this.canvas  = this.app.canvasList.canvas['player'];
-	this.context = this.app.canvasList.context['player'];
+	this.canvas  = this.app.canvasList.canvases['player'];
+	this.context = this.app.canvasList.contexts['player'];
 
 	this.react(0, true);
 };
@@ -411,9 +411,9 @@ Player.prototype.react = function (speed, resizeWindow) {
 
 				// ignore off-screen collisions
 				if (
-					entity.posX - entity.centerX > this.app.canvasList.canvas['map'].width + this.app.map.left ||
+					entity.posX - entity.centerX > this.app.canvasList.canvases['map'].width + this.app.map.left ||
 					entity.posX + entity.centerX < this.app.map.left - entity.width ||
-					entity.posY - entity.centerY > this.app.canvasList.canvas['map'].height + this.app.map.top ||
+					entity.posY - entity.centerY > this.app.canvasList.canvases['map'].height + this.app.map.top ||
 					entity.posY + entity.centerY < this.app.map.top - entity.height
 				)
 					break;
@@ -527,18 +527,18 @@ Player.prototype.react = function (speed, resizeWindow) {
 		var old_map_top = this.app.map.top;
 
 		// center the player (actually move the map so the player is in the center, even if the map position is wrong)
-		this.app.map.top = this.posY - this.centerY - ((this.app.canvasList.canvas['player'].height - this.height) / 2);
-		this.app.map.left = this.posX - this.centerX - ((this.app.canvasList.canvas['player'].width - this.width) / 2);
+		this.app.map.top = this.posY - this.centerY - ((this.app.canvasList.canvases['player'].height - this.height) / 2);
+		this.app.map.left = this.posX - this.centerX - ((this.app.canvasList.canvases['player'].width - this.width) / 2);
 
 		// fix map position in case map is not within canvas' borders
 		if (this.app.map.top < 0)
 			this.app.map.top = 0;
-		else if (this.app.map.top > this.app.map.height - this.app.canvasList.canvas['player'].height + (2 * this.app.map.marginTop))
-			this.app.map.top = this.app.map.height - this.app.canvasList.canvas['player'].height + (2 * this.app.map.marginTop);
+		else if (this.app.map.top > this.app.map.height - this.app.canvasList.canvases['player'].height + (2 * this.app.map.marginTop))
+			this.app.map.top = this.app.map.height - this.app.canvasList.canvases['player'].height + (2 * this.app.map.marginTop);
 		if (this.app.map.left < 0)
 			this.app.map.left = 0;
-		else if (this.app.map.left > this.app.map.width - this.app.canvasList.canvas['player'].width + (2 * this.app.map.marginLeft))
-			this.app.map.left = this.app.map.width - this.app.canvasList.canvas['player'].width + (2 * this.app.map.marginLeft);
+		else if (this.app.map.left > this.app.map.width - this.app.canvasList.canvases['player'].width + (2 * this.app.map.marginLeft))
+			this.app.map.left = this.app.map.width - this.app.canvasList.canvases['player'].width + (2 * this.app.map.marginLeft);
 
 		// redraw the map, if necessary
 		if ((this.app.map.left != old_map_left) || (this.app.map.top != old_map_top))

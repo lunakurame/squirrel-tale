@@ -55,8 +55,8 @@ var Hud = function (application) {
 
 Hud.prototype.load = function () {
 	// get canvas
-	this.canvas = this.app.canvasList.canvas['hud'];
-	this.context = this.app.canvasList.context['hud'];
+	this.canvas  = this.app.canvasList.canvases['hud'];
+	this.context = this.app.canvasList.contexts['hud'];
 
 	// set up pause menu actions
 	this.pauseMenu.items[0].action = function () {
@@ -117,7 +117,7 @@ Hud.prototype.drawDebugInfo = function (fps) {
 
 	this.app.fontList.draw(
 		'FPS ' + fps.toFixed(2) +
-		'\nRES ' + this.app.canvasList.canvas['player'].width + 'x' + this.app.canvasList.canvas['player'].height +
+		'\nRES ' + this.app.canvasList.canvases['player'].width + 'x' + this.app.canvasList.canvases['player'].height +
 		'\nKEY ' + this.app.lastPressedKey,
 		'basic', 'white', 6, 4
 	);

@@ -133,17 +133,17 @@ Application.prototype.init = function (arg) {
 				app.config.debug.enabled = !app.config.debug.enabled;
 
 				// clear all and redraw
-				for (var i in app.canvasList.context)
-					app.canvasList.context[i].clearRect(
+				for (let i in app.canvasList.contexts)
+					app.canvasList.contexts[i].clearRect(
 						0,
 						0,
-						app.canvasList.canvas[i].width,
-						app.canvasList.canvas[i].height
+						app.canvasList.canvases[i].width,
+						app.canvasList.canvases[i].height
 					);
 				app.map.draw();
 				app.hud.draw();
 				app.player.draw();
-				for (var i in app.map.entities)
+				for (let i in app.map.entities)
 					app.map.entities[i].draw();
 			}
 

@@ -26,8 +26,8 @@ var FontList = function (application) {
 
 FontList.prototype.load = function () {
 	// get canvas
-	this.canvas  = this.app.canvasList.canvas['hud'];
-	this.context = this.app.canvasList.context['hud'];
+	this.canvas  = this.app.canvasList.canvases['hud'];
+	this.context = this.app.canvasList.contexts['hud'];
 
 	// find loaded fonts
 	for (var i in this.app.resourceLoader.resources) {
