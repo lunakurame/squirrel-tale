@@ -9,104 +9,74 @@ var Controls = function (application) {
 	// technical
 	this.app = application;
 
-	// config	TODO move to Config?
+	// data
 	this.keys = {
-		// primary keys
-		debug: 192,
-		up   : 87,
-		down : 83,
-		right: 68,
-		left : 65,
-		slow : 16,
-		pause: 27,
-		confirm: 13,
-
-		// secondary keys
-		debug_alt: 223,	// 192 is 223 on UK keyboards
-		up_alt   : 38,
-		down_alt : 40,
-		right_alt: 39,
-		left_alt : 37,
-		slow_alt : 16,
-		pause_alt: 27,
-		confirm_alt: 69
+		/* template
+		debug: {
+			states: {
+				192: false,
+				223: false,
+				...
+			},
+			queue: [
+				{
+					callback: <function>,
+					state: true
+				},
+				...
+			]
+		} */
 	};
+};
 
-	// states
-	this.keysDown = {
-		// primary keys
-		debug: false,
-		up   : false,
-		down : false,
-		right: false,
-		left : false,
-		slow : false,
-		pause: false,
-		confirm: false,
+Controls.prototype.load = function () {
+	this.keys = {};
+	for (let i in this.app.config.controls) {
+		this.keys[i] = {};
+		let key = this.keys[i];
+		let keyConf = this.app.config.controls[i];
 
-		// secondary keys
-		debug_alt: false,
-		up_alt   : false,
-		down_alt : false,
-		right_alt: false,
-		left_alt : false,
-		slow_alt : false,
-		pause_alt: false,
-		confirm_alt: false
-	};
+		key.states = {};
+		keyConf.forEach(keyCode => key.states[keyCode] = false);
+		key.queue = [];
+	}
 };
 
 Controls.prototype.toggleKeyDown = function (e, state) {
 	this.app.lastPressedKey = e.which;
+
 	// set key state
-	switch(e.which) {
-	case this.keys.debug:
-		this.keysDown.debug = state;
-		break;
-	case this.keys.debug_alt:
-		this.keysDown.debug_alt = state;
-		break;
-	case this.keys.up:
-		this.keysDown.up = state;
-		break;
-	case this.keys.up_alt:
-		this.keysDown.up_alt = state;
-		break;
-	case this.keys.down:
-		this.keysDown.down = state;
-		break;
-	case this.keys.down_alt:
-		this.keysDown.down_alt = state;
-		break;
-	case this.keys.right:
-		this.keysDown.right = state;
-		break;
-	case this.keys.right_alt:
-		this.keysDown.right_alt = state;
-		break;
-	case this.keys.left:
-		this.keysDown.left = state;
-		break;
-	case this.keys.left_alt:
-		this.keysDown.left_alt = state;
-		break;
-	case this.keys.slow:
-		this.keysDown.slow = state;
-		break;
-	case this.keys.slow_alt:
-		this.keysDown.slow_alt = state;
-		break;
-	case this.keys.pause:
-		this.keysDown.pause = state;
-		break;
-	case this.keys.pause_alt:
-		this.keysDown.pause_alt = state;
-		break;
-	case this.keys.confirm:
-		this.keysDown.confirm = state;
-		break;
-	case this.keys.confirm_alt:
-		this.keysDown.confirm_alt = state;
-		break;
+	for (let i in this.keys) {
+		let key = this.keys[i];
+		if (typeof key.states[e.which] === 'undefined')
+			continue;
+
+		key.states[e.which] = state;
 	}
+
+	// exec key's queue
+	for (let i in this.keys) {
+		let key = this.keys[i];
+		if (typeof key.states[e.which] === 'undefined')
+			continue;
+
+		key.queue.filter(item => item.state === state).forEach(item => item.callback());
+	}
+};
+
+Controls.prototype.isKeyDown = function (keyName) {
+	let keyStates = this.keys[keyName].states;
+	let state = false;
+	for (let i in keyStates)
+		if (keyStates[i])
+			state = true;
+
+	return state;
+};
+
+Controls.prototype.addToQueue = function (callback, keyName, state = true) {
+	this.keys[keyName].queue.push({
+		callback: callback,
+		state: state
+	});
 };

@@ -10,8 +10,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-$(document).ready(function () {
+'use strict';
+
+window.onload = function () {
 	// init application
-	var app = new Application();
+	window.app = new Application();
 	app.init('start');
-});
+};

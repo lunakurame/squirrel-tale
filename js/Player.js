@@ -47,6 +47,8 @@ var Player = function (application, name, variant) {
 	this.moving     = false;
 	this.speed      = 0;
 	this.movingAnimationInterval;	// TODO [animations] remove
+	this.tryingToMoveVert = 'none'; // modified by Controls event
+	this.tryingToMoveHorz = 'none'; // modified by Controls event
 };
 
 Player.prototype.load = function (entrances, data, image) {
@@ -260,24 +262,6 @@ Player.prototype.draw = function () {
 
 Player.prototype.react = function (speed, resizeWindow) {
 // TODO [animations] lots of things to remove
-	// alias for nested functions
-	var isKeyDown = function (key) {
-		switch (key) {
-		case 'up':
-			return ((this.app.controls.keysDown.up || this.app.controls.keysDown.up_alt) &&
-			        !(this.app.controls.keysDown.down || this.app.controls.keysDown.down_alt));
-		case 'down':
-			return ((this.app.controls.keysDown.down || this.app.controls.keysDown.down_alt) &&
-			        !(this.app.controls.keysDown.up || this.app.controls.keysDown.up_alt));
-		case 'right':
-			return ((this.app.controls.keysDown.right || this.app.controls.keysDown.right_alt) &&
-			        !(this.app.controls.keysDown.left || this.app.controls.keysDown.left_alt));
-		case 'left':
-			return ((this.app.controls.keysDown.left || this.app.controls.keysDown.left_alt) &&
-			        !(this.app.controls.keysDown.right || this.app.controls.keysDown.right_alt));
-		}
-	}.bind(this);
-
 	if (!this.moving) {
 		// clear moving animation
 		clearInterval(this.movingAnimationInterval);
@@ -288,19 +272,19 @@ Player.prototype.react = function (speed, resizeWindow) {
 
 	// check if player is moving (it doesn't check collisions)
 	var moving_up = (
-		isKeyDown('up') &&
+		this.tryingToMoveVert === 'up' &&
 		this.posY - this.centerY > 0
 	);
 	var moving_down = (
-		isKeyDown('down') &&
+		this.tryingToMoveVert === 'down' &&
 		this.posY - this.centerY < this.app.map.height - this.height
 	);
 	var moving_right = (
-		isKeyDown('right') &&
+		this.tryingToMoveHorz === 'right' &&
 		this.posX - this.centerX < this.app.map.width - this.width
 	);
 	var moving_left = (
-		isKeyDown('left') &&
+		this.tryingToMoveHorz === 'left' &&
 		this.posX - this.centerX > 0
 	);
 
@@ -382,14 +366,14 @@ Player.prototype.react = function (speed, resizeWindow) {
 		var old_player_posY = this.posY - this.centerY;
 
 		// move the player
-		if (isKeyDown('right') && this.posX - this.centerX < this.app.map.width - this.width) {
+		if (this.tryingToMoveHorz === 'right' && this.posX - this.centerX < this.app.map.width - this.width) {
 			this.posX += speed;
-		} else if (isKeyDown('left') && this.posX - this.centerX > 0) {
+		} else if (this.tryingToMoveHorz === 'left' && this.posX - this.centerX > 0) {
 			this.posX -= speed;
 		}
-		if (isKeyDown('up') && this.posY - this.centerY > 0) {
+		if (this.tryingToMoveVert === 'up' && this.posY - this.centerY > 0) {
 			this.posY -= speed;
-		} else if (isKeyDown('down') && this.posY - this.centerY < this.app.map.height - this.height) {
+		} else if (this.tryingToMoveVert === 'down' && this.posY - this.centerY < this.app.map.height - this.height) {
 			this.posY += speed;
 		}
 
@@ -477,35 +461,35 @@ Player.prototype.react = function (speed, resizeWindow) {
 						);
 
 						// move player's position if necessary, also fix direction and moving animation
-						if (isKeyDown('right') && collides_vertically && collided_vertically) {
+						if (this.tryingToMoveHorz === 'right' && collides_vertically && collided_vertically) {
 							this.posX = entity.posX - entity.centerX + collision.posX - pcoll.width - pcoll.posX + this.centerX;
-							if (isKeyDown('up'))
+							if (this.tryingToMoveVert === 'up')
 								this.direction = this.app.config.player.direction.up;
-							else if (isKeyDown('down'))
+							else if (this.tryingToMoveVert === 'down')
 								this.direction = this.app.config.player.direction.down;
 							else
 								this.moving = false;
-						} else if (isKeyDown('left') && collides_vertically && collided_vertically) {
+						} else if (this.tryingToMoveHorz === 'left' && collides_vertically && collided_vertically) {
 							this.posX = entity.posX - entity.centerX + collision.posX + collision.width - pcoll.posX + this.centerX;
-							if (isKeyDown('up'))
+							if (this.tryingToMoveVert === 'up')
 								this.direction = this.app.config.player.direction.up;
-							else if (isKeyDown('down'))
+							else if (this.tryingToMoveVert === 'down')
 								this.direction = this.app.config.player.direction.down;
 							else
 								this.moving = false;
-						} else if (isKeyDown('up') && collides_horizontally && collided_horizontally) {
+						} else if (this.tryingToMoveVert === 'up' && collides_horizontally && collided_horizontally) {
 							this.posY = entity.posY - entity.centerY + collision.posY + collision.height - pcoll.posY + this.centerY;
-							if (isKeyDown('right'))
+							if (this.tryingToMoveHorz === 'right')
 								this.direction = this.app.config.player.direction.right;
-							else if (isKeyDown('left'))
+							else if (this.tryingToMoveHorz === 'left')
 								this.direction = this.app.config.player.direction.left;
 							else
 								this.moving = false;
-						} else if (isKeyDown('down') && collides_horizontally && collided_horizontally) {
+						} else if (this.tryingToMoveVert === 'down' && collides_horizontally && collided_horizontally) {
 							this.posY = entity.posY - entity.centerY + collision.posY - pcoll.height - pcoll.posY + this.centerY;
-							if (isKeyDown('right'))
+							if (this.tryingToMoveHorz === 'right')
 								this.direction = this.app.config.player.direction.right;
-							else if (isKeyDown('left'))
+							else if (this.tryingToMoveHorz === 'left')
 								this.direction = this.app.config.player.direction.left;
 							else
 								this.moving = false;
@@ -549,20 +533,20 @@ Player.prototype.react = function (speed, resizeWindow) {
 	default:
 		// change direction without moving (e.g. next to a canvas border)
 		if ( // skip canvas corners (otherwise they default to horizontal axis, which is bad)
-			(isKeyDown('left') && isKeyDown('up') && this.posX - this.centerX <= 0 && this.posY - this.centerY <= 0) ||
-			(isKeyDown('left') && isKeyDown('down') && this.posX - this.centerX <= 0 && this.posY - this.centerY >= this.app.map.height - this.height) ||
-			(isKeyDown('right') && isKeyDown('up') && this.posX - this.centerX >= this.app.map.width - this.width && this.posY - this.centerY <= 0) ||
-			(isKeyDown('right') && isKeyDown('down') && this.posX - this.centerX >= this.app.map.width - this.width && this.posY - this.centerY >= this.app.map.height - this.height)
+			(this.tryingToMoveHorz === 'left' && this.tryingToMoveVert === 'up' && this.posX - this.centerX <= 0 && this.posY - this.centerY <= 0) ||
+			(this.tryingToMoveHorz === 'left' && this.tryingToMoveVert === 'down' && this.posX - this.centerX <= 0 && this.posY - this.centerY >= this.app.map.height - this.height) ||
+			(this.tryingToMoveHorz === 'right' && this.tryingToMoveVert === 'up' && this.posX - this.centerX >= this.app.map.width - this.width && this.posY - this.centerY <= 0) ||
+			(this.tryingToMoveHorz === 'right' && this.tryingToMoveVert === 'down' && this.posX - this.centerX >= this.app.map.width - this.width && this.posY - this.centerY >= this.app.map.height - this.height)
 		)
 			; // yep, a single semicolon, 'no operation'
 			 // (if something doesn't work, you can replace it with $.noop(); or (function(){})();)
-		else if (isKeyDown('right'))
+		else if (this.tryingToMoveHorz === 'right')
 			this.direction = this.app.config.player.direction.right;
-		else if (isKeyDown('left'))
+		else if (this.tryingToMoveHorz === 'left')
 			this.direction = this.app.config.player.direction.left;
-		else if (isKeyDown('up'))
+		else if (this.tryingToMoveVert === 'up')
 			this.direction = this.app.config.player.direction.up;
-		else if (isKeyDown('down'))
+		else if (this.tryingToMoveVert === 'down')
 			this.direction = this.app.config.player.direction.down;
 	}
 

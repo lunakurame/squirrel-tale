@@ -40,6 +40,20 @@ AnimationList.prototype.load = function () {
 	});
 };
 
+AnimationList.prototype.pauseAll = function () {
+	this.animations.forEach(animation => {
+		if (typeof animation.timer !== 'undefined')
+			animation.timer.pause();
+	});
+};
+
+AnimationList.prototype.resumeAll = function () {
+	this.animations.forEach(animation => {
+		if (typeof animation.timer !== 'undefined')
+			animation.timer.resume();
+	});
+};
+
 AnimationList.prototype.execAnimationScript = function (animation, lineNum = 0) {
 	// check if EOF
 	if (typeof animation.animation.script[lineNum] === 'undefined')

@@ -115,126 +115,212 @@ Application.prototype.init = function (arg) {
 			app.hud.resize();
 		});
 
+		// load controls config
+		// TODO move it higher?
+		// TODO new config
+		this.controls.load();
+
+		// debug
+		this.controls.addToQueue(() => {
+			this.config.debug.enabled = !this.config.debug.enabled;
+
+			// clear all and redraw
+			for (let i in this.canvasList.contexts)
+				this.canvasList.contexts[i].clearRect(
+					0,
+					0,
+					this.canvasList.canvases[i].width,
+					this.canvasList.canvases[i].height
+				);
+			this.map.draw();
+			this.hud.draw();
+			this.player.draw();
+			this.map.entities.forEach(entity => entity.draw());
+		}, 'debug', true);
+
+		// pause
+		this.controls.addToQueue(() => {
+			switch (this.mode) {
+			case 'pause':
+				this.mode = this.modePrev;
+				this.animationList.resumeAll();
+				break;
+			default:
+				this.modePrev = this.mode;
+				this.mode = 'pause';
+				this.animationList.pauseAll();
+			}
+
+			this.hud.clear();
+			this.hud.draw();
+		}, 'pause', true);
+
+		// confirm
+		this.controls.addToQueue(() => {
+			switch (this.mode) {
+			case 'pause':
+				this.hud.pauseMenu.items[this.hud.pauseMenu.selected].action();
+				this.hud.clear();
+				this.hud.draw();
+				break;
+			}
+
+			this.hud.clear();
+			this.hud.draw();
+		}, 'confirm', true);
+
+		// up
+		this.controls.addToQueue(() => {
+			switch (this.mode) {
+			case 'pause':
+				if (this.hud.pauseMenu.selected > 0)
+					--this.hud.pauseMenu.selected;
+
+				this.hud.clear();
+				this.hud.draw();
+				break;
+			case 'game':
+				if (this.controls.isKeyDown('down'))
+					this.player.tryingToMoveVert = 'none';
+				else
+					this.player.tryingToMoveVert = 'up';
+				break;
+			}
+		}, 'up', true);
+		this.controls.addToQueue(() => {
+			switch (this.mode) {
+			case 'game':
+				if (this.controls.isKeyDown('down'))
+					this.player.tryingToMoveVert = 'down';
+				else
+					this.player.tryingToMoveVert = 'none';
+				break;
+			}
+		}, 'up', false);
+
+		// down
+		this.controls.addToQueue(() => {
+			switch (this.mode) {
+			case 'pause':
+				if (this.hud.pauseMenu.selected < this.hud.pauseMenu.items.length - 1)
+					++this.hud.pauseMenu.selected;
+
+				this.hud.clear();
+				this.hud.draw();
+				break;
+			case 'game':
+				if (this.controls.isKeyDown('up'))
+					this.player.tryingToMoveVert = 'none';
+				else
+					this.player.tryingToMoveVert = 'down';
+				break;
+			}
+		}, 'down', true);
+		this.controls.addToQueue(() => {
+			switch (this.mode) {
+			case 'game':
+				if (this.controls.isKeyDown('up'))
+					this.player.tryingToMoveVert = 'up';
+				else
+					this.player.tryingToMoveVert = 'none';
+				break;
+			}
+		}, 'down', false);
+
+		// right
+		this.controls.addToQueue(() => {
+			switch (this.mode) {
+			case 'pause':
+				if (this.hud.pauseMenu.selected > 0)
+					--this.hud.pauseMenu.selected;
+
+				this.hud.clear();
+				this.hud.draw();
+				break;
+			case 'game':
+				if (this.controls.isKeyDown('left'))
+					this.player.tryingToMoveHorz = 'none';
+				else
+					this.player.tryingToMoveHorz = 'right';
+				break;
+			}
+		}, 'right', true);
+		this.controls.addToQueue(() => {
+			switch (this.mode) {
+			case 'game':
+				if (this.controls.isKeyDown('left'))
+					this.player.tryingToMoveHorz = 'left';
+				else
+					this.player.tryingToMoveHorz = 'none';
+				break;
+			}
+		}, 'right', false);
+
+		// left
+		this.controls.addToQueue(() => {
+			switch (this.mode) {
+			case 'pause':
+				if (this.hud.pauseMenu.selected < this.hud.pauseMenu.items.length - 1)
+					++this.hud.pauseMenu.selected;
+
+				this.hud.clear();
+				this.hud.draw();
+				break;
+			case 'game':
+				if (this.controls.isKeyDown('right'))
+					this.player.tryingToMoveHorz = 'none';
+				else
+					this.player.tryingToMoveHorz = 'left';
+				break;
+			}
+		}, 'left', true);
+		this.controls.addToQueue(() => {
+			switch (this.mode) {
+			case 'game':
+				if (this.controls.isKeyDown('right'))
+					this.player.tryingToMoveHorz = 'right';
+				else
+					this.player.tryingToMoveHorz = 'none';
+				break;
+			}
+		}, 'left', false);
+
+
+
 	case 'draw':
 		this.map.draw();
 		this.hud.draw();
 
-		var drawingLoop_interval = setInterval(function () { // TODO
-			let fps = app.hud.fpsCounter.getValue();
+		var drawingLoop = setInterval(() => {
+			let fps = this.hud.fpsCounter.getValue();
 
-			// global keys
-
-			// debug mode
-			if (app.controls.keysDown.debug || app.controls.keysDown.debug_alt) {
-				app.controls.keysDown.debug     = false;
-				app.controls.keysDown.debug_alt = false;
-
-				// toggle debug mode
-				app.config.debug.enabled = !app.config.debug.enabled;
-
-				// clear all and redraw
-				for (let i in app.canvasList.contexts)
-					app.canvasList.contexts[i].clearRect(
-						0,
-						0,
-						app.canvasList.canvases[i].width,
-						app.canvasList.canvases[i].height
-					);
-				app.map.draw();
-				app.hud.draw();
-				app.player.draw();
-				for (let i in app.map.entities)
-					app.map.entities[i].draw();
-			}
-
-			// pause menu
-			if (app.controls.keysDown.pause || app.controls.keysDown.pause_alt) {
-				app.controls.keysDown.pause     = false;
-				app.controls.keysDown.pause_alt = false;
-				if (app.mode == 'pause') {
-					app.mode = app.modePrev;
-					// resume all animations
-					for (var i in app.animationList.animations)
-						if (typeof app.animationList.animations[i].timer !== 'undefined')
-							app.animationList.animations[i].timer.resume();
-				} else {
-					app.modePrev = app.mode;
-					app.mode = 'pause';
-					// pause all animations
-					for (var i in app.animationList.animations)
-						if (typeof app.animationList.animations[i].timer !== 'undefined')
-							app.animationList.animations[i].timer.pause();
-				}
-
-				app.hud.clear();
-				app.hud.draw();
-			}
-
-			// the actual drawing
-
-			if (app.mode == 'pause') {
-				if (app.controls.keysDown.down || app.controls.keysDown.down_alt) {
-					app.controls.keysDown.down     = false;
-					app.controls.keysDown.down_alt = false;
-
-					if (app.hud.pauseMenu.selected < app.hud.pauseMenu.items.length - 1)
-						++app.hud.pauseMenu.selected;
-
-					app.hud.clear();
-					app.hud.draw();
-				}
-
-				if (app.controls.keysDown.up || app.controls.keysDown.up_alt) {
-					app.controls.keysDown.up     = false;
-					app.controls.keysDown.up_alt = false;
-
-					if (app.hud.pauseMenu.selected > 0)
-						--app.hud.pauseMenu.selected;
-
-					app.hud.clear();
-					app.hud.draw();
-				}
-
-				if (app.controls.keysDown.confirm || app.controls.keysDown.confirm_alt) {
-					app.controls.keysDown.confirm     = false;
-					app.controls.keysDown.confirm_alt = false;
-
-					app.hud.pauseMenu.items[app.hud.pauseMenu.selected].action();
-
-					app.hud.clear();
-					app.hud.draw();
-				}
-			} else if (app.mode == 'game') {
+			switch (this.mode) {
+			case 'game':
 				// adjust speed to fps, so the player will always move the same speed
-				var speed = app.player.speed / fps;
-				if (app.controls.keysDown.slow)
-					speed = speed / 2;
+				let speed = this.player.speed / fps;
+				if (this.controls.isKeyDown('slow'))
+					speed /= 2;
 
 				// clear
-				app.player.clear();
-				for (var i in app.map.entities)
-					app.map.entities[i].clear();
+				this.player.clear();
+				this.map.entities.forEach(entity => entity.clear());
 
 				// exec entities queue
-				for (var i in app.map.entities)
-					app.map.entities[i].execQueue();
+				this.map.entities.forEach(entity => entity.execQueue());
 	// TODO bugfix: when animation changes collisions while player is not moving,
 	// then player can appear inside the collision, and then teleport though it
 	// when walking inside
 				// player react
-				app.player.react(speed);
+				this.player.react(speed);
 
 				// draw
-				app.player.draw();
-				for (var i in app.map.entities)
-					app.map.entities[i].draw();
+				this.player.draw();
+				this.map.entities.forEach(entity => entity.draw());
 			}
 
-			if (app.config.debug.enabled)
-				app.hud.drawDebugInfo(fps);
-
-			//clearInterval(drawingLoop_interval);
-		}, (1000 / this.config.fpsCap));
+			if (this.config.debug.enabled)
+				this.hud.drawDebugInfo(fps);
+		}, 1000 / this.config.fpsCap);
 
 	case 'done':
 		this.loadingScreen.fadeOut();

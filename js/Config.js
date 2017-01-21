@@ -49,4 +49,14 @@ var Config = function (application) {
 		name: 'grassland',
 		variant: undefined
 	};
+	this.controls = {
+		debug  : [192, 223], // ` (US kb), ` (UK kb)
+		up     : [87, 38],   // w, ↑
+		down   : [83, 40],   // s, ↓
+		right  : [68, 39],   // d, →
+		left   : [65, 37],   // a, ←
+		slow   : [16],       // shift
+		pause  : [27],       // esc
+		confirm: [13, 69]    // enter, e
+	};
 };
