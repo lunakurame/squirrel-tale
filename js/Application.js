@@ -164,9 +164,6 @@ Application.prototype.init = function (arg) {
 				this.hud.draw();
 				break;
 			}
-
-			this.hud.clear();
-			this.hud.draw();
 		}, 'confirm', true);
 
 		// up

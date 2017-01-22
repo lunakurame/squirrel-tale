@@ -11,21 +11,24 @@ var Hud = function (application) {
 	this.canvas;
 	this.context;
 
-	// jail
+	// data
 	this.jail = {
 		left  : 0,
 		top   : 0,
 		width : 0,
 		height: 0
 	};
-
-	// pause menu
 	this.pauseMenu = {
 		selected: 0,
 		items: [
 			{
 				'label': 'CONTINUE',
-				'action': undefined
+				'action': () => {
+					this.app.mode = this.app.modePrev;
+					this.app.animationList.resumeAll();
+					this.app.hud.clear();
+					this.app.hud.draw();
+				}
 			},
 			{
 				'label': 'OPTIONS',
@@ -35,21 +38,21 @@ var Hud = function (application) {
 	};
 
 	// fpsCounter
-	this.fpsCounter = {};
-	this.fpsCounter.startTime = 0;
-	this.fpsCounter.frameNumber = 0;
-	this.fpsCounter.getValue = function () {
-		this.frameNumber++;
-		var d = new Date().getTime(),
-			currentTime = (d - this.startTime) / 1000,
-			//result = Math.floor(this.frameNumber / currentTime);
-			result = this.frameNumber / currentTime;
+	this.fpsCounter = {
+		startTime: 0,
+		frameNumber: 0,
+		getValue: function () {
+			this.frameNumber++;
+			let d = new Date().getTime();
+			let currentTime = (d - this.startTime) / 1000;
+			let result = this.frameNumber / currentTime;
 
-		if (currentTime > 1) {
-			this.startTime = new Date().getTime();
-			this.frameNumber = 0;
+			if (currentTime > 1) {
+				this.startTime = d;
+				this.frameNumber = 0;
+			}
+			return result;
 		}
-		return result;
 	};
 };
 
@@ -57,16 +60,6 @@ Hud.prototype.load = function () {
 	// get canvas
 	this.canvas  = this.app.canvasList.canvases['hud'];
 	this.context = this.app.canvasList.contexts['hud'];
-
-	// set up pause menu actions
-	this.pauseMenu.items[0].action = function () {
-		this.app.mode = this.app.modePrev;
-		this.app.hud.clear();
-		this.app.hud.draw();
-	}.bind(this);
-	this.pauseMenu.items[1].action = function () {
-		// TODO
-	}.bind(this);
 
 	this.setJail();
 };
@@ -102,17 +95,23 @@ Hud.prototype.draw = function () {
 //		this.jail.height
 //	);
 
-	if (this.app.mode == 'pause')
+	switch (this.app.mode) {
+	case 'pause':
 		this.drawPauseMenu();
+	}
 };
 
 Hud.prototype.drawDebugInfo = function (fps) {
 	// draw debug HUD
 	this.context.clearRect(0, 0, 282, 40);
-	if (this.app.mode == 'pause')
+
+	switch (this.app.mode) {
+	case 'pause':
 		this.context.fillStyle = 'rgba(0, 0, 0, .9)';
-	else
+		break;
+	default:
 		this.context.fillStyle = 'rgba(0, 127, 127, .8)';
+	}
 	this.context.fillRect(0, 0, 282, 40);
 
 	this.app.fontList.draw(
@@ -157,17 +156,17 @@ Hud.prototype.drawPauseMenu = function () {
 	);
 
 	// calc text size
-	var menuText = '';
-	for (var i in this.pauseMenu.items) {
+	let menuText = '';
+	for (let i in this.pauseMenu.items) {
 		if (i > 0)
 			menuText += '\n';
 		menuText += (this.pauseMenu.selected == i ? '⯈' : ' ') + this.pauseMenu.items[i].label;
 	}
-	var menuTextSize = this.app.fontList.getTextSize(menuText, 'basic');
+	let menuTextSize = this.app.fontList.getTextSize(menuText, 'basic');
 
 	// draw text
-	var topMargin = '';
-	for (var i in this.pauseMenu.items) {
+	let topMargin = '';
+	for (let i in this.pauseMenu.items) {
 		this.app.fontList.draw(
 			topMargin + (this.pauseMenu.selected == i ? '⯈' : ' ') + this.pauseMenu.items[i].label,
 			'basic', (this.pauseMenu.selected == i ? 'teal' : 'white'),
