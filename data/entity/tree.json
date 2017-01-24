@@ -96,7 +96,7 @@
 			}
 		]
 	},
-	"animations": [
+	"nuts": [
 		{
 			"type": "auto",
 			"script": [

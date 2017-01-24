@@ -14,7 +14,7 @@ var Application = function () {
 	this.loadingScreen = new LoadingScreen(this);
 	this.resourceLoader = new ResourceLoader(this);
 	this.canvasList = new CanvasList(this);
-	this.animationList = new AnimationList(this);
+	this.nuthead = new Nuthead(this);
 	this.fontList = new FontList(this);
 	this.controls = new Controls(this);
 	this.map = new Map(this, this.config.map.name, this.config.map.variant);
@@ -95,8 +95,8 @@ Application.prototype.init = function (arg) {
 	case 'setup-entities':
 		this.map.setupEntities();
 
-	case 'animations':
-		this.animationList.load();
+	case 'nuthead':
+		this.nuthead.load();
 
 	case 'setup-window':
 		//controls
@@ -143,12 +143,12 @@ Application.prototype.init = function (arg) {
 			switch (this.mode) {
 			case 'pause':
 				this.mode = this.modePrev;
-				this.animationList.resumeAll();
+				this.nuthead.resumeAll();
 				break;
 			default:
 				this.modePrev = this.mode;
 				this.mode = 'pause';
-				this.animationList.pauseAll();
+				this.nuthead.pauseAll();
 			}
 
 			this.hud.clear();

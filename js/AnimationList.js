@@ -1,72 +1,72 @@
-// prototype: AnimationList ////////////////////////////////////////////////////
+// prototype: Nuthead //////////////////////////////////////////////////////////
 
-var AnimationList = function (application) {
-	console.log('AnimationList instance created');
+var Nuthead = function (application) {
+	console.log('Nuthead instance created');
 
 	if (typeof application !== 'object' || application == null)
-		throw Error('AnimationList: constructor: application is required');
+		throw Error('Nuthead: constructor: application is required');
 
 	// technical
 	this.app = application;
 
 	// data
-	this.animations = [
-		/* array of {
+	this.nutshells = [
+		/* array of nutshells {
 		 * 	owner: object
 		 * 	parent: object
-		 * 	animation: pointer to Entity's animation object
-		 * 	timer: animation timer, which can be paused and resumed
+		 * 	nut: pointer to Entity's nut object
+		 * 	timer: nut timer, which can be paused and resumed
 		 * }
 		 */
 	];
 };
 
-AnimationList.prototype.load = function () {
-	// get all animations of all entities
+Nuthead.prototype.load = function () {
+	// get all nuts of all entities
 	this.app.map.entities.forEach(entity => {
-		entity.animations.forEach(animation => {
-			this.animations.push({
+		entity.nuts.forEach(nut => {
+			this.nutshells.push({
 				owner: entity,
 				parent: this,
-				animation: animation
+				nut: nut
 			});
 		});
 	});
 
-	// exec all auto animations
-	this.animations.forEach(animation => {
-		if (animation.animation.type === 'auto')
-			this.execAnimationScript(animation);
+	// exec all auto nuts
+	this.nutshells.forEach(nutshell => {
+		if (nutshell.nut.type === 'auto')
+			this.execNutshell(nutshell);
 	});
 };
 
-AnimationList.prototype.pauseAll = function () {
-	this.animations.forEach(animation => {
-		if (typeof animation.timer !== 'undefined')
-			animation.timer.pause();
+Nuthead.prototype.pauseAll = function () {
+	this.nutshells.forEach(nutshell => {
+		if (typeof nutshell.timer !== 'undefined')
+			nutshell.timer.pause();
 	});
 };
 
-AnimationList.prototype.resumeAll = function () {
-	this.animations.forEach(animation => {
-		if (typeof animation.timer !== 'undefined')
-			animation.timer.resume();
+Nuthead.prototype.resumeAll = function () {
+	this.nutshells.forEach(nutshell => {
+		if (typeof nutshell.timer !== 'undefined')
+			nutshell.timer.resume();
 	});
 };
 
-AnimationList.prototype.execAnimationScript = function (animation, lineNum = 0) {
+Nuthead.prototype.execNutshell = function (nutshell, lineNum = 0) {
 	// check if EOF
-	if (typeof animation.animation.script[lineNum] === 'undefined')
+	if (typeof nutshell.nut.script[lineNum] === 'undefined')
 		return;
 
-	let line = animation.animation.script[lineNum];
+	let line = nutshell.nut.script[lineNum];
 	let args = line.split(' ');
-	let jump = lineNum => this.execAnimationScript(animation, lineNum);
+	let jump = lineNum => this.execNutshell(nutshell, lineNum);
 	let jumpNext = () => jump(lineNum + 1);
-	let addToQueue = func => animation.owner.queue.push(func);
+	let addToQueue = func => nutshell.owner.queue.push(func);
 	let warn = text => console.warn('Nuthead: ' + text + ', ' +
-		'owner "' + animation.owner.data.id + '", ' +
-		'script "' + animation.animation.name + '", ' +
+		'owner "' + nutshell.owner.data.id + '", ' +
+		'script "' + nutshell.nut.name + '", ' +
 		'line ' + lineNum);
 
 	// skip empty lines and comments
@@ -91,7 +91,7 @@ AnimationList.prototype.execAnimationScript = function (animation, lineNum = 0) 
 		} else if (tools.isNumeric(args[1])) {
 			jump(parseInt(args[1]));
 		} else {
-			let labelPos = animation.animation.script.indexOf('lbl ' + args[1]);
+			let labelPos = nutshell.nut.script.indexOf('lbl ' + args[1]);
 			if (labelPos === -1) {
 				warn('Cannot jump to a nonexistent label "' + args[1] + '"');
 				jumpNext();
@@ -102,7 +102,7 @@ AnimationList.prototype.execAnimationScript = function (animation, lineNum = 0) 
 		break;
 	case 'nop':
 		if (typeof args[1] !== 'undefined' && tools.isNumeric(args[1]))
-			animation.timer = new tools.Timer(jumpNext, parseInt(args[1]));
+			nutshell.timer = new tools.Timer(jumpNext, parseInt(args[1]));
 		else
 			jumpNext();
 		break;
@@ -113,13 +113,13 @@ AnimationList.prototype.execAnimationScript = function (animation, lineNum = 0) 
 			warn('Cannot set nothing, missing required parameter');
 			break;
 		case 'view':
-			addToQueue(() => animation.owner.setView(
+			addToQueue(() => nutshell.owner.setView(
 				args[2],
 				typeof args[3] === 'undefined' ? undefined : parseInt(args[3])
 			));
 			break;
 		case 'frame':
-			addToQueue(() => animation.owner.setFrame(
+			addToQueue(() => nutshell.owner.setFrame(
 				typeof args[2] === 'undefined' ? undefined : parseInt(args[2])
 			));
 			break;

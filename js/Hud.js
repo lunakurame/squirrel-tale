@@ -25,7 +25,7 @@ var Hud = function (application) {
 				'label': 'CONTINUE',
 				'action': () => {
 					this.app.mode = this.app.modePrev;
-					this.app.animationList.resumeAll();
+					this.app.nuthead.resumeAll();
 					this.app.hud.clear();
 					this.app.hud.draw();
 				}

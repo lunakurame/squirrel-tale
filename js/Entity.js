@@ -20,9 +20,9 @@ var Entity = function (application, name, variant) {
 	this.queue = [];
 
 	// from JSON (may be overrided!)
-	this.label      = '';
-	this.views      = {};
-	this.animations = [];
+	this.label = '';
+	this.views = {};
+	this.nuts  = [];
 
 	// from map's JSON (may be overrided!)
 	// this.label = [see 'from JSON']
@@ -89,8 +89,8 @@ Entity.prototype.load = function (mapData, data, image) {
 	// XXX ^ this may not clone views[view][frame].collisions, but it seem
 	// to work for now...? fix it in case something's wrong
 
-	if (typeof this.data.file.animations !== 'undefined')
-		this.animations = $.map(this.data.file.animations, function (obj) {
+	if (typeof this.data.file.nuts !== 'undefined')
+		this.nuts = $.map(this.data.file.nuts, function (obj) {
 			return $.extend(true, {}, obj);
 		});
 

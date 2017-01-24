@@ -44,7 +44,7 @@
 			}
 		]
 	},
-	"animations": [
+	"nuts": [
 		{
 			"name": "master_wind",
 			"type": "auto",

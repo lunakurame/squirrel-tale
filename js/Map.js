@@ -21,8 +21,8 @@ var Map = function (application, name, variant) {
 	this.entities  = [];	// NOT loaded form JSON, Entity objects replace them
 
 	// from image (may be overrided!)
-	this.width      = 0;
-	this.height     = 0;
+	this.width  = 0;
+	this.height = 0;
 
 	// generated on runtime
 	this.fullName   = name + (typeof variant === 'undefined' ? '' : '-' + variant);
@@ -39,7 +39,7 @@ Map.prototype.load = function (data, image) {
 
 	// load info from JSON
 	this.label = this.data.file.label;
-	for (var i in this.data.file.entrances)
+	for (let i in this.data.file.entrances)
 		this.entrances[i] = $.extend(true, {}, this.data.file.entrances[i]);
 // don't copy entities
 //	if (typeof this.data.file.entities !== 'undefined')
@@ -48,7 +48,7 @@ Map.prototype.load = function (data, image) {
 //		});
 
 	// load info from image
-	this.width = this.image.file.width;
+	this.width  = this.image.file.width;
 	this.height = this.image.file.height;
 
 	// get canvas
@@ -57,23 +57,19 @@ Map.prototype.load = function (data, image) {
 };
 
 Map.prototype.loadEntities = function () {
-	for (var i in this.data.file.entities) {
+	for (let i in this.data.file.entities) {
 		this.entities[i] = new Entity(this.app, this.data.file.entities[i].name, this.data.file.entities[i].variant);
 		this.app.resourceLoader.loadOnce('json', 'entity', this.entities[i].name);
 		this.app.resourceLoader.loadOnce('image', 'entity', this.entities[i].fullName);
 	}
 	this.app.resourceLoader.waitForAllFiles(
-		() => {
-			this.app.init('setup-entities');
-		},
-		() => {
-			this.app.loadingScreen.showError('Error – can\'t load all resources.');
-		}
+		() => this.app.init('setup-entities'),
+		() => this.app.loadingScreen.showError('Error – can\'t load all resources.')
 	);
 };
 
 Map.prototype.setupEntities = function () {
-	for (var i in this.entities) {
+	for (let i in this.entities) {
 		this.entities[i].load(
 			this.data.file.entities[i],
 			this.app.resourceLoader.resources['json/entity/' + this.entities[i].name],
@@ -83,19 +79,22 @@ Map.prototype.setupEntities = function () {
 };
 
 Map.prototype.draw = function () {
+	let width;
+	let height;
+
 	if (this.canvas.width > this.width) {
-		var width = this.width;
+		width = this.width;
 		this.marginLeft = (this.canvas.width - width) / 2;
 	} else {
-		var width = this.canvas.width;
+		width = this.canvas.width;
 		this.marginLeft = 0;
 	}
 	
 	if (this.canvas.height > this.height) {
-		var height = this.height;
+		height = this.height;
 		this.marginTop = (this.canvas.height - height) / 2;
 	} else {
-		var height = this.canvas.height;
+		height = this.canvas.height;
 		this.marginTop = 0;
 	}
 
