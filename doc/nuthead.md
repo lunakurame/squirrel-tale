@@ -12,8 +12,9 @@ to script NPCs and interactions with other objects).
 	"log Hello world!",
 	"nop",
 	"set view master 0",
+	"let nextFrame 1",
 	"nop 500",
-	"set frame 1",
+	"set frame $nextFrame",
 	"nop 200",
 	"set view loopy",
 	"",
@@ -49,16 +50,28 @@ matches any of the rules for ignored lines.
 
 - `lbl PARAM1`  
 Sets a label named `PARAM1`, then jumps to the next instruction.
+- `let PARAM1 PARAM2`  
+If `PARAM1` is not defined, throws warning to the console.
+Otherwise defines a variable, which is visible in the scope of the currently
+executed script. There are three variable types: `string`, `number`, `null`.
+The type is determined automatically. `PARAM1` is the variable name, `PARAM2` is
+the variable value. To define a null variable, omit `PARAM2`.
+At the end, always jumps to the next instruction.
 - `log PARAM1`  
 Logs `PARAM1` to the JavaScript console, then jumps to the next instruction.
+`PARAM1` might be a variable name.
 - `jmp PARAM1`  
 If `PARAM1` is not defined, throws warning to the JavaScript console.
 If `PARAM1` is numeric, jumps to the line `PARAM1` of the script.
 Otherwise, tries to find the first occurence of label `PARAM1` in the script. If
 found, jumps to that line, if not, throws a warning.
+`PARAM1` might be a variable name.
 - `nop PARAM1`  
 If `PARAM1` is not defined or is not numeric, jumps to the next instruction.
 Otherwise, waits for `PARAM1` milliseconds, then jumps to the next instruction.
+`PARAM1` might be a variable name.
+- `ret`  
+Exit the script.
 - `set PARAM1 PARAM2 PARAM3`  
 If `PARAM1` is not defined, throws a warning, then jumps to the next
 instruction.
@@ -67,5 +80,6 @@ If `PARAM1` equals `frame`, sets frame `PARAM2`.
 If `PARAM2` or `PARAM3` is not defined, the currently set view or frame will be
 reloaded. If not set, the defaults will be loaded (view `master`, frame `0`). At
 the end, always jumps to the next instruction.
+`PARAM1`, `PARAM2` and `PARAM3` might be variable names.
 - Any other instructions throw a warning to the console and jump to the next
 instruction.

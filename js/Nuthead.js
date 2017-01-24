@@ -14,8 +14,9 @@ var Nuthead = function (application) {
 		/* array of nutshells {
 		 * 	owner: object
 		 * 	parent: object
-		 * 	nut: pointer to Entity's nut object
 		 * 	timer: nut timer, which can be paused and resumed
+		 * 	variables: {}, vars used in the script
+		 * 	nut: pointer to Entity's nut object
 		 * }
 		 */
 	];
@@ -28,6 +29,8 @@ Nuthead.prototype.load = function () {
 			this.nutshells.push({
 				owner: entity,
 				parent: this,
+				timer: undefined,
+				variables: {},
 				nut: nut
 			});
 		});
@@ -54,13 +57,23 @@ Nuthead.prototype.resumeAll = function () {
 	});
 };
 
+Nuthead.prototype.isNutshellVariable = function (nutshell, variable) {
+	return typeof variable !== 'undefined' &&
+	       variable.startsWith('$') &&
+	       typeof this.getNutshellVariable(nutshell, variable) !== 'undefined';
+};
+
+Nuthead.prototype.getNutshellVariable = function (nutshell, variable) {
+	return nutshell.variables[variable.substr(1)];
+};
+
 Nuthead.prototype.execNutshell = function (nutshell, lineNum = 0) {
 	// check if EOF
 	if (typeof nutshell.nut.script[lineNum] === 'undefined')
 		return;
 
 	let line = nutshell.nut.script[lineNum];
-	let args = line.split(' ');
+	let args = line.split(' ').filter(item => item !== '');
 	let jump = lineNum => this.execNutshell(nutshell, lineNum);
 	let jumpNext = () => jump(lineNum + 1);
 	let addToQueue = func => nutshell.owner.queue.push(func);
@@ -76,24 +89,49 @@ Nuthead.prototype.execNutshell = function (nutshell, lineNum = 0) {
 	}
 
 	// instructions
+	let arg1, arg2, arg3;
 	switch (args[0]) {
 	case 'lbl':
 		jumpNext();
 		break;
+	case 'let':
+		if (typeof args[1] === 'undefined')
+			warn('Cannot set a variable without a name');
+		else if (typeof args[2] === 'undefined')
+			nutshell.variables[args[1]] = null;
+		else if (tools.isNumeric(args[2]))
+			nutshell.variables[args[1]] = +args[2];
+		else
+			nutshell.variables[args[1]] = args[2];
+		jumpNext();
+		break;
 	case 'log':
-		console.log(line.slice(4));
+		arg1 = args[1];
+		if (this.isNutshellVariable(nutshell, arg1))
+			arg1 = this.getNutshellVariable(nutshell, arg1);
+		else
+			arg1 = line.slice(4);
+
+		console.log(arg1);
 		jumpNext();
 		break;
 	case 'jmp':
 		if (typeof args[1] === 'undefined') {
 			warn('Cannot jump to nowhere, missing destination parameter');
 			jumpNext();
-		} else if (tools.isNumeric(args[1])) {
-			jump(parseInt(args[1]));
+			break;
+		}
+
+		arg1 = args[1];
+		if (this.isNutshellVariable(nutshell, arg1))
+			arg1 = this.getNutshellVariable(nutshell, arg1);
+
+		if (tools.isNumeric(arg1)) {
+			jump(parseInt(arg1));
 		} else {
-			let labelPos = nutshell.nut.script.indexOf('lbl ' + args[1]);
+			let labelPos = nutshell.nut.script.indexOf('lbl ' + arg1);
 			if (labelPos === -1) {
-				warn('Cannot jump to a nonexistent label "' + args[1] + '"');
+				warn('Cannot jump to a nonexistent label "' + arg1 + '"');
 				jumpNext();
 			} else {
 				jump(labelPos);
@@ -101,26 +139,43 @@ Nuthead.prototype.execNutshell = function (nutshell, lineNum = 0) {
 		}
 		break;
 	case 'nop':
-		if (typeof args[1] !== 'undefined' && tools.isNumeric(args[1]))
-			nutshell.timer = new tools.Timer(jumpNext, parseInt(args[1]));
+		arg1 = args[1];
+		if (this.isNutshellVariable(nutshell, arg1))
+			arg1 = this.getNutshellVariable(nutshell, arg1);
+
+		if (typeof arg1 !== 'undefined' && tools.isNumeric(arg1))
+			nutshell.timer = new tools.Timer(jumpNext, parseInt(arg1));
 		else
 			jumpNext();
 		break;
+	case 'ret':
+		break;
 	case 'set':
-		switch (args[1]) {
+		arg1 = args[1];
+		if (this.isNutshellVariable(nutshell, arg1))
+			arg1 = this.getNutshellVariable(nutshell, arg1);
+		arg2 = args[2];
+		if (this.isNutshellVariable(nutshell, arg2))
+			arg2 = this.getNutshellVariable(nutshell, arg2);
+		arg3 = args[3];
+		if (this.isNutshellVariable(nutshell, arg3))
+			arg3 = this.getNutshellVariable(nutshell, arg3);
+
+
+		switch (arg1) {
 		case undefined:
 		case '':
 			warn('Cannot set nothing, missing required parameter');
 			break;
 		case 'view':
 			addToQueue(() => nutshell.owner.setView(
-				args[2],
-				typeof args[3] === 'undefined' ? undefined : parseInt(args[3])
+				arg2,
+				typeof arg3 === 'undefined' ? undefined : parseInt(arg3)
 			));
 			break;
 		case 'frame':
 			addToQueue(() => nutshell.owner.setFrame(
-				typeof args[2] === 'undefined' ? undefined : parseInt(args[2])
+				typeof arg2 === 'undefined' ? undefined : parseInt(arg2)
 			));
 			break;
 		}
