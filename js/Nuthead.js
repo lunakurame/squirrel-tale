@@ -148,6 +148,17 @@ Nuthead.prototype.execNutshell = function (nutshell, lineNum = 0) {
 		else
 			jumpNext();
 		break;
+	case 'nut':
+		arg1 = args[1];
+		if (this.isNutshellVariable(nutshell, arg1))
+			arg1 = this.getNutshellVariable(nutshell, arg1);
+
+		let dest = this.nutshells.find(ns => ns.owner === nutshell.owner && ns.nut.name === arg1);
+		if (typeof dest === 'undefined')
+			warn('Cannot find nut "' + arg1 + '"');
+		else
+			this.execNutshell(dest);
+		break;
 	case 'ret':
 		break;
 	case 'set':

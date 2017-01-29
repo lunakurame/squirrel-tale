@@ -70,6 +70,11 @@ found, jumps to that line, if not, throws a warning.
 If `PARAM1` is not defined or is not numeric, jumps to the next instruction.
 Otherwise, waits for `PARAM1` milliseconds, then jumps to the next instruction.
 `PARAM1` might be a variable name.
+- `nut PARAM1`  
+If `PARAM1` is not defined or doesn't point to an existing nut (another script
+in the same JSON file), throws a warning. Otherwise jumps to the nut named
+`PARAM1`. Doesn't jump to the next instruction of the parent nut.
+`PARAM1` might be a variable name.
 - `ret`  
 Exit the script.
 - `set PARAM1 PARAM2 PARAM3`  
