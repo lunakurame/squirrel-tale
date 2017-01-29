@@ -1,16 +1,18 @@
 {
 	"label": "Flower",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 11,
+		"cropHeight": 22,
+		"width": 11,
+		"height": 22,
+		"centerX": 5,
+		"centerY": 21
+	},
 	"views": {
 		"master": [
 			{
-				"cropX": 0,
-				"cropY": 0,
-				"cropWidth": 11,
-				"cropHeight": 22,
-				"width": 11,
-				"height": 22,
-				"centerX": 5,
-				"centerY": 21
 			}
 		]
 	}

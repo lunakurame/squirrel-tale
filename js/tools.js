@@ -1,4 +1,7 @@
 window.tools = {
+	cloneJson: function (source) {
+		return JSON.parse(JSON.stringify(source));
+	},
 	isNumeric: function (n) {
 		// checks if n is numeric (even if it's a string)
 		return !isNaN(parseFloat(n)) && isFinite(n);

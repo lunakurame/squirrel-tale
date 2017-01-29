@@ -18,9 +18,10 @@ var Player = function (application, name, variant) {
 	this.queue = [];
 
 	// from JSON (may be overrided!)
-	this.label = '';
-	this.views = {};
-	this.nuts  = [];
+	this.label        = '';
+	this.defaults     = {};
+	this.views        = {};
+	this.nuts         = [];
 	this.defaultSpeed = 0;
 	this.framesCount  = 1;	// TODO [animations] remove
 
@@ -71,20 +72,23 @@ Player.prototype.load = function (entrances, data, image) {
 	//this.label = [see JSON overrides]
 	this.defaultSpeed = this.data.file.defaultSpeed;
 	this.framesCount  = this.data.file.framesCount;	// TODO [animations] remove
+	this.defaults     = tools.cloneJson(this.data.file.defaults);
 
-	for (var i in this.data.file.views) {
+	this.views = {};
+	for (let i in this.data.file.views) {
 		this.views[i] = [];
-		this.views[i] = $.map(this.data.file.views[i], function (obj) {
-			return $.extend(true, {}, obj);
-		});
+		this.data.file.views[i].forEach(frame =>
+			this.views[i].push(Object.assign(
+				{},
+				tools.cloneJson(this.defaults),
+				tools.cloneJson(this.data.file.views[i][0]),
+				tools.cloneJson(frame)
+			))
+		);
 	}
-	// XXX ^ this may not clone views[view][frame].collisions, but it seem
-	// to work for now...? fix it in case something's wrong
 
 	if (typeof this.data.file.nuts !== 'undefined')
-		this.nuts = $.map(this.data.file.nuts, function (obj) {
-			return $.extend(true, {}, obj);
-		});
+		this.nuts = tools.cloneJson(this.data.file.nuts);
 
 	// set view and frame
 	this.setView();

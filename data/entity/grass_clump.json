@@ -1,46 +1,27 @@
 {
 	"label": "Grass",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 8,
+		"cropHeight": 8,
+		"width": 8,
+		"height": 8,
+		"centerX": 4,
+		"centerY": 6
+	},
 	"views": {
 		"master": [
 			{
-				"cropX": 0,
-				"cropY": 0,
-				"cropWidth": 8,
-				"cropHeight": 8,
-				"width": 8,
-				"height": 8,
-				"centerX": 4,
-				"centerY": 6
 			},
 			{
-				"cropX": 8,
-				"cropY": 0,
-				"cropWidth": 8,
-				"cropHeight": 8,
-				"width": 8,
-				"height": 8,
-				"centerX": 4,
-				"centerY": 6
+				"cropX": 8
 			},
 			{
-				"cropX": 16,
-				"cropY": 0,
-				"cropWidth": 8,
-				"cropHeight": 8,
-				"width": 8,
-				"height": 8,
-				"centerX": 4,
-				"centerY": 6
+				"cropX": 16
 			},
 			{
-				"cropX": 24,
-				"cropY": 0,
-				"cropWidth": 8,
-				"cropHeight": 8,
-				"width": 8,
-				"height": 8,
-				"centerX": 4,
-				"centerY": 6
+				"cropX": 24
 			}
 		]
 	},

@@ -1,30 +1,28 @@
 {
 	"label": "Tree",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 64,
+		"cropHeight": 96,
+		"width": 64,
+		"height": 96,
+		"centerX": 32,
+		"centerY": 85,
+		"collisions": [
+			{
+				"posX": 23,
+				"posY": 83,
+				"width": 20,
+				"height": 13
+			}
+		]
+	},
 	"views": {
 		"master": [
 			{
-				"cropX": 0,
-				"cropY": 0,
-				"cropWidth": 64,
-				"cropHeight": 96,
-				"width": 64,
-				"height": 96,
-				"centerX": 32,
-				"centerY": 85,
-				"collisions": [
-					{
-						"posX": 23,
-						"posY": 83,
-						"width": 20,
-						"height": 13
-					}
-				]
 			},
 			{
-				"cropX": 0,
-				"cropY": 0,
-				"cropWidth": 64,
-				"cropHeight": 96,
 				"width": 128,
 				"height": 192,
 				"centerX": 64,
@@ -39,10 +37,6 @@
 				]
 			},
 			{
-				"cropX": 0,
-				"cropY": 0,
-				"cropWidth": 64,
-				"cropHeight": 96,
 				"width": 32,
 				"height": 48,
 				"centerX": 16,
@@ -59,40 +53,9 @@
 		],
 		"dance": [
 			{
-				"cropX": 0,
-				"cropY": 0,
-				"cropWidth": 64,
-				"cropHeight": 96,
-				"width": 64,
-				"height": 96,
-				"centerX": 32,
-				"centerY": 85,
-				"collisions": [
-					{
-						"posX": 23,
-						"posY": 83,
-						"width": 20,
-						"height": 13
-					}
-				]
 			},
 			{
-				"cropX": 64,
-				"cropY": 0,
-				"cropWidth": 64,
-				"cropHeight": 96,
-				"width": 64,
-				"height": 96,
-				"centerX": 32,
-				"centerY": 85,
-				"collisions": [
-					{
-						"posX": 23,
-						"posY": 83,
-						"width": 20,
-						"height": 13
-					}
-				]
+				"cropX": 64
 			}
 		]
 	},
@@ -100,11 +63,11 @@
 		{
 			"type": "auto",
 			"script": [
-				"sleep 500",
-				"frame dance 0",
-				"sleep 500",
-				"frame dance 1",
-				"goto 0"
+				"nop 500",
+				"set view dance 0",
+				"nop 500",
+				"set view dance 1",
+				"jmp 0"
 			]
 		}
 	]
