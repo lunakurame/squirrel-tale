@@ -51,7 +51,6 @@ var Player = function (application, name, variant) {
 	this.tryingToMoveVert = 'none'; // modified by Controls event
 	this.tryingToMoveHorz = 'none'; // modified by Controls event
 	this.stats = {
-		name: 'Shiro',
 		hp: 10,
 		xp: 0
 	};

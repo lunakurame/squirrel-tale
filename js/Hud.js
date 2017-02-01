@@ -146,12 +146,11 @@ Hud.prototype.drawDebugInfo = function () {
 	// draw debug HUD
 	switch (this.app.mode) {
 	case 'pause':
-		this.context.fillStyle = 'rgba(0, 0, 0, .9)';
 		break;
 	default:
 		this.context.fillStyle = 'rgba(0, 127, 127, .8)';
+		this.context.fillRect(0, 0, 282, 40);
 	}
-	this.context.fillRect(0, 0, 282, 40);
 
 	this.app.fontList.draw(
 		'FPS ' + this.fpsCounter.value.toFixed(2) +
@@ -333,7 +332,7 @@ Hud.prototype.drawBox = function (options) {
 
 Hud.prototype.drawUserMenu = function () {
 	// calc things to set the box size manually
-	let playerNameTextSize   = this.app.fontList.getTextSize(this.app.player.stats.name, 'basic');
+	let playerNameTextSize   = this.app.fontList.getTextSize(this.app.player.label, 'basic');
 	let statsLabelsTextSize  = this.app.fontList.getTextSize('HP\nXP', 'basic');
 	let statsNumbersTextSize = this.app.fontList.getTextSize(this.app.player.stats.hp + '\n' + this.app.player.stats.xp, 'basic');
 
@@ -343,13 +342,13 @@ Hud.prototype.drawUserMenu = function () {
 	let boxHeight = playerNameTextSize.height + 8 + statsLabelsTextSize.height + 32;
 
 	this.drawBox({
-		posX : this.jail.left,
-		posY : this.jail.top,
+		posX: this.jail.left,
+		posY: this.jail.top,
 		width: boxWidth,
 		height: boxHeight,
 		texts: [
 			{
-				text: this.app.player.stats.name,
+				text: this.app.player.label,
 				fontName: 'basic',
 				fontVariant: 'white',
 				posX: 0,
@@ -378,8 +377,8 @@ Hud.prototype.drawUserMenu = function () {
 Hud.prototype.drawDialogue = function () {
 	// TODO
 	this.drawBox({
-		posX : this.jail.left,
-		posY : this.jail.top + this.jail.height,
+		posX: this.jail.left,
+		posY: this.jail.top + this.jail.height,
 		width: this.jail.width,
 		growUp: true,
 		texts: [
