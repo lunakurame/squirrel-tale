@@ -50,6 +50,11 @@ var Player = function (application, name, variant) {
 	this.movingAnimationInterval;	// TODO [animations] remove
 	this.tryingToMoveVert = 'none'; // modified by Controls event
 	this.tryingToMoveHorz = 'none'; // modified by Controls event
+	this.stats = {
+		name: 'Shiro',
+		hp: 10,
+		xp: 0
+	};
 };
 
 Player.prototype.load = function (entrances, data, image) {

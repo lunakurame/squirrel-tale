@@ -151,8 +151,7 @@ Application.prototype.init = function (arg) {
 				this.nuthead.pauseAll();
 			}
 
-			this.hud.clear();
-			this.hud.draw();
+			this.hud.redraw();
 		}, 'pause', true);
 
 		// confirm
@@ -160,9 +159,11 @@ Application.prototype.init = function (arg) {
 			switch (this.mode) {
 			case 'pause':
 				this.hud.pauseMenu.items[this.hud.pauseMenu.selected].action();
-				this.hud.clear();
-				this.hud.draw();
+				this.hud.redraw();
 				break;
+			case 'game':
+				this.hud.toggleUserMenu();
+				this.hud.redraw();
 			}
 		}, 'confirm', true);
 
@@ -173,8 +174,7 @@ Application.prototype.init = function (arg) {
 				if (this.hud.pauseMenu.selected > 0)
 					--this.hud.pauseMenu.selected;
 
-				this.hud.clear();
-				this.hud.draw();
+				this.hud.redraw();
 				break;
 			case 'game':
 				if (this.controls.isKeyDown('down'))
@@ -202,8 +202,7 @@ Application.prototype.init = function (arg) {
 				if (this.hud.pauseMenu.selected < this.hud.pauseMenu.items.length - 1)
 					++this.hud.pauseMenu.selected;
 
-				this.hud.clear();
-				this.hud.draw();
+				this.hud.redraw();
 				break;
 			case 'game':
 				if (this.controls.isKeyDown('up'))
@@ -231,8 +230,7 @@ Application.prototype.init = function (arg) {
 				if (this.hud.pauseMenu.selected > 0)
 					--this.hud.pauseMenu.selected;
 
-				this.hud.clear();
-				this.hud.draw();
+				this.hud.redraw();
 				break;
 			case 'game':
 				if (this.controls.isKeyDown('left'))
@@ -260,8 +258,7 @@ Application.prototype.init = function (arg) {
 				if (this.hud.pauseMenu.selected < this.hud.pauseMenu.items.length - 1)
 					++this.hud.pauseMenu.selected;
 
-				this.hud.clear();
-				this.hud.draw();
+				this.hud.redraw();
 				break;
 			case 'game':
 				if (this.controls.isKeyDown('right'))
@@ -285,11 +282,10 @@ Application.prototype.init = function (arg) {
 
 
 	case 'draw':
-		this.map.draw();
-		this.hud.draw();
+		this.hud.redraw();
 
 		var drawingLoop = setInterval(() => {
-			let fps = this.hud.fpsCounter.getValue();
+			let fps = this.hud.fpsCounter.refreshValue();
 
 			switch (this.mode) {
 			case 'game':
@@ -316,7 +312,7 @@ Application.prototype.init = function (arg) {
 			}
 
 			if (this.config.debug.enabled)
-				this.hud.drawDebugInfo(fps);
+				this.hud.redraw();
 		}, 1000 / this.config.fpsCap);
 
 	case 'done':
