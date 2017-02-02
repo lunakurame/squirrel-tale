@@ -162,8 +162,39 @@ Application.prototype.init = function (arg) {
 				this.hud.redraw();
 				break;
 			case 'game':
-				this.hud.toggleUserMenu();
-				this.hud.redraw();
+				let closestEntity = null;
+				let minDistance = Infinity;
+
+				this.map.getVisibleEntities().forEach(entity => {
+					let distance = entity.getDistanceFrom(this.player.posX, this.player.posY);
+
+					let rightDirection = false;
+					switch (this.player.direction) {
+					case this.config.player.direction.up:
+						rightDirection = entity.posY < this.player.posY;
+						break;
+					case this.config.player.direction.down:
+						rightDirection = entity.posY > this.player.posY;
+						break;
+					case this.config.player.direction.left:
+						rightDirection = entity.posX < this.player.posX;
+						break;
+					case this.config.player.direction.right:
+						rightDirection = entity.posX > this.player.posX;
+						break;
+					}
+
+					if (rightDirection && distance < minDistance) {
+						closestEntity = entity;
+						minDistance = distance;
+					}
+				});
+
+				if (minDistance < 20)
+					closestEntity.queue.push(() => closestEntity.rotate += .05);
+
+//				this.hud.toggleUserMenu();
+//				this.hud.redraw();
 			}
 		}, 'confirm', true);
 

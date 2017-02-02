@@ -387,6 +387,14 @@ Entity.prototype.draw = function () {
 	}
 };
 
+Entity.prototype.getDistanceFrom = function (posX, posY) {
+	// no Math.abs because (±x)² = +z anyway
+	let x = this.posX - posX;
+	let y = this.posY - posY;
+
+	return Math.sqrt(x * x + y * y);
+};
+
 Entity.prototype.isUnder = function () {
 	return (
 		this.posZ == 'under' ||

@@ -78,6 +78,20 @@ Map.prototype.setupEntities = function () {
 	}
 };
 
+Map.prototype.getVisibleEntities = function () {
+	// filter out off-screen entities
+	return this.entities.filter(entity => !( // <-- note negation
+		// left entity edge > right map edge ||
+		// right entity edge < left map edge ||
+		// top entity edge > bottom map edge ||
+		// bottom entity edge < top map edge
+		entity.posX - entity.centerX > this.canvas.width + this.left ||
+		entity.posX - entity.centerX + entity.width < this.left ||
+		entity.posY - entity.centerY > this.canvas.height + this.top ||
+		entity.posY - entity.centerY + entity.height < this.top
+	));
+};
+
 Map.prototype.draw = function () {
 	let width;
 	let height;
