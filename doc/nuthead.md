@@ -48,6 +48,17 @@ matches any of the rules for ignored lines.
 
 ### Instructions:
 
+- `dlg PARAM1 PARAM2 PARAM3`  
+`PARAM1` - dialogue object name.  
+`PARAM2` - action.  
+`PARAM3` - parameter.  
+At the end, always jumps to the next instruction.
+`PARAM1` and `PARAM3` might be variable names.
+Actions:
+	- `text`  
+	  Adds text `PARAM3` to the dialogue object.
+	- `show`  
+	  Shows the dialogue on the screen.
 - `lbl PARAM1`  
 Sets a label named `PARAM1`, then jumps to the next instruction.
 - `let PARAM1 PARAM2`  

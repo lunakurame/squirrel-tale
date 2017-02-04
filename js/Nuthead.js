@@ -109,6 +109,48 @@ Nuthead.prototype.execNutshell = function (nutshell, lineNum = 0) {
 	// instructions
 	let arg1, arg2, arg3;
 	switch (args[0]) {
+	case 'dlg':
+		if (typeof args[1] !== 'undefined' && typeof args[2] !== 'undefined') {
+			arg1 = args[1];
+			if (this.isNutshellVariable(nutshell, arg1))
+				arg1 = this.getNutshellVariable(nutshell, arg1);
+			arg2 = args[2];
+
+			switch (arg2) {
+			case 'show':
+				// build the dialogue object
+				let dialogue = {};
+				nutshell.nut.script.forEach(nutline => {
+					let nutargs = nutline.split(' ').filter(item => item !== '');
+					if (typeof nutargs[0] !== 'undefined' &&
+					           nutargs[0] === 'dlg' &&
+					    typeof nutargs[1] !== 'undefined' &&
+					           nutargs[1] === arg1 &&
+					    typeof nutargs[2] !== 'undefined') {
+						if (this.isNutshellVariable(nutshell, nutargs[1]))
+							nutargs[1] = this.getNutshellVariable(nutshell, nutargs[1]);
+						if (typeof nutargs[3] !== 'undefined' && this.isNutshellVariable(nutshell, nutargs[3]))
+							nutargs[3] = this.getNutshellVariable(nutshell, nutargs[3]);
+
+						switch (nutargs[2]) {
+						case 'text':
+							if (typeof dialogue.texts === 'undefined')
+								dialogue.texts = [];
+							dialogue.texts.push({
+								text: nutline.slice(('dlg text ' + arg1 + ' ').length)
+							});
+							break;
+						}
+					}
+				});
+
+				this.app.hud.drawDialogue(dialogue);
+				break;
+			}
+		}
+
+		jumpNext();
+		break;
 	case 'lbl':
 		jumpNext();
 		break;

@@ -1,5 +1,5 @@
 {
-	"label": "Tree",
+	"label": "Willow tree",
 	"defaults": {
 		"cropX": 0,
 		"cropY": 0,
@@ -179,6 +179,49 @@
 				"nop 2000",
 
 				"jmp 0"
+			]
+		},
+		{
+			"name": "squirrel_runs_away",
+			"type": "interaction",
+			"script": [
+				"dlg ekk text Looks like a squirrel lives on this tree!",
+				"dlg ekk show",
+
+				"set view master_hole 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 0",
+				"nop 2000",
+
+				"set view master_hole 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 0",
+				"nop 2000",
+
+				"set view master_hole 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 0",
+				"nop 2000",
+
+				"nut squirrel_wind"
 			]
 		},
 		{
