@@ -216,7 +216,7 @@ Hud.prototype.drawPauseMenu = function () {
 };
 
 Hud.prototype.drawBox = function (options) {
-	const defaults = {
+	let defaults = {
 		posX: 0,
 		posY: 0,
 		height: 'auto',
@@ -226,6 +226,8 @@ Hud.prototype.drawBox = function (options) {
 		boxMargin: 5,
 		boxBorder: 3,
 		textMargin: 8,
+		defaultFontName: 'basic',
+		defaultFontVariant: 'white',
 		texts: [
 			/* {
 			 * 	*text: String,
@@ -239,7 +241,7 @@ Hud.prototype.drawBox = function (options) {
 		]
 	};
 
-	options = Object.assign({}, defaults, options);
+	options = Object.assign(defaults, options);
 
 	let menuRect = {
 		posX  : options.posX,
@@ -283,7 +285,7 @@ Hud.prototype.drawBox = function (options) {
 
 		let textSize = this.app.fontList.getTextSize(
 			text.text,
-			text.fontName,
+			text.fontName || options.defaultFontName,
 			text.marginX,
 			text.marginY
 		);
@@ -320,8 +322,8 @@ Hud.prototype.drawBox = function (options) {
 	options.texts.forEach(text => {
 		let textSize = this.app.fontList.draw(
 			text.text,
-			text.fontName,
-			text.fontVariant,
+			text.fontName || options.defaultFontName,
+			text.fontVariant || options.defaultFontVariant,
 			menuRect.posX + options.boxBorder + options.textMargin + (text.posX || 0),
 			menuRect.posY + options.boxBorder + options.textMargin + (text.posY || 0),
 			text.marginX,
@@ -349,44 +351,33 @@ Hud.prototype.drawUserMenu = function () {
 		texts: [
 			{
 				text: this.app.player.label,
-				fontName: 'basic',
-				fontVariant: 'white',
 				posX: 0,
 				posY: 0
 			},
 			{
 				text: 'HP\nXP',
-				fontName: 'basic',
-				fontVariant: 'white',
 				posX: 0,
 				posY: playerNameTextSize.height + 8
 			},
 			{
 				text: this.app.player.stats.hp + '\n' + this.app.player.stats.xp,
-				fontName: 'basic',
-				fontVariant: 'white',
 				posX: statsLabelsTextSize.width + 10,
 				posY: playerNameTextSize.height + 8
 			}
 		]
 	});
-
-	this.drawDialogue(); // TODO temporary
 };
 
-Hud.prototype.drawDialogue = function () {
-	// TODO
-	this.drawBox({
+Hud.prototype.drawDialogue = function (options) {
+	this.drawBox(Object.assign({
 		posX: this.jail.left,
 		posY: this.jail.top + this.jail.height,
 		width: this.jail.width,
 		growUp: true,
 		texts: [
 			{
-				text: 'A wild lobster appeared!\nOh wait...\nNevermind, it\'s just a squirrel. Ekk ekk!',
-				fontName: 'basic',
-				fontVariant: 'white'
+				text: 'A wild lobster appeared!\nOh wait...\nNevermind, it\'s just a squirrel. Ekk ekk!'
 			}
 		]
-	});
+	}, options));
 };

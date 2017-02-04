@@ -154,7 +154,7 @@ Application.prototype.init = function (arg) {
 			this.hud.redraw();
 		}, 'pause', true);
 
-		// confirm
+		// primary
 		this.controls.addToQueue(() => {
 			switch (this.mode) {
 			case 'pause':
@@ -190,13 +190,44 @@ Application.prototype.init = function (arg) {
 					}
 				});
 
-				if (minDistance < 20)
-					closestEntity.queue.push(() => closestEntity.rotate += .05);
-
-//				this.hud.toggleUserMenu();
-//				this.hud.redraw();
+				if (minDistance < 20) {
+					closestEntity.queue.push(() => this.hud.drawDialogue({
+						texts: [
+							{text: closestEntity.label}
+						]
+					}));
+					this.player.tryingToMoveHorz = 'none';
+					this.player.tryingToMoveVert = 'none';
+					this.modePrev = this.mode;
+					this.mode = 'game-ui';
+				}
+				break;
+			case 'game-ui':
+				this.hud.redraw();
+				this.modePrev = this.mode;
+				this.mode = 'game';
+				break;
 			}
-		}, 'confirm', true);
+		}, 'primary', true);
+
+		// secondary
+		this.controls.addToQueue(() => {
+			switch (this.mode) {
+			case 'game':
+				this.hud.toggleUserMenu();
+				this.hud.redraw();
+				this.modePrev = this.mode;
+				this.mode = 'game-ui';
+				break;
+			case 'game-ui':
+				if (this.hud.state.userMenu)
+					this.hud.toggleUserMenu();
+				this.hud.redraw();
+				this.modePrev = this.mode;
+				this.mode = 'game';
+				break;
+			}
+		}, 'secondary', true);
 
 		// up
 		this.controls.addToQueue(() => {
@@ -320,6 +351,7 @@ Application.prototype.init = function (arg) {
 
 			switch (this.mode) {
 			case 'game':
+			case 'game-ui':
 				// adjust speed to fps, so the player will always move the same speed
 				let speed = this.player.speed / fps;
 				if (this.controls.isKeyDown('slow'))

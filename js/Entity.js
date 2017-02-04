@@ -388,7 +388,7 @@ Entity.prototype.draw = function () {
 };
 
 Entity.prototype.getDistanceFrom = function (posX, posY) {
-	// no Math.abs because (±x)² = +z anyway
+	// no Math.abs because (±x)² >= 0 anyway
 	let x = this.posX - posX;
 	let y = this.posY - posY;
 
