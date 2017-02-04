@@ -191,15 +191,8 @@ Application.prototype.init = function (arg) {
 				});
 
 				if (minDistance < 20) {
-					closestEntity.queue.push(() => this.hud.drawDialogue({
-						texts: [
-							{text: closestEntity.label}
-						]
-					}));
-					this.player.tryingToMoveHorz = 'none';
-					this.player.tryingToMoveVert = 'none';
-					this.modePrev = this.mode;
-					this.mode = 'game-ui';
+					this.nuthead.pauseAll(closestEntity);
+					this.nuthead.execAll(closestEntity, {type: 'interaction'});
 				}
 				break;
 			case 'game-ui':

@@ -380,4 +380,9 @@ Hud.prototype.drawDialogue = function (options) {
 			}
 		]
 	}, options));
+
+	this.app.player.tryingToMoveHorz = 'none';
+	this.app.player.tryingToMoveVert = 'none';
+	this.app.modePrev = this.app.mode;
+	this.app.mode = 'game-ui';
 };

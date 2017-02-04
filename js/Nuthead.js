@@ -43,16 +43,34 @@ Nuthead.prototype.load = function () {
 	});
 };
 
-Nuthead.prototype.pauseAll = function () {
+Nuthead.prototype.execAll = function (entity, options) {
 	this.nutshells.forEach(nutshell => {
-		if (typeof nutshell.timer !== 'undefined')
+		if ((typeof entity === 'undefined' || nutshell.owner === entity)) {
+			for (let i in options)
+				if (options[i] !== nutshell.nut[i])
+					return;
+
+			if (typeof nutshell.timer !== 'undefined') {
+				nutshell.timer.pause();
+				nutshell.timer = undefined;
+			}
+			this.execNutshell(nutshell);
+		}
+	});
+};
+
+Nuthead.prototype.pauseAll = function (entity) {
+	this.nutshells.forEach(nutshell => {
+		if ((typeof entity === 'undefined' || nutshell.owner === entity) &&
+		    typeof nutshell.timer !== 'undefined')
 			nutshell.timer.pause();
 	});
 };
 
-Nuthead.prototype.resumeAll = function () {
+Nuthead.prototype.resumeAll = function (entity) {
 	this.nutshells.forEach(nutshell => {
-		if (typeof nutshell.timer !== 'undefined')
+		if ((typeof entity === 'undefined' || nutshell.owner === entity) &&
+		    typeof nutshell.timer !== 'undefined')
 			nutshell.timer.resume();
 	});
 };
