@@ -157,9 +157,7 @@ Player.prototype.setView = function (view, frame) {
 	this.centerX    = framePointer.centerX;
 	this.centerY    = framePointer.centerY;
 	if (typeof framePointer.collisions !== 'undefined')
-		this.collisions = $.map(framePointer.collisions, function (obj) {
-			return $.extend(true, {}, obj);
-		});
+		this.collisions = tools.cloneJson(framePointer.collisions);
 };
 
 Player.prototype.setFrame = function (frame) {
@@ -547,7 +545,6 @@ Player.prototype.react = function (speed, resizeWindow) {
 			(this.tryingToMoveHorz === 'right' && this.tryingToMoveVert === 'down' && this.posX - this.centerX >= this.app.map.width - this.width && this.posY - this.centerY >= this.app.map.height - this.height)
 		)
 			; // yep, a single semicolon, 'no operation'
-			 // (if something doesn't work, you can replace it with $.noop(); or (function(){})();)
 		else if (this.tryingToMoveHorz === 'right')
 			this.direction = this.app.config.player.direction.right;
 		else if (this.tryingToMoveHorz === 'left')

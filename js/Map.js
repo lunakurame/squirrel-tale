@@ -38,14 +38,11 @@ Map.prototype.load = function (data, image) {
 	this.image = image;
 
 	// load info from JSON
-	this.label = this.data.file.label;
-	for (let i in this.data.file.entrances)
-		this.entrances[i] = $.extend(true, {}, this.data.file.entrances[i]);
-// don't copy entities
-//	if (typeof this.data.file.entities !== 'undefined')
-//		this.entities = $.map(this.data.file.entities, function (obj) {
-//			return $.extend(true, {}, obj);
-//		});
+	this.label     = this.data.file.label;
+	this.entrances = tools.cloneJson(this.data.file.entrances);
+	// this.entities = [see this.loadEntities]
+	// don't copy entities, they will be added by loadEntities as an array
+	// of Entity objects instead of plain JSON
 
 	// load info from image
 	this.width  = this.image.file.width;

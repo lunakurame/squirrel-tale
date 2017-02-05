@@ -141,9 +141,7 @@ Entity.prototype.setView = function (view, frame) {
 	this.centerX    = framePointer.centerX;
 	this.centerY    = framePointer.centerY;
 	if (typeof framePointer.collisions !== 'undefined' && this.enableCollisions)
-		this.collisions = $.map(framePointer.collisions, function (obj) {
-			return $.extend(true, {}, obj);
-		});
+		this.collisions = tools.cloneJson(framePointer.collisions);
 
 	// flip collisions if necessary
 	if (this.flipCollisionsX)

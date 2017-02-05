@@ -100,20 +100,25 @@ Application.prototype.init = function (arg) {
 
 	case 'setup-window':
 		//controls
-		$(document).keydown(function (e) {
-			app.controls.toggleKeyDown(e, true);
-		});
+		document.onmousemove = function (e) {
+			document.body.style.cursor = 'inherit';
+		};
 
-		$(document).keyup(function (e) {
+		document.onkeydown = function (e) {
+			document.body.style.cursor = 'none';
+			app.controls.toggleKeyDown(e, true);
+		};
+
+		document.onkeyup = function (e) {
 			app.controls.toggleKeyDown(e, false);
-		});
+		};
 		
-		$(window).resize(function () {
+		window.onresize = function () {
 			app.canvasList.resizeAll();
 			app.map.draw();
 			app.player.react(0, true);
 			app.hud.resize();
-		});
+		};
 
 		// load controls config
 		// TODO move it higher?

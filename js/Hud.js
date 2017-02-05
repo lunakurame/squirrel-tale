@@ -51,7 +51,6 @@ var Hud = function (application) {
 				category: 'options',
 				id: 'options.fpsCap',
 				action: () => {
-					console.log(this.app.config.fpsCap);
 					if (this.app.config.fpsCap < 120)
 						this.app.config.fpsCap += 10;
 					else if (this.app.config.fpsCap === Infinity)
