@@ -22,19 +22,55 @@ var Hud = function (application) {
 		userMenu: false
 	};
 	this.pauseMenu = {
+		category: 'main',
 		selected: 0,
+		stack: [],
 		items: [
 			{
-				'label': 'CONTINUE',
-				'action': () => {
+				label: 'CONTINUE',
+				category: 'main',
+				action: () => {
 					this.app.mode = this.app.modePrev;
 					this.app.nuthead.resumeAll();
-					this.redraw();
 				}
 			},
 			{
-				'label': 'OPTIONS',
-				'action': undefined
+				label: 'OPTIONS',
+				category: 'main',
+				action: () => {
+					this.pauseMenu.stack.push({
+						category: this.pauseMenu.category,
+						selected: this.pauseMenu.selected
+					});
+					this.pauseMenu.category = 'options';
+					this.pauseMenu.selected = 0;
+				}
+			},
+			{
+				label: 'FPS CAP: ' + (this.app.config.fpsCap === Infinity ? 'OFF' : this.app.config.fpsCap),
+				category: 'options',
+				id: 'options.fpsCap',
+				action: () => {
+					console.log(this.app.config.fpsCap);
+					if (this.app.config.fpsCap < 120)
+						this.app.config.fpsCap += 10;
+					else if (this.app.config.fpsCap === Infinity)
+						this.app.config.fpsCap = 10;
+					else
+						this.app.config.fpsCap = Infinity;
+					this.pauseMenu.items.find(item => item.id === 'options.fpsCap').label =
+					'FPS CAP: ' + (this.app.config.fpsCap === Infinity ? 'OFF' : this.app.config.fpsCap);
+					this.app.draw();
+				}
+			},
+			{
+				label: 'BACK',
+				category: 'options',
+				action: () => {
+					let target = this.pauseMenu.stack.pop();
+					this.pauseMenu.category = target.category;
+					this.pauseMenu.selected = target.selected;
+				}
 			}
 		]
 	};
@@ -195,24 +231,35 @@ Hud.prototype.drawPauseMenu = function () {
 
 	// calc text size
 	let menuText = '';
-	for (let i in this.pauseMenu.items) {
-		if (i > 0)
+	let itemCount = 0;
+	this.pauseMenu.items.forEach(item => {
+		if (this.pauseMenu.category !== item.category)
+			return;
+
+		if (itemCount > 0)
 			menuText += '\n';
-		menuText += (this.pauseMenu.selected == i ? '⯈' : ' ') + this.pauseMenu.items[i].label;
-	}
+
+		menuText += (this.pauseMenu.selected === itemCount ? '⯈' : ' ') + item.label;
+		++itemCount;
+	});
 	let menuTextSize = this.app.fontList.getTextSize(menuText, 'basic');
 
 	// draw text
 	let topMargin = '';
-	for (let i in this.pauseMenu.items) {
+	itemCount = 0;
+	this.pauseMenu.items.forEach(item => {
+		if (this.pauseMenu.category !== item.category)
+			return;
+
 		this.app.fontList.draw(
-			topMargin + (this.pauseMenu.selected == i ? '⯈' : ' ') + this.pauseMenu.items[i].label,
-			'basic', (this.pauseMenu.selected == i ? 'teal' : 'white'),
-			(this.jail.width - menuTextSize.width) / 2 + this.jail.left,
-			(this.jail.height - menuTextSize.height) / 2 + this.jail.top
+			topMargin + (this.pauseMenu.selected === itemCount ? '⯈' : ' ') + item.label,
+			'basic', (this.pauseMenu.selected === itemCount ? 'teal' : 'white'),
+			parseInt((this.jail.width - menuTextSize.width) / 2 + this.jail.left),
+			parseInt((this.jail.height - menuTextSize.height) / 2 + this.jail.top)
 		);
 		topMargin += '\n';
-	}
+		++itemCount;
+	});
 };
 
 Hud.prototype.drawBox = function (options) {

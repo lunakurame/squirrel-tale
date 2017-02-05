@@ -142,6 +142,10 @@ Application.prototype.init = function (arg) {
 		this.controls.addToQueue(() => {
 			switch (this.mode) {
 			case 'pause':
+				this.hud.pauseMenu.category = 'main';
+				this.hud.pauseMenu.selected = 0;
+				this.hud.pauseMenu.stack = [];
+
 				this.mode = this.modePrev;
 				this.nuthead.resumeAll();
 				break;
@@ -158,7 +162,17 @@ Application.prototype.init = function (arg) {
 		this.controls.addToQueue(() => {
 			switch (this.mode) {
 			case 'pause':
-				this.hud.pauseMenu.items[this.hud.pauseMenu.selected].action();
+				let itemCount = 0;
+				for (let i in this.hud.pauseMenu.items) {
+					let item = this.hud.pauseMenu.items[i];
+					if (this.hud.pauseMenu.category !== item.category)
+						continue;
+					if (itemCount === this.hud.pauseMenu.selected) {
+						item.action();
+						break;
+					}
+					++itemCount;
+				}
 				this.hud.redraw();
 				break;
 			case 'game':
@@ -338,40 +352,46 @@ Application.prototype.init = function (arg) {
 
 	case 'draw':
 		this.hud.redraw();
-
-		var drawingLoop = setInterval(() => {
-			let fps = this.hud.fpsCounter.refreshValue();
-
-			switch (this.mode) {
-			case 'game':
-			case 'game-ui':
-				// adjust speed to fps, so the player will always move the same speed
-				let speed = this.player.speed / fps;
-				if (this.controls.isKeyDown('slow'))
-					speed /= 2;
-
-				// clear
-				this.player.clear();
-				this.map.entities.forEach(entity => entity.clear());
-
-				// exec entities queue
-				this.map.entities.forEach(entity => entity.execQueue());
-	// TODO bugfix: when animation changes collisions while player is not moving,
-	// then player can appear inside the collision, and then teleport though it
-	// when walking inside
-				// player react
-				this.player.react(speed);
-
-				// draw
-				this.player.draw();
-				this.map.entities.forEach(entity => entity.draw());
-			}
-
-			if (this.config.debug.enabled)
-				this.hud.redraw();
-		}, 1000 / this.config.fpsCap);
+		this.draw();
 
 	case 'done':
 		this.loadingScreen.fadeOut();
 	}
+};
+
+Application.prototype.draw = function () {
+	if (typeof this.drawInterval !== 'undefined')
+		clearInterval(this.drawInterval);
+
+	this.drawInterval = setInterval(() => {
+		let fps = this.hud.fpsCounter.refreshValue();
+
+		switch (this.mode) {
+		case 'game':
+		case 'game-ui':
+			// adjust speed to fps, so the player will always move the same speed
+			let speed = this.player.speed / fps;
+			if (this.controls.isKeyDown('slow'))
+				speed /= 2;
+
+			// clear
+			this.player.clear();
+			this.map.entities.forEach(entity => entity.clear());
+
+			// exec entities queue
+			this.map.entities.forEach(entity => entity.execQueue());
+// TODO bugfix: when animation changes collisions while player is not moving,
+// then player can appear inside the collision, and then teleport though it
+// when walking inside
+			// player react
+			this.player.react(speed);
+
+			// draw
+			this.player.draw();
+			this.map.entities.forEach(entity => entity.draw());
+		}
+
+		if (this.config.debug.enabled)
+			this.hud.redraw();
+	}, 1000 / this.config.fpsCap);
 };
