@@ -4,10 +4,11 @@ var Application = function () {
 	console.log('%c////////////////////////////////////////////////////////////////////////////////', 'background: #3465a4;');
 	console.log('Application instance created');
 
-	// status
+	// data
 	this.lastPressedKey = 0;
 	this.mode = 'game';
 	this.modePrev = 'game';
+	this.maps = [];
 
 	// modules
 	this.config = new Config(this);
@@ -17,9 +18,62 @@ var Application = function () {
 	this.nuthead = new Nuthead(this);
 	this.fontList = new FontList(this);
 	this.controls = new Controls(this);
-	this.map = new Map(this, this.config.map.name, this.config.map.variant);
+	this.maps.push(new Map(this, this.config.map.name, this.config.map.variant));
+	this.map = this.maps[0];
 	this.player = new Player(this, this.config.player.name, this.config.player.variant);
 	this.hud = new Hud(this);
+};
+
+Application.prototype.loadMap = function (name, variant, arg, callback) {
+	let map;
+	// find the map in this.maps
+	for (let i in this.maps)
+		if (this.maps[i].name === name && this.maps[i].variant === variant) {
+			map = this.maps[i];
+			break;
+		}
+
+	switch (arg) {
+	case undefined:
+	case null:
+		if (typeof map === 'undefined') {
+			map = new Map(this, name, variant);
+			this.maps.push(map);
+		}
+		this.resourceLoader.loadOnce('json', 'map', map.name);
+		this.resourceLoader.loadOnce('image', 'map', map.fullName);
+		this.loadingScreen.fadeIn(() =>
+			this.resourceLoader.waitForAllFiles(
+				() => this.loadMap(name, variant, 'resources-loaded', callback),
+				() => this.loadingScreen.showError()
+			)
+		);
+		break;
+	case 'resources-loaded':
+		console.log('Application: setting up the map');
+		map.load(
+			this.resourceLoader.resources['json/map/' + map.name],
+			this.resourceLoader.resources['image/map/' + map.fullName]
+		);
+		map.loadEntities(() => this.loadMap(name, variant, 'setup-entities', callback));
+		break;
+	case 'setup-entities':
+		this.map = map;
+		this.map.setupEntities();
+		this.nuthead.load();
+		this.canvasList.resizeAll();
+		this.map.draw();
+		this.player.loadEntrances(
+			this.resourceLoader.resources['json/map/' + this.map.name].file.entrances
+		);
+		this.player.react(0, true);
+		this.loadingScreen.fadeOut();
+
+		if (typeof callback === 'function')
+			callback();
+
+		break;
+	}
 };
 
 Application.prototype.init = function (arg) {
@@ -33,22 +87,16 @@ Application.prototype.init = function (arg) {
 		// load resources
 		this.loadingScreen.rotateIcon();
 		this.resourceLoader.load('image', 'image', 'loading', 'failed');
-		this.resourceLoader.load('json', 'map', this.map.name);
 		this.resourceLoader.load('json', 'player', this.player.name);
 		this.resourceLoader.load('json', 'font', 'basic');
-		this.resourceLoader.load('image', 'map', this.map.fullName);
 		this.resourceLoader.load('image', 'player', this.player.fullName);
 		this.resourceLoader.load('image', 'font', 'basic', 'white');
 		this.resourceLoader.load('image', 'font', 'basic', 'black');
 		this.resourceLoader.load('image', 'font', 'basic', 'teal');
 		//this.resourceLoader.load('debug', 'debug', 'debug');
 		this.resourceLoader.waitForAllFiles(
-			() => {
-				this.init('setup-environment');
-			},
-			() => {
-				this.loadingScreen.showError('Error – can\'t load all resources.');
-			}
+			() => this.init('setup-environment'),
+			() => this.loadingScreen.showError()
 		);
 		break;
 
@@ -67,17 +115,9 @@ Application.prototype.init = function (arg) {
 		this.canvasList.addContext('hud', $('#hud')[0].getContext('2d'));
 		this.canvasList.resizeAll();
 
-		// map
-		console.log('Application: setting up the map');
-		this.map.load(
-			this.resourceLoader.resources['json/map/' + this.map.name],
-			this.resourceLoader.resources['image/map/' + this.map.fullName]
-		);
-
 		// player
 		console.log('Application: setting up the player');
 		this.player.load(
-			this.resourceLoader.resources['json/map/' + this.map.name].file.entrances,
 			this.resourceLoader.resources['json/player/' + this.player.name],
 			this.resourceLoader.resources['image/player/' + this.player.fullName]
 		);
@@ -87,16 +127,9 @@ Application.prototype.init = function (arg) {
 		this.hud.load();
 		this.fontList.load();
 
-	case 'load-entities':
-		// load entities
-		this.map.loadEntities();
+		// map
+		this.loadMap(this.config.map.name, this.config.map.variant, undefined, () => this.init('setup-window'));
 		break;
-
-	case 'setup-entities':
-		this.map.setupEntities();
-
-	case 'nuthead':
-		this.nuthead.load();
 
 	case 'setup-window':
 		//controls

@@ -56,24 +56,13 @@ var Player = function (application, name, variant) {
 	};
 };
 
-Player.prototype.load = function (entrances, data, image) {
+Player.prototype.load = function (data, image) {
 	// get resources
-	this.entrances = entrances;
 	this.data      = data;
 	this.image     = image;
 
-	// load info from map's JSON
-	this.posX      = this.entrances['start'].posX;
-	this.posY      = this.entrances['start'].posY;
-	this.view      = this.entrances['start'].view;
-	this.frame     = this.entrances['start'].frame;
-	this.direction = this.app.config.player.direction[this.entrances['start'].direction];
-
-	// load JSON overrides
-	this.label = (typeof this.entrances.label === 'undefined' ? this.data.file.label : this.entrances.label);
-
 	// load info from JSON
-	//this.label = [see JSON overrides]
+	this.label        = this.data.file.label;
 	this.defaultSpeed = this.data.file.defaultSpeed;
 	this.framesCount  = this.data.file.framesCount;	// TODO [animations] remove
 	this.defaults     = tools.cloneJson(this.data.file.defaults);
@@ -103,6 +92,17 @@ Player.prototype.load = function (entrances, data, image) {
 	// get canvas
 	this.canvas  = this.app.canvasList.canvases['player'];
 	this.context = this.app.canvasList.contexts['player'];
+};
+
+Player.prototype.loadEntrances = function (entrances) {
+	this.entrances = entrances;
+
+	// load info from map's JSON
+	this.posX      = this.entrances['start'].posX;
+	this.posY      = this.entrances['start'].posY;
+	this.view      = this.entrances['start'].view;
+	this.frame     = this.entrances['start'].frame;
+	this.direction = this.app.config.player.direction[this.entrances['start'].direction];
 
 	this.react(0, true);
 };

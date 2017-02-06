@@ -28,17 +28,18 @@ LoadingScreen.prototype.rotateIcon = function () {
 	}
 };
 
-LoadingScreen.prototype.fadeIn = function () {
+LoadingScreen.prototype.fadeIn = function (callback) {
 	// turn on black screen
-	$('#black-screen').fadeIn();
+	$('#black-screen').fadeIn(300, callback);
 };
 
-LoadingScreen.prototype.fadeOut = function () {
+LoadingScreen.prototype.fadeOut = function (callback) {
 	// turn off black screen
-	$('#black-screen').fadeOut();
+	$('#black-screen').fadeOut(300, callback);
+	$('#black-screen > div').fadeOut();
 };
 
-LoadingScreen.prototype.showError = function (message) {
+LoadingScreen.prototype.showError = function (message = 'Error – can\'t load all resources.') {
 	$('#black-screen > div').fadeOut(300, function() {
 		$('#black-screen .loading-icon').attr({
 			'src': 'data/image/loading-failed.png',

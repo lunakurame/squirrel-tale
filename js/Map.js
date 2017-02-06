@@ -53,15 +53,15 @@ Map.prototype.load = function (data, image) {
 	this.context = this.app.canvasList.contexts['map'];
 };
 
-Map.prototype.loadEntities = function () {
+Map.prototype.loadEntities = function (callback) {
 	for (let i in this.data.file.entities) {
 		this.entities[i] = new Entity(this.app, this.data.file.entities[i].name, this.data.file.entities[i].variant);
 		this.app.resourceLoader.loadOnce('json', 'entity', this.entities[i].name);
 		this.app.resourceLoader.loadOnce('image', 'entity', this.entities[i].fullName);
 	}
 	this.app.resourceLoader.waitForAllFiles(
-		() => this.app.init('setup-entities'),
-		() => this.app.loadingScreen.showError('Error – can\'t load all resources.')
+		() => callback(),
+		() => this.app.loadingScreen.showError()
 	);
 };
 

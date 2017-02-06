@@ -61,6 +61,7 @@
 	},
 	"nuts": [
 		{
+			"name": "dance",
 			"type": "auto",
 			"script": [
 				"nop 500",
@@ -68,6 +69,15 @@
 				"nop 500",
 				"set view dance 1",
 				"jmp 0"
+			]
+		},
+		{
+			"name": "dialog",
+			"type": "interaction",
+			"script": [
+				"dlg ekk text Hm... I don't see any squirrels here.",
+				"dlg ekk show",
+				"nut dance"
 			]
 		}
 	]

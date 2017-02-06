@@ -106,9 +106,11 @@ ResourceLoader.prototype.waitForAllFiles = function (callback_ok, callback_error
 	// check if all files finished loading
 	let waitingInterval = setInterval(() => {
 		let status = this.loaderStatus.completed;
+		let erroredId;
 		for (let id in this.resources) {
 			if (this.resources[id].status === this.loaderStatus.error) {
 				status = this.loaderStatus.error;
+				erroredId = id;
 				break;
 			} else if (this.resources[id].status === this.loaderStatus.loading) {
 				status = this.loaderStatus.loading;
@@ -119,6 +121,7 @@ ResourceLoader.prototype.waitForAllFiles = function (callback_ok, callback_error
 		if (status === this.loaderStatus.error) {
 			clearInterval(waitingInterval);
 			callback_error();
+			console.warn('ResourceLoader: cannot load resource: ' + erroredId);
 		} else if (status === this.loaderStatus.completed) {
 			clearInterval(waitingInterval);
 			callback_ok();
