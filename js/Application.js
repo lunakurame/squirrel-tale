@@ -448,6 +448,24 @@ Application.prototype.draw = function () {
 		case 'game-ui':
 			// adjust speed to fps, so the player will always move the same speed
 			let speed = this.player.speed / fps;
+
+			let isMovingDiagonally = function (up, down, right, left) {
+				return (
+					( up && !down &&  right && !left) ||
+					( up && !down && !right &&  left) ||
+					(!up &&  down &&  right && !left) ||
+					(!up &&  down && !right &&  left)
+				);
+			};
+
+			if (isMovingDiagonally(
+				this.controls.isKeyDown('up'),
+				this.controls.isKeyDown('down'),
+				this.controls.isKeyDown('right'),
+				this.controls.isKeyDown('left'))
+			)
+				speed *= 0.7071067811865475;
+
 			if (this.controls.isKeyDown('slow'))
 				speed /= 2;
 
