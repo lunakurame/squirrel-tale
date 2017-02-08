@@ -2,8 +2,8 @@
 
 ## Description
 
-Nuthead is an interpreter for the scripts used to animate entities (and in the future,
-to script NPCs and interactions with other objects).
+Nuthead is an interpreter for the scripts used to animate entities, script NPCs
+and interactions with other objects.
 
 ## Example
 
@@ -53,11 +53,16 @@ matches any of the rules for ignored lines.
 `PARAM2` - dialogue object's item index.  
 `PARAM3` - action.  
 `PARAM4` - parameter.  
+`PARAM5` - parameter.  
 At the end, always jumps to the next instruction.
 `PARAM1`, `PARAM3` and `PARAM4` might be variable names.  
 Actions:
 	- `text`  
 	  Adds text `PARAM4` to the dialogue object.
+	- `choice`  
+	  Adds a choice option to the dialogue object. The displayed text is
+	  `PARAM5` and it jumps to the nut named `PARAM4` when the user selects
+	  that option. Note that the target nut must be of type "choice".
 	- `show`  
 	  Shows the dialogue on the screen.
 - `lbl PARAM1`  

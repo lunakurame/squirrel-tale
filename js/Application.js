@@ -249,12 +249,21 @@ Application.prototype.init = function (arg) {
 				}
 				break;
 			case 'game-ui':
-				if (this.hud.dialogue.items.length > 0) {
+				if (this.hud.dialogue.items.length < 1)
+					break;
+
+				let dialogueItem = this.hud.dialogue.items[this.hud.dialogue.currentIndex];
+				if (typeof dialogueItem.choices !== 'undefined' && dialogueItem.choices.length > 0) {
+					let action = dialogueItem.choices[this.hud.dialogue.selectedChoice].action;
+					this.hud.resetDialogue();
+					action();
+					this.hud.redraw();
+				} else {
 					++this.hud.dialogue.currentIndex;
 					if (this.hud.dialogue.currentIndex >= this.hud.dialogue.items.length)
 						this.hud.resetDialogue();
+						this.hud.redraw();
 				}
-				this.hud.redraw();
 				break;
 			}
 		}, 'primary', true);
@@ -269,6 +278,8 @@ Application.prototype.init = function (arg) {
 				this.mode = 'game-ui';
 				break;
 			case 'game-ui':
+				if (this.hud.dialogue.items.length > 0)
+					break;
 				if (this.hud.state.userMenu)
 					this.hud.toggleUserMenu();
 				this.hud.redraw();
@@ -293,6 +304,18 @@ Application.prototype.init = function (arg) {
 				else
 					this.player.tryingToMoveVert = 'up';
 				break;
+			case 'game-ui':
+				if (this.controls.isKeyDown('down'))
+					break;
+				if (this.hud.dialogue.items.length < 1)
+					break;
+
+				let dialogueItem = this.hud.dialogue.items[this.hud.dialogue.currentIndex];
+				if (typeof dialogueItem.choices !== 'undefined' &&
+				    this.hud.dialogue.selectedChoice > 0) {
+					--this.hud.dialogue.selectedChoice;
+					this.hud.redraw();
+				}
 			}
 		}, 'up', true);
 		this.controls.addToQueue(() => {
@@ -321,6 +344,18 @@ Application.prototype.init = function (arg) {
 				else
 					this.player.tryingToMoveVert = 'down';
 				break;
+			case 'game-ui':
+				if (this.controls.isKeyDown('up'))
+					break;
+				if (this.hud.dialogue.items.length < 1)
+					break;
+
+				let dialogueItem = this.hud.dialogue.items[this.hud.dialogue.currentIndex];
+				if (typeof dialogueItem.choices !== 'undefined' &&
+				    this.hud.dialogue.selectedChoice < dialogueItem.choices.length - 1) {
+					++this.hud.dialogue.selectedChoice;
+					this.hud.redraw();
+				}
 			}
 		}, 'down', true);
 		this.controls.addToQueue(() => {

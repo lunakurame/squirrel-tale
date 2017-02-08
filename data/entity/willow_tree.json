@@ -186,6 +186,8 @@
 			"type": "interaction",
 			"script": [
 				"dlg ekk 0 text Looks like a squirrel lives on this tree!",
+				"dlg ekk 0 choice choice_knock Knock.",
+				"dlg ekk 0 choice choice_go_away Go away.",
 				"dlg ekk 0 show",
 				"dlg ekk 1 text Ekk ekk!",
 				"dlg ekk 1 show",
@@ -225,6 +227,21 @@
 
 				"nut squirrel_wind"
 			]
+		},
+		{
+			"name": "choice_knock",
+			"type": "choice",
+			"script": [
+				"dlg ekk 0 text ...",
+				"dlg ekk 0 show",
+				"dlg ekk 1 text Maybe they're not home...",
+				"dlg ekk 1 show"
+			]
+		},
+		{
+			"name": "choice_go_away",
+			"type": "choice",
+			"script": []
 		},
 		{
 			"name": "master_wind",

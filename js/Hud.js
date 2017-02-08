@@ -23,6 +23,7 @@ var Hud = function (application) {
 	};
 	this.dialogue = {
 		currentIndex: 0,
+		selectedChoice: 0,
 		items: []
 	};
 	this.pauseMenu = {
@@ -277,13 +278,18 @@ Hud.prototype.drawBox = function (options) {
 		boxMargin: 5,
 		boxBorder: 3,
 		textMargin: 8,
+		choiceMargin: 4,
 		defaultFontName: 'basic',
 		defaultFontVariant: 'white',
+		defaultSelectedFontName: 'basic',
+		defaultSelectedFontVariant: 'teal',
 		texts: [
 			/* {
 			 * 	*text: String,
-			 * 	*fontName: String,
-			 * 	*fontVariant: String,
+			 * 	 fontName: String,
+			 * 	 fontVariant: String,
+			 * 	 selectedFontName: String,
+			 * 	 selectedFontVariant: String,
 			 * 	 posX: Number,
 			 * 	 posY: Number,
 			 * 	 growBox: Boolean
@@ -352,6 +358,33 @@ Hud.prototype.drawBox = function (options) {
 		first = false;
 	});
 
+	// add choice margin
+	if (typeof options.choices !== 'undefined' && options.choices.length > 0) {
+		growWidth(options.choiceMargin * 2);
+		growHeight(options.choiceMargin * 2);
+	}
+
+	// add choices
+	for (let i in options.choices) {
+		let choice = options.choices[i];
+		let selected = this.dialogue.selectedChoice === parseInt(i);
+
+		if (choice.growBox === false)
+			return;
+
+		let textSize = this.app.fontList.getTextSize(
+			(selected ? '⯈' : ' ') + choice.text,
+			(selected ? choice.selectedFontName || options.defaultSelectedFontName :
+			            choice.fontName         || options.defaultFontName),
+			choice.marginX,
+			choice.marginY
+		);
+		textSize.width += options.choiceMargin;
+		growWidth(textSize.width);
+		growHeight(textSize.height + (first ? 0 : (choice.marginY || this.app.fontList.defaultMarginY)));
+		first = false;
+	}
+
 	// drawing
 
 	// box border
@@ -398,6 +431,33 @@ Hud.prototype.drawBox = function (options) {
 			text.marginY
 		).height + (text.marginY || this.app.fontList.defaultMarginY);
 	});
+	// choices
+	for (let i in options.choices) {
+		let choice = options.choices[i];
+		let selected = this.dialogue.selectedChoice === parseInt(i);
+
+		this.app.fontList.draw(
+			(selected ? '⯈' : ' ') + choice.text,
+			(selected ? choice.selectedFontName || options.defaultSelectedFontName :
+			            choice.fontName         || options.defaultFontName),
+			(selected ? choice.selectedFontVariant || options.defaultSelectedFontVariant :
+			            choice.fontVariant         || options.defaultFontVariant),
+			menuRect.posX + options.boxBorder + options.textMargin + options.choiceMargin + (choice.posX || 0),
+			menuRect.posY + options.boxBorder + options.textMargin + options.choiceMargin + (choice.posY || 0)
+			              + (choice.growBox === false ? 0 : textTop) ,
+			choice.marginX,
+			choice.marginY
+		);
+
+		// adjust next text's position
+		textTop += this.app.fontList.getTextSize(
+			(selected ? '⯈' : ' ') + choice.text,
+			(selected ? choice.selectedFontName || options.defaultSelectedFontName :
+			            choice.fontName         || options.defaultFontName),
+			choice.marginX,
+			choice.marginY
+		).height + (choice.marginY || this.app.fontList.defaultMarginY);
+	}
 };
 
 Hud.prototype.drawUserMenu = function () {
@@ -441,6 +501,7 @@ Hud.prototype.drawUserMenu = function () {
 
 Hud.prototype.setDialogue = function (options) {
 	this.dialogue.currentIndex = 0;
+	this.dialogue.selectedChoice = 0;
 	this.dialogue.items = options.map(item => Object.assign({
 		posX: this.jail.left,
 		posY: this.jail.top + this.jail.height,
@@ -461,6 +522,7 @@ Hud.prototype.setDialogue = function (options) {
 
 Hud.prototype.resetDialogue = function (options) {
 	this.dialogue.currentIndex = 0;
+	this.dialogue.selectedChoice = 0;
 	this.dialogue.items = [];
 	this.app.modePrev = this.mode;
 	this.app.mode = 'game';

@@ -140,6 +140,8 @@ Nuthead.prototype.execNutshell = function (nutshell, lineNum = 0) {
 								nutargs[2] = this.getNutshellVariable(nutshell, nutargs[2]);
 							if (typeof nutargs[4] !== 'undefined' && this.isNutshellVariable(nutshell, nutargs[4]))
 								nutargs[4] = this.getNutshellVariable(nutshell, nutargs[4]);
+							if (typeof nutargs[5] !== 'undefined' && this.isNutshellVariable(nutshell, nutargs[5]))
+								nutargs[5] = this.getNutshellVariable(nutshell, nutargs[5]);
 
 							switch (nutargs[3]) {
 							case 'text':
@@ -147,6 +149,19 @@ Nuthead.prototype.execNutshell = function (nutshell, lineNum = 0) {
 									item.texts = [];
 								item.texts.push({
 									text: nutline.slice(('dlg ' + nutargs[1] + ' ' + nutargs[2] + ' text ').length)
+								});
+								break;
+							case 'choice':
+								if (typeof item.choices === 'undefined')
+									item.choices = [];
+								item.choices.push({
+									text: nutline.slice(('dlg ' + nutargs[1] + ' ' + nutargs[2] + ' choice '
+									                            + nutargs[4] + ' ').length),
+									action: () => this.execNutshell(this.nutshells.find(n =>
+										n.owner    === nutshell.owner &&
+										n.nut.type === 'choice' &&
+										n.nut.name === nutargs[4]
+									))
 								});
 								break;
 							}
