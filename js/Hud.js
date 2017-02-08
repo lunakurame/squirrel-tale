@@ -329,9 +329,16 @@ Hud.prototype.drawBox = function (options) {
 	growWidth(options.boxBorder * 2);
 	growHeight(options.boxBorder * 2);
 
+	// add text margin
+	if (options.texts.length > 0) {
+		growWidth(options.textMargin * 2);
+		growHeight(options.textMargin * 2);
+	}
+
 	// add texts
+	let first = true;
 	options.texts.forEach(text => {
-		if (typeof text.growBox !== 'undefined' && text.growBox === false)
+		if (text.growBox === false)
 			return;
 
 		let textSize = this.app.fontList.getTextSize(
@@ -340,10 +347,10 @@ Hud.prototype.drawBox = function (options) {
 			text.marginX,
 			text.marginY
 		);
-		growWidth(textSize.width + options.textMargin * 2);
-		growHeight(textSize.height + options.textMargin * 2);
+		growWidth(textSize.width);
+		growHeight(textSize.height + (first ? 0 : (text.marginY || this.app.fontList.defaultMarginY)));
+		first = false;
 	});
-
 
 	// drawing
 
@@ -370,16 +377,26 @@ Hud.prototype.drawBox = function (options) {
 		menuRect.height - options.boxBorder * 2
 	);
 	// texts
+	let textTop = 0;
 	options.texts.forEach(text => {
-		let textSize = this.app.fontList.draw(
+		this.app.fontList.draw(
 			text.text,
 			text.fontName || options.defaultFontName,
 			text.fontVariant || options.defaultFontVariant,
 			menuRect.posX + options.boxBorder + options.textMargin + (text.posX || 0),
-			menuRect.posY + options.boxBorder + options.textMargin + (text.posY || 0),
+			menuRect.posY + options.boxBorder + options.textMargin + (text.posY || 0)
+			              + (text.growBox === false ? 0 : textTop),
 			text.marginX,
 			text.marginY
 		);
+
+		// adjust next text's position
+		textTop += this.app.fontList.getTextSize(
+			text.text,
+			text.fontName || options.defaultFontName,
+			text.marginX,
+			text.marginY
+		).height + (text.marginY || this.app.fontList.defaultMarginY);
 	});
 };
 
@@ -403,17 +420,20 @@ Hud.prototype.drawUserMenu = function () {
 			{
 				text: this.app.player.label,
 				posX: 0,
-				posY: 0
+				posY: 0,
+				growBox: false
 			},
 			{
 				text: 'HP\nXP',
 				posX: 0,
-				posY: playerNameTextSize.height + 8
+				posY: playerNameTextSize.height + 8,
+				growBox: false
 			},
 			{
 				text: this.app.player.stats.hp + '\n' + this.app.player.stats.xp,
 				posX: statsLabelsTextSize.width + 10,
-				posY: playerNameTextSize.height + 8
+				posY: playerNameTextSize.height + 8,
+				growBox: false
 			}
 		]
 	});
