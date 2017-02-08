@@ -245,12 +245,16 @@ Application.prototype.init = function (arg) {
 				if (minDistance < 20) {
 					this.nuthead.pauseAll(closestEntity);
 					this.nuthead.execAll(closestEntity, {type: 'interaction'});
+					this.hud.redraw();
 				}
 				break;
 			case 'game-ui':
+				if (this.hud.dialogue.items.length > 0) {
+					++this.hud.dialogue.currentIndex;
+					if (this.hud.dialogue.currentIndex >= this.hud.dialogue.items.length)
+						this.hud.resetDialogue();
+				}
 				this.hud.redraw();
-				this.modePrev = this.mode;
-				this.mode = 'game';
 				break;
 			}
 		}, 'primary', true);

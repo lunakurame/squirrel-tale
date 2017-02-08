@@ -185,8 +185,10 @@
 			"name": "squirrel_runs_away",
 			"type": "interaction",
 			"script": [
-				"dlg ekk text Looks like a squirrel lives on this tree!",
-				"dlg ekk show",
+				"dlg ekk 0 text Looks like a squirrel lives on this tree!",
+				"dlg ekk 0 show",
+				"dlg ekk 1 text Ekk ekk!",
+				"dlg ekk 1 show",
 
 				"set view master_hole 0",
 				"nop 300",

@@ -29,8 +29,8 @@
 			"name": "text",
 			"type": "interaction",
 			"script": [
-				"dlg caption text Don't walk on the flowers.",
-				"dlg caption show"
+				"dlg caption 0 text Don't walk on the flowers.",
+				"dlg caption 0 show"
 			]
 		}
 	]

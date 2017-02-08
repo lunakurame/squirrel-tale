@@ -21,6 +21,10 @@ var Hud = function (application) {
 	this.state = {
 		userMenu: false
 	};
+	this.dialogue = {
+		currentIndex: 0,
+		items: []
+	};
 	this.pauseMenu = {
 		category: 'main',
 		selected: 0,
@@ -128,6 +132,7 @@ Hud.prototype.clear = function () {
 Hud.prototype.draw = function () {
 	if (this.state.userMenu)
 		this.drawUserMenu();
+	this.drawDialogue();
 
 	switch (this.app.mode) {
 	case 'pause':
@@ -414,8 +419,9 @@ Hud.prototype.drawUserMenu = function () {
 	});
 };
 
-Hud.prototype.drawDialogue = function (options) {
-	this.drawBox(Object.assign({
+Hud.prototype.setDialogue = function (options) {
+	this.dialogue.currentIndex = 0;
+	this.dialogue.items = options.map(item => Object.assign({
 		posX: this.jail.left,
 		posY: this.jail.top + this.jail.height,
 		width: this.jail.width,
@@ -425,10 +431,24 @@ Hud.prototype.drawDialogue = function (options) {
 				text: 'A wild lobster appeared!\nOh wait...\nNevermind, it\'s just a squirrel. Ekk ekk!'
 			}
 		]
-	}, options));
+	}, item));
 
 	this.app.player.tryingToMoveHorz = 'none';
 	this.app.player.tryingToMoveVert = 'none';
 	this.app.modePrev = this.app.mode;
 	this.app.mode = 'game-ui';
+};
+
+Hud.prototype.resetDialogue = function (options) {
+	this.dialogue.currentIndex = 0;
+	this.dialogue.items = [];
+	this.app.modePrev = this.mode;
+	this.app.mode = 'game';
+};
+
+Hud.prototype.drawDialogue = function () {
+	if (this.dialogue.items.length < 1)
+		return;
+
+	this.drawBox(this.dialogue.items[this.dialogue.currentIndex]);
 };

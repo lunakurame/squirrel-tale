@@ -48,15 +48,16 @@ matches any of the rules for ignored lines.
 
 ### Instructions:
 
-- `dlg PARAM1 PARAM2 PARAM3`  
+- `dlg PARAM1 PARAM2 PARAM3 PARAM4`  
 `PARAM1` - dialogue object name.  
-`PARAM2` - action.  
-`PARAM3` - parameter.  
+`PARAM2` - dialogue object's item index.  
+`PARAM3` - action.  
+`PARAM4` - parameter.  
 At the end, always jumps to the next instruction.
-`PARAM1` and `PARAM3` might be variable names.
+`PARAM1`, `PARAM3` and `PARAM4` might be variable names.  
 Actions:
 	- `text`  
-	  Adds text `PARAM3` to the dialogue object.
+	  Adds text `PARAM4` to the dialogue object.
 	- `show`  
 	  Shows the dialogue on the screen.
 - `lbl PARAM1`  

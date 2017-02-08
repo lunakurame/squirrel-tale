@@ -115,36 +115,52 @@ Nuthead.prototype.execNutshell = function (nutshell, lineNum = 0) {
 			if (this.isNutshellVariable(nutshell, arg1))
 				arg1 = this.getNutshellVariable(nutshell, arg1);
 			arg2 = args[2];
+			arg3 = args[3];
 
-			switch (arg2) {
+			switch (arg3) {
 			case 'show':
-				// build the dialogue object
-				let dialogue = {};
-				nutshell.nut.script.forEach(nutline => {
-					let nutargs = nutline.split(' ').filter(item => item !== '');
-					if (typeof nutargs[0] !== 'undefined' &&
-					           nutargs[0] === 'dlg' &&
-					    typeof nutargs[1] !== 'undefined' &&
-					           nutargs[1] === arg1 &&
-					    typeof nutargs[2] !== 'undefined') {
-						if (this.isNutshellVariable(nutshell, nutargs[1]))
-							nutargs[1] = this.getNutshellVariable(nutshell, nutargs[1]);
-						if (typeof nutargs[3] !== 'undefined' && this.isNutshellVariable(nutshell, nutargs[3]))
-							nutargs[3] = this.getNutshellVariable(nutshell, nutargs[3]);
+				// build the dialogue array
+				let dialogue = [];
+				for (let i = 0;; ++i) {
+					// build the dialogue item
+					let item = {};
 
-						switch (nutargs[2]) {
-						case 'text':
-							if (typeof dialogue.texts === 'undefined')
-								dialogue.texts = [];
-							dialogue.texts.push({
-								text: nutline.slice(('dlg text ' + arg1 + ' ').length)
-							});
-							break;
+					nutshell.nut.script.forEach(nutline => {
+						let nutargs = nutline.split(' ').filter(item => item !== '');
+						if (typeof nutargs[0]  !== 'undefined' &&
+						           nutargs[0]  === 'dlg' &&
+						    typeof nutargs[1]  !== 'undefined' &&
+						           nutargs[1]  === arg1 &&
+						    typeof nutargs[2]  !== 'undefined' &&
+						  parseInt(nutargs[2]) === i &&
+						    typeof nutargs[3]  !== 'undefined') {
+							if (this.isNutshellVariable(nutshell, nutargs[1]))
+								nutargs[1] = this.getNutshellVariable(nutshell, nutargs[1]);
+							if (this.isNutshellVariable(nutshell, nutargs[2]))
+								nutargs[2] = this.getNutshellVariable(nutshell, nutargs[2]);
+							if (typeof nutargs[4] !== 'undefined' && this.isNutshellVariable(nutshell, nutargs[4]))
+								nutargs[4] = this.getNutshellVariable(nutshell, nutargs[4]);
+
+							switch (nutargs[3]) {
+							case 'text':
+								if (typeof item.texts === 'undefined')
+									item.texts = [];
+								item.texts.push({
+									text: nutline.slice(('dlg ' + nutargs[1] + ' ' + nutargs[2] + ' text ').length)
+								});
+								break;
+							}
 						}
-					}
-				});
+					});
 
-				this.app.hud.drawDialogue(dialogue);
+					// add the item to the dialogue or exit
+					if (Object.keys(item).length > 0)
+						dialogue.push(item);
+					else
+						break;
+				}
+
+				this.app.hud.setDialogue(dialogue);
 				break;
 			}
 		}
