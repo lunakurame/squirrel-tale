@@ -395,6 +395,14 @@
 			"posZ": "over",
 			"view": "big",
 			"frame": 0
+		},
+		{
+			"name": "sign",
+			"posX": 250,
+			"posY": 700,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
 		}
 	]
 }

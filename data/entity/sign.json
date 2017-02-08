@@ -1,0 +1,37 @@
+{
+	"label": "Sign",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 15,
+		"cropHeight": 17,
+		"width": 15,
+		"height": 17,
+		"centerX": 7,
+		"centerY": 16,
+		"collisions": [
+			{
+				"posX": 6,
+				"posY": 15,
+				"width": 3,
+				"height": 2
+			}
+		]
+	},
+	"views": {
+		"master": [
+			{
+			}
+		]
+	},
+	"nuts": [
+		{
+			"name": "text",
+			"type": "interaction",
+			"script": [
+				"dlg caption text Don't walk on the flowers.",
+				"dlg caption show"
+			]
+		}
+	]
+}
