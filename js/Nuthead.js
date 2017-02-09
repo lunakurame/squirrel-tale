@@ -229,6 +229,20 @@ Nuthead.prototype.execNutshell = function (nutshell, lineNum = 0) {
 			}
 		}
 		break;
+	case 'map':
+		arg1 = args[1];
+		if (this.isNutshellVariable(nutshell, arg1))
+			arg1 = this.getNutshellVariable(nutshell, arg1);
+		arg2 = args[2];
+		if (this.isNutshellVariable(nutshell, arg2))
+			arg2 = this.getNutshellVariable(nutshell, arg2);
+
+		if (typeof arg1 === 'undefined')
+			warn('Cannot load map, missing parameter');
+		else
+			this.app.loadMap(arg1, arg2);
+		jumpNext();
+		break;
 	case 'nop':
 		arg1 = args[1];
 		if (this.isNutshellVariable(nutshell, arg1))

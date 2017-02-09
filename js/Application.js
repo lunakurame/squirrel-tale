@@ -63,6 +63,7 @@ Application.prototype.loadMap = function (name, variant, arg, callback) {
 		this.nuthead.load();
 		this.canvasList.resizeAll();
 		this.map.draw();
+		this.hud.draw();
 		this.player.loadEntrances(
 			this.resourceLoader.resources['json/map/' + this.map.name].file.entrances
 		);

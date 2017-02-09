@@ -83,6 +83,10 @@ If `PARAM1` is numeric, jumps to the line `PARAM1` of the script.
 Otherwise, tries to find the first occurence of label `PARAM1` in the script. If
 found, jumps to that line, if not, throws a warning.
 `PARAM1` might be a variable name.
+- `map PARAM1 PARAM2`  
+If `PARAM1` is not defined, throws a warning. Otherwise, loads map named
+`PARAM`, variant `PARAM2`. Always jumps to the next instruction.
+`PARAM1` and `PARAM2` might be variable names.
 - `nop PARAM1`  
 If `PARAM1` is not defined or is not numeric, jumps to the next instruction.
 Otherwise, waits for `PARAM1` milliseconds, then jumps to the next instruction.
