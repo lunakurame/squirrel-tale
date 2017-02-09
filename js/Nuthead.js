@@ -1,10 +1,10 @@
-// prototype: Nuthead //////////////////////////////////////////////////////////
+// prototype: Nutcracker ///////////////////////////////////////////////////////
 
-var Nuthead = function (application) {
-	console.log('Nuthead instance created');
+var Nutcracker = function (application) {
+	console.log('Nutcracker instance created');
 
 	if (typeof application !== 'object' || application == null)
-		throw Error('Nuthead: constructor: application is required');
+		throw Error('Nutcracker: constructor: application is required');
 
 	// technical
 	this.app = application;
@@ -22,7 +22,7 @@ var Nuthead = function (application) {
 	];
 };
 
-Nuthead.prototype.load = function () {
+Nutcracker.prototype.load = function () {
 	// get all nuts of all entities
 	this.app.map.entities.forEach(entity => {
 		entity.nuts.forEach(nut => {
@@ -43,7 +43,7 @@ Nuthead.prototype.load = function () {
 	});
 };
 
-Nuthead.prototype.execAll = function (entity, options) {
+Nutcracker.prototype.execAll = function (entity, options) {
 	this.nutshells.forEach(nutshell => {
 		if ((typeof entity === 'undefined' || nutshell.owner === entity)) {
 			for (let i in options)
@@ -59,7 +59,7 @@ Nuthead.prototype.execAll = function (entity, options) {
 	});
 };
 
-Nuthead.prototype.pauseAll = function (entity) {
+Nutcracker.prototype.pauseAll = function (entity) {
 	this.nutshells.forEach(nutshell => {
 		if ((typeof entity === 'undefined' || nutshell.owner === entity) &&
 		    typeof nutshell.timer !== 'undefined')
@@ -67,7 +67,7 @@ Nuthead.prototype.pauseAll = function (entity) {
 	});
 };
 
-Nuthead.prototype.resumeAll = function (entity) {
+Nutcracker.prototype.resumeAll = function (entity) {
 	this.nutshells.forEach(nutshell => {
 		if ((typeof entity === 'undefined' || nutshell.owner === entity) &&
 		    typeof nutshell.timer !== 'undefined')
@@ -75,17 +75,17 @@ Nuthead.prototype.resumeAll = function (entity) {
 	});
 };
 
-Nuthead.prototype.isNutshellVariable = function (nutshell, variable) {
+Nutcracker.prototype.isNutshellVariable = function (nutshell, variable) {
 	return typeof variable !== 'undefined' &&
 	       variable.startsWith('$') &&
 	       typeof this.getNutshellVariable(nutshell, variable) !== 'undefined';
 };
 
-Nuthead.prototype.getNutshellVariable = function (nutshell, variable) {
+Nutcracker.prototype.getNutshellVariable = function (nutshell, variable) {
 	return nutshell.variables[variable.substr(1)];
 };
 
-Nuthead.prototype.execNutshell = function (nutshell, lineNum = 0) {
+Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 	// check if EOF
 	if (typeof nutshell.nut.script[lineNum] === 'undefined')
 		return;
@@ -95,7 +95,7 @@ Nuthead.prototype.execNutshell = function (nutshell, lineNum = 0) {
 	let jump = lineNum => this.execNutshell(nutshell, lineNum);
 	let jumpNext = () => jump(lineNum + 1);
 	let addToQueue = func => nutshell.owner.queue.push(func);
-	let warn = text => console.warn('Nuthead: ' + text + ', ' +
+	let warn = text => console.warn('Nutcracker: ' + text + ', ' +
 		'owner "' + nutshell.owner.data.id + '", ' +
 		'script "' + nutshell.nut.name + '", ' +
 		'line ' + lineNum);

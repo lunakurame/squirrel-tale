@@ -15,7 +15,7 @@ var Application = function () {
 	this.loadingScreen = new LoadingScreen(this);
 	this.resourceLoader = new ResourceLoader(this);
 	this.canvasList = new CanvasList(this);
-	this.nuthead = new Nuthead(this);
+	this.nutcracker = new Nutcracker(this);
 	this.fontList = new FontList(this);
 	this.controls = new Controls(this);
 	this.maps.push(new Map(this, this.config.map.name, this.config.map.variant));
@@ -60,7 +60,7 @@ Application.prototype.loadMap = function (name, variant, arg, callback) {
 	case 'setup-entities':
 		this.map = map;
 		this.map.setupEntities();
-		this.nuthead.load();
+		this.nutcracker.load();
 		this.canvasList.resizeAll();
 		this.map.draw();
 		this.hud.draw();
@@ -186,12 +186,12 @@ Application.prototype.init = function (arg) {
 				this.hud.pauseMenu.stack = [];
 
 				this.mode = this.modePrev;
-				this.nuthead.resumeAll();
+				this.nutcracker.resumeAll();
 				break;
 			default:
 				this.modePrev = this.mode;
 				this.mode = 'pause';
-				this.nuthead.pauseAll();
+				this.nutcracker.pauseAll();
 			}
 
 			this.hud.redraw();
@@ -244,8 +244,8 @@ Application.prototype.init = function (arg) {
 				});
 
 				if (minDistance < 20) {
-					this.nuthead.pauseAll(closestEntity);
-					this.nuthead.execAll(closestEntity, {type: 'interaction'});
+					this.nutcracker.pauseAll(closestEntity);
+					this.nutcracker.execAll(closestEntity, {type: 'interaction'});
 					this.hud.redraw();
 				}
 				break;

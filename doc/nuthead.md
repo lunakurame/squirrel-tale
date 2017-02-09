@@ -1,9 +1,9 @@
-# Nuthead script interpreter
+# Nutcracker script interpreter
 
 ## Description
 
-Nuthead is an interpreter for the scripts used to animate entities, script NPCs
-and interactions with other objects.
+Nutcracker is an interpreter for the scripts used to animate entities, script
+NPCs and interactions with other objects.
 
 ## Example
 
@@ -30,8 +30,8 @@ and interactions with other objects.
 
 ## Specification
 
-Nuthead reads the script line by line from an array of strings, each line is an
-element of the array.
+Nutcracker reads the script line by line from an array of strings, each line is
+an element of the array.
 
 ### Ignored lines:
 
@@ -43,8 +43,8 @@ element of the array.
 Whitespace is whatever your JavaScript interpreter thinks it is. If in doubt,
 check the documentation of `String.prototype.trim()`. Ignored lines still count
 for line numbering (eg. when you jump to a specified line number). During script
-execution, Nuthead just immediately jumps to the next line if the current line
-matches any of the rules for ignored lines.
+execution, Nutcracker just immediately jumps to the next line if the current
+line matches any of the rules for ignored lines.
 
 ### Instructions:
 
@@ -85,7 +85,7 @@ found, jumps to that line, if not, throws a warning.
 `PARAM1` might be a variable name.
 - `map PARAM1 PARAM2`  
 If `PARAM1` is not defined, throws a warning. Otherwise, loads map named
-`PARAM`, variant `PARAM2`. Always jumps to the next instruction.
+`PARAM1`, variant `PARAM2`. Always jumps to the next instruction.
 `PARAM1` and `PARAM2` might be variable names.
 - `nop PARAM1`  
 If `PARAM1` is not defined or is not numeric, jumps to the next instruction.

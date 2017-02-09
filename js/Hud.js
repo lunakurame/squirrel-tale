@@ -36,7 +36,7 @@ var Hud = function (application) {
 				category: 'main',
 				action: () => {
 					this.app.mode = this.app.modePrev;
-					this.app.nuthead.resumeAll();
+					this.app.nutcracker.resumeAll();
 				}
 			},
 			{
