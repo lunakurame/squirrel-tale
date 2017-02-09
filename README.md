@@ -1,3 +1,7 @@
-# KURO HTML5 Game Engine
+# Nuthead
 
-Some day there will be an awesome game engine.
+![Screenshot of a sample game](doc/screenshot.png)
+
+## Description
+
+A game engine for pixel art RPG games running in a web browser.
