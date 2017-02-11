@@ -30,7 +30,7 @@ var Player = function (application, name, variant) {
 	this.posY      = 0;
 	this.view      = 'master';
 	this.frame     = 0;
-	this.direction = this.app.config.player.direction.down;
+	this.direction = 'down'; // 'up'|'down|'right'|'left'
 
 	// generated on runtime
 	this.fullName   = name + (typeof variant === 'undefined' ? '' : '-' + variant);
@@ -99,7 +99,7 @@ Player.prototype.loadEntrances = function (entrances) {
 	this.posY      = this.entrances['start'].posY;
 	this.view      = this.entrances['start'].view;
 	this.frame     = this.entrances['start'].frame;
-	this.direction = this.app.config.player.direction[this.entrances['start'].direction];
+	this.direction = this.entrances['start'].direction;
 
 	this.react(0, true);
 };
@@ -298,47 +298,47 @@ Player.prototype.react = function (speed, resizeWindow) {
 			// in case horizontal and vertical direction is pressed at the same time,
 			// the horizontal one is prefered
 			if (moving_right)
-				this.direction = this.app.config.player.direction.right;
+				this.direction = 'right';
 			else if (moving_left)
-				this.direction = this.app.config.player.direction.left;
+				this.direction = 'left';
 			else if (moving_up)
-				this.direction = this.app.config.player.direction.up;
+				this.direction = 'up';
 			else if (moving_down)
-				this.direction = this.app.config.player.direction.down;
+				this.direction = 'down';
 		} else {
 			// check if the direction is still okay
-			if ((this.direction == this.app.config.player.direction.right) && (!moving_right)) {
+			if ((this.direction === 'right') && (!moving_right)) {
 				startAnimation = true;
 				if (moving_left)
-					this.direction = this.app.config.player.direction.left;
+					this.direction = 'left';
 				else if (moving_up)
-					this.direction = this.app.config.player.direction.up;
+					this.direction = 'up';
 				else if (moving_down)
-					this.direction = this.app.config.player.direction.down;
-			} else if ((this.direction == this.app.config.player.direction.left) && (!moving_left)) {
+					this.direction = 'down';
+			} else if ((this.direction === 'left') && (!moving_left)) {
 				startAnimation = true;
 				if (moving_right)
-					this.direction = this.app.config.player.direction.right;
+					this.direction = 'right';
 				else if (moving_up)
-					this.direction = this.app.config.player.direction.up;
+					this.direction = 'up';
 				else if (moving_down)
-					this.direction = this.app.config.player.direction.down;
-			} else if ((this.direction == this.app.config.player.direction.up) && (!moving_up)) {
+					this.direction = 'down';
+			} else if ((this.direction === 'up') && (!moving_up)) {
 				startAnimation = true;
 				if (moving_down)
-					this.direction = this.app.config.player.direction.down;
+					this.direction = 'down';
 				else if (moving_right)
-					this.direction = this.app.config.player.direction.right;
+					this.direction = 'right';
 				else if (moving_left)
-					this.direction = this.app.config.player.direction.left;
-			} else if ((this.direction == this.app.config.player.direction.down) && (!moving_down)) {
+					this.direction = 'left';
+			} else if ((this.direction === 'down') && (!moving_down)) {
 				startAnimation = true;
 				if (moving_up)
-					this.direction = this.app.config.player.direction.up;
+					this.direction = 'up';
 				else if (moving_right)
-					this.direction = this.app.config.player.direction.right;
+					this.direction = 'right';
 				else if (moving_left)
-					this.direction = this.app.config.player.direction.left;
+					this.direction = 'left';
 			}
 		}
 
@@ -347,18 +347,7 @@ Player.prototype.react = function (speed, resizeWindow) {
 			this.app.nutcracker.pauseAll(this);
 			this.app.nutcracker.execAll(this, {
 				type: 'movement',
-				name: 'move_' + (() => {
-					switch (this.direction) {
-					case this.app.config.player.direction.right:
-						return 'right';
-					case this.app.config.player.direction.left:
-						return 'left';
-					case this.app.config.player.direction.up:
-						return 'up';
-					case this.app.config.player.direction.down:
-						return 'down';
-					}
-				})()
+				name: 'move_' + this.direction
 			});
 		}
 
@@ -465,33 +454,33 @@ Player.prototype.react = function (speed, resizeWindow) {
 						if (this.tryingToMoveHorz === 'right' && collides_vertically && collided_vertically) {
 							this.posX = entity.posX - entity.centerX + collision.posX - pcoll.width - pcoll.posX + this.centerX;
 							if (this.tryingToMoveVert === 'up')
-								this.direction = this.app.config.player.direction.up;
+								this.direction = 'up';
 							else if (this.tryingToMoveVert === 'down')
-								this.direction = this.app.config.player.direction.down;
+								this.direction = 'down';
 							else
 								this.moving = false;
 						} else if (this.tryingToMoveHorz === 'left' && collides_vertically && collided_vertically) {
 							this.posX = entity.posX - entity.centerX + collision.posX + collision.width - pcoll.posX + this.centerX;
 							if (this.tryingToMoveVert === 'up')
-								this.direction = this.app.config.player.direction.up;
+								this.direction = 'up';
 							else if (this.tryingToMoveVert === 'down')
-								this.direction = this.app.config.player.direction.down;
+								this.direction = 'down';
 							else
 								this.moving = false;
 						} else if (this.tryingToMoveVert === 'up' && collides_horizontally && collided_horizontally) {
 							this.posY = entity.posY - entity.centerY + collision.posY + collision.height - pcoll.posY + this.centerY;
 							if (this.tryingToMoveHorz === 'right')
-								this.direction = this.app.config.player.direction.right;
+								this.direction = 'right';
 							else if (this.tryingToMoveHorz === 'left')
-								this.direction = this.app.config.player.direction.left;
+								this.direction = 'left';
 							else
 								this.moving = false;
 						} else if (this.tryingToMoveVert === 'down' && collides_horizontally && collided_horizontally) {
 							this.posY = entity.posY - entity.centerY + collision.posY - pcoll.height - pcoll.posY + this.centerY;
 							if (this.tryingToMoveHorz === 'right')
-								this.direction = this.app.config.player.direction.right;
+								this.direction = 'right';
 							else if (this.tryingToMoveHorz === 'left')
-								this.direction = this.app.config.player.direction.left;
+								this.direction = 'left';
 							else
 								this.moving = false;
 						}
@@ -541,13 +530,13 @@ Player.prototype.react = function (speed, resizeWindow) {
 		)
 			; // yep, a single semicolon, 'no operation'
 		else if (this.tryingToMoveHorz === 'right')
-			this.direction = this.app.config.player.direction.right;
+			this.direction = 'right';
 		else if (this.tryingToMoveHorz === 'left')
-			this.direction = this.app.config.player.direction.left;
+			this.direction = 'left';
 		else if (this.tryingToMoveVert === 'up')
-			this.direction = this.app.config.player.direction.up;
+			this.direction = 'up';
 		else if (this.tryingToMoveVert === 'down')
-			this.direction = this.app.config.player.direction.down;
+			this.direction = 'down';
 	}
 
 	// load direction's view if it changed

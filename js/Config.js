@@ -37,13 +37,7 @@ var Config = function (application) {
 	};
 	this.player = {
 		name: 'shiro',
-		variant: undefined,
-		direction: {	// don't change those values
-			up: 0,	// they are used in Player.prototype.draw
-			down: 1,	// FIXME should it be fixed or not?
-			right: 2,
-			left: 3
-		}
+		variant: undefined
 	};
 	this.map = {
 		name: 'grassland',

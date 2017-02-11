@@ -223,16 +223,16 @@ Application.prototype.init = function (arg) {
 
 					let rightDirection = false;
 					switch (this.player.direction) {
-					case this.config.player.direction.up:
+					case 'up':
 						rightDirection = entity.posY < this.player.posY;
 						break;
-					case this.config.player.direction.down:
+					case 'down':
 						rightDirection = entity.posY > this.player.posY;
 						break;
-					case this.config.player.direction.left:
+					case 'left':
 						rightDirection = entity.posX < this.player.posX;
 						break;
-					case this.config.player.direction.right:
+					case 'right':
 						rightDirection = entity.posX > this.player.posX;
 						break;
 					}
