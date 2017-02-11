@@ -35,6 +35,15 @@ Nutcracker.prototype.load = function () {
 			});
 		});
 	});
+	this.app.player.nuts.forEach(nut => {
+		this.nutshells.push({
+			owner: this.app.player,
+			parent: this,
+			timer: undefined,
+			variables: {},
+			nut: nut
+		});
+	});
 
 	// exec all auto nuts
 	this.nutshells.forEach(nutshell => {

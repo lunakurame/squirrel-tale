@@ -81,5 +81,66 @@
 			}
 		]
 	},
-	"framesCount": 4
+	"nuts": [
+		{
+			"name": "move_up",
+			"type": "movement",
+			"script": [
+				"set view master-up 1",
+				"nop 250",
+				"set frame 2",
+				"nop 250",
+				"set frame 3",
+				"nop 250",
+				"set frame 0",
+				"nop 250",
+				"jmp 0"
+			]
+		},
+		{
+			"name": "move_down",
+			"type": "movement",
+			"script": [
+				"set view master-down 1",
+				"nop 250",
+				"set frame 2",
+				"nop 250",
+				"set frame 3",
+				"nop 250",
+				"set frame 0",
+				"nop 250",
+				"jmp 0"
+			]
+		},
+		{
+			"name": "move_right",
+			"type": "movement",
+			"script": [
+				"set view master-right 1",
+				"nop 250",
+				"set frame 2",
+				"nop 250",
+				"set frame 3",
+				"nop 250",
+				"set frame 0",
+				"nop 250",
+				"jmp 0"
+			]
+		},
+		{
+			"name": "move_left",
+			"type": "movement",
+			"script": [
+				"set view master-left 1",
+				"nop 250",
+				"set frame 2",
+				"nop 250",
+				"set frame 3",
+				"nop 250",
+				"set frame 0",
+				"nop 250",
+				"jmp 0"
+			]
+		}
+	]
 }

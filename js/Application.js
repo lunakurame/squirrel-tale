@@ -479,7 +479,8 @@ Application.prototype.draw = function () {
 // TODO bugfix: when animation changes collisions while player is not moving,
 // then player can appear inside the collision, and then teleport though it
 // when walking inside
-			// player react
+			// player
+			this.player.execQueue();
 			this.player.react(speed);
 
 			// draw

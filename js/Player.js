@@ -23,7 +23,6 @@ var Player = function (application, name, variant) {
 	this.views        = {};
 	this.nuts         = [];
 	this.defaultSpeed = 0;
-	this.framesCount  = 1;	// TODO [animations] remove
 
 	// from map's JSON (may be overrided!)
 	// this.label = [see 'from JSON']
@@ -35,7 +34,6 @@ var Player = function (application, name, variant) {
 
 	// generated on runtime
 	this.fullName   = name + (typeof variant === 'undefined' ? '' : '-' + variant);
-	this.realView   = 'master';
 	this.cropX      = 0;	// -\ 
 	this.cropY      = 0;	//  |
 	this.cropWidth  = 0;	//  |
@@ -47,7 +45,7 @@ var Player = function (application, name, variant) {
 	this.collisions = [];	// -/
 	this.moving     = false;
 	this.speed      = 0;
-	this.movingAnimationInterval;	// TODO [animations] remove
+	this.continuesMovement;
 	this.tryingToMoveVert = 'none'; // modified by Controls event
 	this.tryingToMoveHorz = 'none'; // modified by Controls event
 	this.stats = {
@@ -64,7 +62,6 @@ Player.prototype.load = function (data, image) {
 	// load info from JSON
 	this.label        = this.data.file.label;
 	this.defaultSpeed = this.data.file.defaultSpeed;
-	this.framesCount  = this.data.file.framesCount;	// TODO [animations] remove
 	this.defaults     = tools.cloneJson(this.data.file.defaults);
 
 	this.views = {};
@@ -127,25 +124,8 @@ Player.prototype.setView = function (view, frame) {
 	if (typeof this.frame === 'undefined')
 		this.frame = 0;
 
-	// include direction
-	this.realView = this.view;
-	switch (this.direction) {
-	case this.app.config.player.direction.down:
-		this.realView += '-down';
-		break;
-	case this.app.config.player.direction.up:
-		this.realView += '-up';
-		break;
-	case this.app.config.player.direction.right:
-		this.realView += '-right';
-		break;
-	case this.app.config.player.direction.left:
-		this.realView += '-left';
-		break;
-	}
-
 	// get pointer to frame
-	var framePointer = this.views[this.realView][this.frame];
+	var framePointer = this.views[this.view][this.frame];
 
 	// set data
 	this.cropX      = framePointer.cropX;
@@ -267,13 +247,11 @@ Player.prototype.draw = function () {
 };
 
 Player.prototype.react = function (speed, resizeWindow) {
-// TODO [animations] lots of things to remove
 	if (!this.moving) {
 		// clear moving animation
-		clearInterval(this.movingAnimationInterval);
-		this.movingAnimationInterval = undefined;
-		this.frame = 0;
-		this.setView();
+		this.continuesMovement = false;
+		this.app.nutcracker.pauseAll(this);
+		this.setFrame(0);
 	}
 
 	// check if player is moving (it doesn't check collisions)
@@ -307,22 +285,15 @@ Player.prototype.react = function (speed, resizeWindow) {
 
 	// remember current direction to reload frame in case it changes
 	old_direction = this.direction;
-
 	// react
 	switch (mode) {
 	case 'moving':
-		// if player just started moving (wasn't moving a cycle before)
-		if (typeof this.movingAnimationInterval === 'undefined') {
-			// player animations
-			this.frame = 1;
-			this.setView();
-			this.movingAnimationInterval = setInterval(function () {
-				++this.frame;
-				if (this.frame > this.data.file.framesCount - 1)
-					this.frame = 0;
-				this.setView();
-			}.bind(this), 250);
+		let startAnimation = false;
 
+		// if player just started moving (wasn't moving a cycle before)
+		if (this.continuesMovement === false) {
+			this.continuesMovement = true;
+			startAnimation = true;
 			// set direction
 			// in case horizontal and vertical direction is pressed at the same time,
 			// the horizontal one is prefered
@@ -337,6 +308,7 @@ Player.prototype.react = function (speed, resizeWindow) {
 		} else {
 			// check if the direction is still okay
 			if ((this.direction == this.app.config.player.direction.right) && (!moving_right)) {
+				startAnimation = true;
 				if (moving_left)
 					this.direction = this.app.config.player.direction.left;
 				else if (moving_up)
@@ -344,6 +316,7 @@ Player.prototype.react = function (speed, resizeWindow) {
 				else if (moving_down)
 					this.direction = this.app.config.player.direction.down;
 			} else if ((this.direction == this.app.config.player.direction.left) && (!moving_left)) {
+				startAnimation = true;
 				if (moving_right)
 					this.direction = this.app.config.player.direction.right;
 				else if (moving_up)
@@ -351,6 +324,7 @@ Player.prototype.react = function (speed, resizeWindow) {
 				else if (moving_down)
 					this.direction = this.app.config.player.direction.down;
 			} else if ((this.direction == this.app.config.player.direction.up) && (!moving_up)) {
+				startAnimation = true;
 				if (moving_down)
 					this.direction = this.app.config.player.direction.down;
 				else if (moving_right)
@@ -358,6 +332,7 @@ Player.prototype.react = function (speed, resizeWindow) {
 				else if (moving_left)
 					this.direction = this.app.config.player.direction.left;
 			} else if ((this.direction == this.app.config.player.direction.down) && (!moving_down)) {
+				startAnimation = true;
 				if (moving_up)
 					this.direction = this.app.config.player.direction.up;
 				else if (moving_right)
@@ -365,6 +340,26 @@ Player.prototype.react = function (speed, resizeWindow) {
 				else if (moving_left)
 					this.direction = this.app.config.player.direction.left;
 			}
+		}
+
+		// player animations
+		if (startAnimation) {
+			this.app.nutcracker.pauseAll(this);
+			this.app.nutcracker.execAll(this, {
+				type: 'movement',
+				name: 'move_' + (() => {
+					switch (this.direction) {
+					case this.app.config.player.direction.right:
+						return 'right';
+					case this.app.config.player.direction.left:
+						return 'left';
+					case this.app.config.player.direction.up:
+						return 'up';
+					case this.app.config.player.direction.down:
+						return 'down';
+					}
+				})()
+			});
 		}
 
 		// remember current position (for collisions)
