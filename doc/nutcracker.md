@@ -86,11 +86,23 @@ Logs `PARAM1` to the JavaScript console, then jumps to the next instruction.
 `PARAM1` might be a variable name.
 - `inc PARAM1`  
 If a variable named `PARAM1` is numeric, increments its value.
+- `inv PARAM1 PARAM2 PARAM3`  
+`PARAM1` - action.  
+`PARAM2` - parameter.  
+`PARAM3` - parameter.  
+Actions:
+	- `add`  
+	  Adds an item named `PARAM2` to the player inventory.
+	- `rem`  
+	  Removes an item named `PARAM2` from the player inventory.
+	- `has`  
+	  Jumps to label `PARAM2` if there is an item named `PARAM3` in the
+	  player inventory.
 - `jmp PARAM1 PARAM2 PARAM3 PARAM4`  
-`PARAM1` - target label.
-`PARAM2` - variable or numeric value.
-`PARAM3` - operator (==, !=, >, >=, <, <=).
-`PARAM4` - variable or numeric value.
+`PARAM1` - target label.  
+`PARAM2` - variable or numeric value.  
+`PARAM3` - operator (==, !=, >, >=, <, <=).  
+`PARAM4` - variable or numeric value.  
 If `PARAM1` is not defined, throws warning to the JavaScript console.
 If `PARAM1` is numeric, jumps to the line `PARAM1` of the script.
 Otherwise, tries to find the first occurence of label `PARAM1` in the script. If

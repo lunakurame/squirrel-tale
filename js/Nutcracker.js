@@ -232,6 +232,81 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 			++nutshell.variables[args[1]];
 		jumpNext();
 		break;
+	case 'inv':
+		if (typeof args[1] === 'undefined') {
+			warn('Missing inventory action parameter');
+			jumpNext();
+			break;
+		}
+		if (typeof args[2] === 'undefined') {
+			warn('Missing inventory object parameter');
+			jumpNext();
+			break;
+		}
+
+		arg1 = args[1];
+		if (this.isNutshellVariable(nutshell, arg1))
+			arg1 = this.getNutshellVariable(nutshell, arg1);
+		if (typeof args[3] !== 'undefined') {
+			arg2 = line.slice(('inv ' + args[1] + ' ').length);
+		} else {
+			arg2 = args[2];
+			if (this.isNutshellVariable(nutshell, arg2))
+				arg2 = this.getNutshellVariable(nutshell, arg2);
+		}
+
+		switch (arg1) {
+		case 'add':
+			this.app.player.inventory.push({
+				name: arg2
+			});
+			jumpNext();
+			break;
+		case 'rem':
+			for (let i in this.app.player.inventory)
+				if (this.app.player.inventory[i].name === arg2) {
+					this.app.player.inventory.splice(i, 1);
+					break;
+				}
+			jumpNext();
+			break;
+		case 'has':
+			arg2 = args[2];
+			if (this.isNutshellVariable(nutshell, arg2))
+				arg2 = this.getNutshellVariable(nutshell, arg2);
+			if (typeof args[4] !== 'undefined') {
+				arg3 = line.slice(('inv ' + args[1] + ' ' + args[2] + ' ').length);
+			} else {
+				arg3 = args[3];
+				if (this.isNutshellVariable(nutshell, arg3))
+					arg3 = this.getNutshellVariable(nutshell, arg3);
+			}
+
+			let has = false;
+			for (let i in this.app.player.inventory)
+				if (this.app.player.inventory[i].name === arg3) {
+					has = true;
+					break;
+				}
+
+			if (has) {
+				if (tools.isNumeric(arg2)) {
+					jump(parseInt(arg2));
+				} else {
+					let labelPos = nutshell.nut.script.indexOf('lbl ' + arg2);
+					if (labelPos === -1) {
+						warn('Cannot jump to a nonexistent label "' + arg2 + '"');
+						jumpNext();
+					} else {
+						jump(labelPos);
+					}
+				}
+			} else {
+				jumpNext();
+			}
+			break;
+		}
+		break;
 	case 'jmp':
 		if (typeof args[1] === 'undefined') {
 			warn('Cannot jump to nowhere, missing destination parameter');
