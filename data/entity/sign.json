@@ -30,7 +30,7 @@
 			"type": "interaction",
 			"script": [
 				"dlg caption 0 text Don't walk on the flowers.",
-				"dlg caption 0 show"
+				"dlg caption show"
 			]
 		}
 	]

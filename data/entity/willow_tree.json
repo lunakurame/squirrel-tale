@@ -187,10 +187,10 @@
 			"script": [
 				"dlg ekk 0 text Looks like a squirrel lives on this tree!",
 				"dlg ekk 0 choice choice_knock Knock.",
+				"dlg ekk 0 choice choice_go_inside Go inside the tree hole.",
 				"dlg ekk 0 choice choice_go_away Go away.",
-				"dlg ekk 0 show",
 				"dlg ekk 1 text Ekk ekk!",
-				"dlg ekk 1 show",
+				"dlg ekk show",
 
 				"set view master_hole 0",
 				"nop 300",
@@ -233,9 +233,22 @@
 			"type": "choice",
 			"script": [
 				"dlg ekk 0 text ...",
-				"dlg ekk 0 show",
 				"dlg ekk 1 text Maybe they're not home...",
-				"dlg ekk 1 show"
+				"dlg ekk show"
+			]
+		},
+		{
+			"name": "choice_go_inside",
+			"type": "choice",
+			"script": [
+				"dlg teleport 0 text What's that?",
+				"dlg teleport 1 text Something's pulling me in!",
+				"dlg teleport 2 text Aaaaaaaaaaaaaaa!",
+				"dlg teleport show",
+				"map test",
+				"nop 200",
+				"dlg new_place 0 text That's a weird place...",
+				"dlg new_place show"
 			]
 		},
 		{

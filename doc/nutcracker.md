@@ -50,21 +50,25 @@ line matches any of the rules for ignored lines.
 
 - `dlg PARAM1 PARAM2 PARAM3 PARAM4`  
 `PARAM1` - dialogue object name.  
-`PARAM2` - dialogue object's item index.  
-`PARAM3` - action.  
+`PARAM2` - dialogue object's item index OR action.  
+`PARAM3` - configuration parameter.  
 `PARAM4` - parameter.  
 `PARAM5` - parameter.  
-At the end, always jumps to the next instruction.
+If `PARAM2` equals `show`, it shows a dialogue with all defined configuration
+parameters. Note that `show` is synchronous on the nut thread, so it will wait
+for player interaction and jump to the next instruction when the dialogue
+disappears from the screen. Other `dlg` instructions jump to the next one
+immediately. If the dialogue is being replaced by another nut (eg. when
+triggering a choice option), it will not jump to the parent dialogue's next
+instruction.
 `PARAM1`, `PARAM3` and `PARAM4` might be variable names.  
-Actions:
+Configuration parameters:
 	- `text`  
 	  Adds text `PARAM4` to the dialogue object.
 	- `choice`  
 	  Adds a choice option to the dialogue object. The displayed text is
 	  `PARAM5` and it jumps to the nut named `PARAM4` when the user selects
 	  that option. Note that the target nut must be of type "choice".
-	- `show`  
-	  Shows the dialogue on the screen.
 - `lbl PARAM1`  
 Sets a label named `PARAM1`, then jumps to the next instruction.
 - `let PARAM1 PARAM2`  

@@ -24,7 +24,8 @@ var Hud = function (application) {
 	this.dialogue = {
 		currentIndex: 0,
 		selectedChoice: 0,
-		items: []
+		items: [],
+		onend: null // function
 	};
 	this.pauseMenu = {
 		category: 'main',
@@ -558,6 +559,7 @@ Hud.prototype.setDialogue = function (options) {
 			}
 		]
 	}, item));
+	this.dialogue.onend = options.onend;
 
 	this.app.player.tryingToMoveHorz = 'none';
 	this.app.player.tryingToMoveVert = 'none';
@@ -569,6 +571,8 @@ Hud.prototype.resetDialogue = function (options) {
 	this.dialogue.currentIndex = 0;
 	this.dialogue.selectedChoice = 0;
 	this.dialogue.items = [];
+	this.dialogue.onend = null;
+
 	this.app.modePrev = this.mode;
 	this.app.mode = 'game';
 };

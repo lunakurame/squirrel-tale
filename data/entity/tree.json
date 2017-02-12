@@ -76,7 +76,7 @@
 			"type": "interaction",
 			"script": [
 				"dlg ekk 0 text Hm... I don't see any squirrels here.",
-				"dlg ekk 0 show",
+				"dlg ekk show",
 				"nut dance"
 			]
 		}

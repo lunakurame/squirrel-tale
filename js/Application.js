@@ -261,9 +261,12 @@ Application.prototype.init = function (arg) {
 					this.hud.redraw();
 				} else {
 					++this.hud.dialogue.currentIndex;
-					if (this.hud.dialogue.currentIndex >= this.hud.dialogue.items.length)
+					if (this.hud.dialogue.currentIndex >= this.hud.dialogue.items.length) {
+						let onend = this.hud.dialogue.onend;
 						this.hud.resetDialogue();
-						this.hud.redraw();
+						onend();
+					}
+					this.hud.redraw();
 				}
 				break;
 			}

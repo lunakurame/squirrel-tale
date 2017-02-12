@@ -124,9 +124,8 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 			if (this.isNutshellVariable(nutshell, arg1))
 				arg1 = this.getNutshellVariable(nutshell, arg1);
 			arg2 = args[2];
-			arg3 = args[3];
 
-			switch (arg3) {
+			switch (arg2) {
 			case 'show':
 				// build the dialogue array
 				let dialogue = [];
@@ -173,8 +172,6 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 									))
 								});
 								break;
-							case 'show':
-								break;
 							default:
 								warn('Invalid dialogue instruction "' + nutargs[3] + '"');
 							}
@@ -188,12 +185,14 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 						break;
 				}
 
+				dialogue.onend = () => jumpNext();
 				this.app.hud.setDialogue(dialogue);
 				break;
+			default:
+				jumpNext();
 			}
 		}
 
-		jumpNext();
 		break;
 	case 'lbl':
 		jumpNext();
