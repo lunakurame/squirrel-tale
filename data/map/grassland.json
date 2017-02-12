@@ -378,7 +378,17 @@
 			"posY": 662,
 			"posZ": "over",
 			"view": "big",
-			"frame": 2
+			"frame": 2,
+			"nuts": [
+				{
+					"name": "talking_papaver",
+					"type": "interaction",
+					"script": [
+						"dlg talk 0 text Haven't you read the sign?!",
+						"dlg talk 0 show"
+					]
+				}
+			]
 		},
 		{
 			"name": "papaver_flower",

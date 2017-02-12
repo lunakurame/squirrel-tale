@@ -173,6 +173,10 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 									))
 								});
 								break;
+							case 'show':
+								break;
+							default:
+								warn('Invalid dialogue instruction "' + nutargs[3] + '"');
 							}
 						}
 					});

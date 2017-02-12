@@ -98,6 +98,20 @@ Entity.prototype.load = function (mapData, data, image) {
 	if (typeof this.data.file.nuts !== 'undefined')
 		this.nuts = tools.cloneJson(this.data.file.nuts);
 
+	// map nuts overrides
+	if (typeof this.mapData.nuts !== 'undefined')
+		this.mapData.nuts.forEach(mapNut => {
+			let added = false;
+			for (let i in this.nuts)
+				if (this.nuts[i].name === mapNut.name) {
+					this.nuts[i] = tools.cloneJson(mapNut);
+					added = true;
+					break;
+				}
+			if (!added)
+				this.nuts.push(tools.cloneJson(mapNut));
+		});
+
 	// set view and frame
 	this.setView();
 
