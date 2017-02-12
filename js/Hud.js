@@ -465,37 +465,82 @@ Hud.prototype.drawUserMenu = function () {
 	let playerNameTextSize   = this.app.fontList.getTextSize(this.app.player.label, 'basic');
 	let statsLabelsTextSize  = this.app.fontList.getTextSize('HP\nXP', 'basic');
 	let statsNumbersTextSize = this.app.fontList.getTextSize(this.app.player.stats.hp + '\n' + this.app.player.stats.xp, 'basic');
+	let itemsLabelTextSize   = this.app.fontList.getTextSize('Items:', 'basic');
 
-	let boxWidth = playerNameTextSize.width;
+	let texts = [];
+	let top = 0;
+	let boxWidth = 10;
+	if (playerNameTextSize.width > boxWidth)
+		boxWidth = playerNameTextSize.width;
 	if (statsLabelsTextSize.width + 10 + statsNumbersTextSize.width > boxWidth)
-		boxWidth = statsLabelsTextSize.width + 10 + statsNumbersTextSize.width + 32;
-	let boxHeight = playerNameTextSize.height + 8 + statsLabelsTextSize.height + 32;
+		boxWidth = statsLabelsTextSize.width + 10 + statsNumbersTextSize.width;
+
+	texts.push({
+		text: this.app.player.label,
+		posX: 0,
+		posY: top,
+		growBox: false
+	});
+	top += playerNameTextSize.height + 8;
+
+	texts.push({
+		text: 'HP\nXP',
+		posX: 0,
+		posY: top,
+		growBox: false
+	});
+	texts.push({
+		text: this.app.player.stats.hp + '\n' + this.app.player.stats.xp,
+		posX: statsLabelsTextSize.width + 10,
+		posY: top,
+		growBox: false
+	});
+	top += statsLabelsTextSize.height + 8;
+	texts.push({
+		text: 'Items:',
+		posX: 0,
+		posY: top,
+		growBox: false
+	});
+	top += itemsLabelTextSize.height;
+
+	if (this.app.player.inventory.length > 0) {
+		this.app.player.inventory.forEach(item => {
+			top += 8;
+			let textSize = this.app.fontList.getTextSize(' ' + item.name, 'basic');
+			texts.push({
+				text: ' ' + item.name,
+				posX: 0,
+				posY: top,
+				growBox: false
+			});
+			top += textSize.height;
+			if (textSize.width > boxWidth)
+				boxWidth = textSize.width;
+		});
+	} else {
+		top += 8;
+		let textSize = this.app.fontList.getTextSize(' (no items)', 'basic');
+		texts.push({
+			text: ' (no items)',
+			posX: 0,
+			posY: top,
+			growBox: false
+		});
+		top += textSize.height;
+		if (textSize.width > boxWidth)
+			boxWidth = textSize.width;
+	}
+
+	boxWidth += 32;
+	let boxHeight = top + 32;
 
 	this.drawBox({
 		posX: this.jail.left,
 		posY: this.jail.top,
 		width: boxWidth,
 		height: boxHeight,
-		texts: [
-			{
-				text: this.app.player.label,
-				posX: 0,
-				posY: 0,
-				growBox: false
-			},
-			{
-				text: 'HP\nXP',
-				posX: 0,
-				posY: playerNameTextSize.height + 8,
-				growBox: false
-			},
-			{
-				text: this.app.player.stats.hp + '\n' + this.app.player.stats.xp,
-				posX: statsLabelsTextSize.width + 10,
-				posY: playerNameTextSize.height + 8,
-				growBox: false
-			}
-		]
+		texts: texts
 	});
 };
 

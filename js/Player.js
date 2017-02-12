@@ -52,6 +52,13 @@ var Player = function (application, name, variant) {
 		hp: 10,
 		xp: 0
 	};
+	this.inventory = [
+		/* {
+		 * 	name: String
+		 * }
+		 * ...
+		 */
+	];
 };
 
 Player.prototype.load = function (data, image) {
