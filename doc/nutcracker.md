@@ -48,6 +48,8 @@ line matches any of the rules for ignored lines.
 
 ### Instructions:
 
+- `dec PARAM1`  
+If a variable named `PARAM1` is numeric, decrements its value.
 - `dlg PARAM1 PARAM2 PARAM3 PARAM4`  
 `PARAM1` - dialogue object name.  
 `PARAM2` - dialogue object's item index OR action.  
@@ -74,18 +76,27 @@ Sets a label named `PARAM1`, then jumps to the next instruction.
 - `let PARAM1 PARAM2`  
 If `PARAM1` is not defined, throws warning to the console.
 Otherwise defines a variable, which is visible in the scope of the currently
-executed script. There are three variable types: `string`, `number`, `null`.
+executed script. There are two variable types: `string`, `number`.
 The type is determined automatically. `PARAM1` is the variable name, `PARAM2` is
-the variable value. To define a null variable, omit `PARAM2`.
+the variable value. If you omit `PARAM2` and the variable is not yet defined,
+its value will be initialized with 0.
 At the end, always jumps to the next instruction.
 - `log PARAM1`  
 Logs `PARAM1` to the JavaScript console, then jumps to the next instruction.
 `PARAM1` might be a variable name.
-- `jmp PARAM1`  
+- `inc PARAM1`  
+If a variable named `PARAM1` is numeric, increments its value.
+- `jmp PARAM1 PARAM2 PARAM3 PARAM4`  
+`PARAM1` - target label.
+`PARAM2` - variable or numeric value.
+`PARAM3` - operator (==, !=, >, >=, <, <=).
+`PARAM4` - variable or numeric value.
 If `PARAM1` is not defined, throws warning to the JavaScript console.
 If `PARAM1` is numeric, jumps to the line `PARAM1` of the script.
 Otherwise, tries to find the first occurence of label `PARAM1` in the script. If
 found, jumps to that line, if not, throws a warning.
+If PARAMs 2, 3, 4 are defined, it checks the condition before jumping and if the
+result is `false`, it jumps to the next line instead of the defined label.
 `PARAM1` might be a variable name.
 - `map PARAM1 PARAM2`  
 If `PARAM1` is not defined, throws a warning. Otherwise, loads map named

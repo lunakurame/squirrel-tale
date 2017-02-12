@@ -118,6 +118,13 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 	// instructions
 	let arg1, arg2, arg3;
 	switch (args[0]) {
+	case 'dec':
+		if (typeof args[1] === 'undefined')
+			warn('Cannot decrement a variable without a name');
+		else if (typeof args[2] === 'undefined' && tools.isNumeric(nutshell.variables[args[1]]))
+			--nutshell.variables[args[1]];
+		jumpNext();
+		break;
 	case 'dlg':
 		if (typeof args[1] !== 'undefined' && typeof args[2] !== 'undefined') {
 			arg1 = args[1];
@@ -201,7 +208,7 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 		if (typeof args[1] === 'undefined')
 			warn('Cannot set a variable without a name');
 		else if (typeof args[2] === 'undefined')
-			nutshell.variables[args[1]] = null;
+			nutshell.variables[args[1]] = nutshell.variables[args[1]] || 0;
 		else if (tools.isNumeric(args[2]))
 			nutshell.variables[args[1]] = +args[2];
 		else
@@ -218,6 +225,13 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 		console.log(arg1);
 		jumpNext();
 		break;
+	case 'inc':
+		if (typeof args[1] === 'undefined')
+			warn('Cannot increment a variable without a name');
+		else if (typeof args[2] === 'undefined' && tools.isNumeric(nutshell.variables[args[1]]))
+			++nutshell.variables[args[1]];
+		jumpNext();
+		break;
 	case 'jmp':
 		if (typeof args[1] === 'undefined') {
 			warn('Cannot jump to nowhere, missing destination parameter');
@@ -228,6 +242,46 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 		arg1 = args[1];
 		if (this.isNutshellVariable(nutshell, arg1))
 			arg1 = this.getNutshellVariable(nutshell, arg1);
+		arg2 = args[2];
+		if (this.isNutshellVariable(nutshell, arg2))
+			arg2 = this.getNutshellVariable(nutshell, arg2);
+		arg3 = args[3];
+		arg4 = args[4];
+		if (this.isNutshellVariable(nutshell, arg4))
+			arg4 = this.getNutshellVariable(nutshell, arg4);
+
+		if (typeof args[4] !== 'undefined') {
+			if (tools.isNumeric(arg2))
+				arg2 = +arg2;
+			if (tools.isNumeric(arg4))
+				arg4 = +arg4;
+
+			let test = false;
+			switch (arg3) {
+			case '==':
+				test = arg2 === arg4;
+				break;
+			case '!=':
+				test = arg2 !== arg4;
+				break;
+			case '>':
+				test = arg2 > arg4;
+				break;
+			case '>=':
+				test = arg2 >= arg4;
+				break;
+			case '<':
+				test = arg2 < arg4;
+				break;
+			case '<=':
+				test = arg2 <= arg4;
+				break;
+			}
+			if (!test) {
+				jumpNext();
+				break;
+			}
+		}
 
 		if (tools.isNumeric(arg1)) {
 			jump(parseInt(arg1));
