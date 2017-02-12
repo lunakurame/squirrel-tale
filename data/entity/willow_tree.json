@@ -245,7 +245,7 @@
 				"dlg teleport 1 text Something's pulling me in!",
 				"dlg teleport 2 text Aaaaaaaaaaaaaaa!",
 				"dlg teleport show",
-				"map test",
+				"map start test",
 				"nop 200",
 				"dlg new_place 0 text That's a weird place...",
 				"dlg new_place show"

@@ -24,7 +24,7 @@ var Application = function () {
 	this.hud = new Hud(this);
 };
 
-Application.prototype.loadMap = function (name, variant, arg, callback) {
+Application.prototype.loadMap = function (name, variant, entranceName, arg, callback) {
 	let map;
 	// find the map in this.maps
 	for (let i in this.maps)
@@ -44,7 +44,7 @@ Application.prototype.loadMap = function (name, variant, arg, callback) {
 		this.resourceLoader.loadOnce('image', 'map', map.fullName);
 		this.loadingScreen.fadeIn(() =>
 			this.resourceLoader.waitForAllFiles(
-				() => this.loadMap(name, variant, 'resources-loaded', callback),
+				() => this.loadMap(name, variant, entranceName, 'resources-loaded', callback),
 				() => this.loadingScreen.showError()
 			)
 		);
@@ -55,7 +55,7 @@ Application.prototype.loadMap = function (name, variant, arg, callback) {
 			this.resourceLoader.resources['json/map/' + map.name],
 			this.resourceLoader.resources['image/map/' + map.fullName]
 		);
-		map.loadEntities(() => this.loadMap(name, variant, 'setup-entities', callback));
+		map.loadEntities(() => this.loadMap(name, variant, entranceName, 'setup-entities', callback));
 		break;
 	case 'setup-entities':
 		this.map = map;
@@ -65,7 +65,8 @@ Application.prototype.loadMap = function (name, variant, arg, callback) {
 		this.map.draw();
 		this.hud.draw();
 		this.player.loadEntrances(
-			this.resourceLoader.resources['json/map/' + this.map.name].file.entrances
+			this.resourceLoader.resources['json/map/' + this.map.name].file.entrances,
+			entranceName
 		);
 		this.player.react(0, true);
 		this.loadingScreen.fadeOut();
@@ -129,7 +130,7 @@ Application.prototype.init = function (arg) {
 		this.fontList.load();
 
 		// map
-		this.loadMap(this.config.map.name, this.config.map.variant, undefined, () => this.init('setup-window'));
+		this.loadMap(this.config.map.name, this.config.map.variant, 'start', undefined, () => this.init('setup-window'));
 		break;
 
 	case 'setup-window':

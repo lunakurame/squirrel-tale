@@ -377,11 +377,15 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 		arg2 = args[2];
 		if (this.isNutshellVariable(nutshell, arg2))
 			arg2 = this.getNutshellVariable(nutshell, arg2);
+		arg3 = args[3];
+		if (this.isNutshellVariable(nutshell, arg3))
+			arg3 = this.getNutshellVariable(nutshell, arg3);
 
-		if (typeof arg1 === 'undefined')
+		if (typeof arg1 === 'undefined' ||
+		    typeof arg2 === 'undefined')
 			warn('Cannot load map, missing parameter');
 		else
-			this.app.loadMap(arg1, arg2);
+			this.app.loadMap(arg2, arg3, arg1);
 		jumpNext();
 		break;
 	case 'nop':

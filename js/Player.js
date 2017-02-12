@@ -98,15 +98,16 @@ Player.prototype.load = function (data, image) {
 	this.context = this.app.canvasList.contexts['player'];
 };
 
-Player.prototype.loadEntrances = function (entrances) {
-	this.entrances = entrances;
+Player.prototype.loadEntrances = function (entrances, entranceName = 'start') {
+	if (typeof entrances !== 'undefined')
+		this.entrances = tools.cloneJson(entrances);
 
 	// load info from map's JSON
-	this.posX      = this.entrances['start'].posX;
-	this.posY      = this.entrances['start'].posY;
-	this.view      = this.entrances['start'].view;
-	this.frame     = this.entrances['start'].frame;
-	this.direction = this.entrances['start'].direction;
+	this.posX      = this.entrances[entranceName].posX;
+	this.posY      = this.entrances[entranceName].posY;
+	this.view      = this.entrances[entranceName].view;
+	this.frame     = this.entrances[entranceName].frame;
+	this.direction = this.entrances[entranceName].direction;
 
 	this.react(0, true);
 };

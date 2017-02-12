@@ -110,10 +110,11 @@ found, jumps to that line, if not, throws a warning.
 If PARAMs 2, 3, 4 are defined, it checks the condition before jumping and if the
 result is `false`, it jumps to the next line instead of the defined label.
 `PARAM1` might be a variable name.
-- `map PARAM1 PARAM2`  
-If `PARAM1` is not defined, throws a warning. Otherwise, loads map named
-`PARAM1`, variant `PARAM2`. Always jumps to the next instruction.
-`PARAM1` and `PARAM2` might be variable names.
+- `map PARAM1 PARAM2 PARAM3`  
+If `PARAM1` or `PARAM2` is not defined, throws a warning. Otherwise, loads map
+named `PARAM2`, variant `PARAM3` and places the player in the place defined by
+entrance `PARAM1` in the map file. Always jumps to the next instruction.
+`PARAM1`, `PARAM2` and `PARAM3` might be variable names.
 - `nop PARAM1`  
 If `PARAM1` is not defined or is not numeric, jumps to the next instruction.
 Otherwise, waits for `PARAM1` milliseconds, then jumps to the next instruction.
