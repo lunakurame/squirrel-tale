@@ -244,7 +244,7 @@ Application.prototype.init = function (arg) {
 					}
 				});
 
-				if (minDistance < 20) {
+				if (minDistance < 20 && this.nutcracker.hasAny(closestEntity, {type: 'interaction'})) {
 					this.nutcracker.pauseAll(closestEntity);
 					this.nutcracker.execAll(closestEntity, {type: 'interaction'});
 					this.hud.redraw();

@@ -189,43 +189,7 @@
 				"dlg ekk 0 choice choice_knock Knock.",
 				"dlg ekk 0 choice choice_go_inside Go inside the tree hole.",
 				"dlg ekk 0 choice choice_go_away Go away.",
-				"dlg ekk 1 text Ekk ekk!",
-				"dlg ekk show",
-
-				"set view master_hole 0",
-				"nop 300",
-				"set frame 1",
-				"nop 300",
-				"set frame 2",
-				"nop 300",
-				"set frame 1",
-				"nop 300",
-				"set frame 0",
-				"nop 2000",
-
-				"set view master_hole 0",
-				"nop 300",
-				"set frame 1",
-				"nop 300",
-				"set frame 2",
-				"nop 300",
-				"set frame 1",
-				"nop 300",
-				"set frame 0",
-				"nop 2000",
-
-				"set view master_hole 0",
-				"nop 300",
-				"set frame 1",
-				"nop 300",
-				"set frame 2",
-				"nop 300",
-				"set frame 1",
-				"nop 300",
-				"set frame 0",
-				"nop 2000",
-
-				"nut squirrel_wind"
+				"dlg ekk show"
 			]
 		},
 		{
@@ -234,7 +198,8 @@
 			"script": [
 				"dlg ekk 0 text ...",
 				"dlg ekk 1 text Maybe they're not home...",
-				"dlg ekk show"
+				"dlg ekk show",
+				"nut squirrel_wind"
 			]
 		},
 		{
@@ -254,7 +219,9 @@
 		{
 			"name": "choice_go_away",
 			"type": "choice",
-			"script": []
+			"script": [
+				"nut squirrel_wind"
+			]
 		},
 		{
 			"name": "master_wind",

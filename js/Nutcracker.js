@@ -52,6 +52,17 @@ Nutcracker.prototype.load = function () {
 	});
 };
 
+Nutcracker.prototype.hasAny = function (entity, options) {
+	return this.nutshells.some(nutshell => {
+		if ((typeof entity === 'undefined' || nutshell.owner === entity)) {
+			for (let i in options)
+				if (options[i] !== nutshell.nut[i])
+					return false;
+			return true;
+		}
+	});
+};
+
 Nutcracker.prototype.execAll = function (entity, options) {
 	this.nutshells.forEach(nutshell => {
 		if ((typeof entity === 'undefined' || nutshell.owner === entity)) {
