@@ -1,0 +1,14 @@
+{
+	"label": "Forest 1",
+	"entrances": {
+		"start": {
+			"posX": 80,
+			"posY": 60,
+			"view": "master",
+			"frame": 0,
+			"direction": "down"
+		}
+	},
+	"entities": [
+	]
+}

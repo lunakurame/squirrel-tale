@@ -1,0 +1,85 @@
+{
+	"label": "Sword",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 12,
+		"cropHeight": 21,
+		"width": 12,
+		"height": 21,
+		"centerX": 6,
+		"centerY": 18,
+		"collisions": [
+			{
+				"posX": 0,
+				"posY": 14,
+				"width": 12,
+				"height": 6
+			}
+		]
+	},
+	"views": {
+		"master": [
+			{
+			}
+		],
+		"taken": [
+			{
+				"cropX": 12,
+				"collisions": []
+			}
+		]
+	},
+	"nuts": [
+		{
+			"name": "interaction",
+			"type": "interaction",
+			"script": [
+				"var taken",
+				"jmp taken $taken > 0",
+
+				"dlg item 0 text * Looks like a sword. Take it?",
+				"dlg item 0 choice choice_take_yes Yes.",
+				"dlg item 0 choice choice_take_no No.",
+				"dlg item show",
+				"jmp end",
+
+				"lbl taken",
+				"dlg item_taken 0 text * Do you want to put the sword back?",
+				"dlg item_taken 0 choice choice_put_back_yes Yes.",
+				"dlg item_taken 0 choice choice_put_back_no No.",
+				"dlg item_taken show",
+
+				"lbl end"
+			]
+		},
+		{
+			"name": "choice_take_yes",
+			"type": "choice",
+			"script": [
+				"var taken 1",
+				"inv add Sword",
+				"set view taken"
+			]
+		},
+		{
+			"name": "choice_take_no",
+			"type": "choice",
+			"script": []
+		},
+		{
+			"name": "choice_put_back_yes",
+			"type": "choice",
+			"script": [
+				"var taken 0",
+				"inv rem Sword",
+				"set view master"
+			]
+		},
+		{
+			"name": "choice_put_back_no",
+			"type": "choice",
+			"script": []
+		}
+	]
+}

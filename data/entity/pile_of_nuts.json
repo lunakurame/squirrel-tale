@@ -1,0 +1,67 @@
+{
+	"label": "Pile of nuts",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 15,
+		"cropHeight": 11,
+		"width": 15,
+		"height": 11,
+		"centerX": 7,
+		"centerY": 7,
+		"collisions": [
+			{
+				"posX": 2,
+				"posY": 4,
+				"width": 10,
+				"height": 6
+			}
+		]
+	},
+	"views": {
+		"master": [
+			{
+			}
+		],
+		"taken": [
+			{
+				"cropX": 0,
+				"cropY": 0,
+				"cropWidth": 1,
+				"cropHeight": 1,
+				"width": 15,
+				"height": 11,
+				"collisions": []
+			}
+		]
+	},
+	"nuts": [
+		{
+			"name": "interaction",
+			"type": "interaction",
+			"script": [
+				"var taken",
+				"jmp end $taken > 0",
+				"dlg item 0 text * Looks like a pile of nuts. Take it?",
+				"dlg item 0 choice choice_take_yes Yes.",
+				"dlg item 0 choice choice_take_no No.",
+				"dlg item show",
+				"lbl end"
+			]
+		},
+		{
+			"name": "choice_take_yes",
+			"type": "choice",
+			"script": [
+				"var taken 1",
+				"inv add Pile of nuts",
+				"set view taken"
+			]
+		},
+		{
+			"name": "choice_take_no",
+			"type": "choice",
+			"script": []
+		}
+	]
+}

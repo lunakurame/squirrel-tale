@@ -182,18 +182,111 @@
 			]
 		},
 		{
-			"name": "squirrel_runs_away",
+			"name": "partial_decline_animation",
+			"type": "partial",
+			"script": [
+				"set view squirrel_coming_in 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 3",
+				"nop 300",
+				"set frame 4",
+				"nop 2000",
+
+				"nut squirrel_wind"
+			]
+		},
+
+		{
+			"name": "interaction",
 			"type": "interaction",
 			"script": [
-				"dlg ekk 0 text Looks like a squirrel lives on this tree!",
-				"dlg ekk 0 choice choice_knock Knock.",
-				"dlg ekk 0 choice choice_go_inside Go inside the tree hole.",
-				"dlg ekk 0 choice choice_go_away Go away.",
-				"dlg ekk show"
+				"var stage",
+				"jmp stages $stage > 0",
+
+				"dlg stage0 0 text * Looks like a squirrel lives on this tree!",
+				"dlg stage0 0 choice choice_stage0_talk Hello, squirrel!",
+				"dlg stage0 0 choice choice_stage0_knock (knock)",
+				"dlg stage0 0 choice choice_stage0_ignore (ignore)",
+				"dlg stage0 show",
+				"jmp end",
+
+				"lbl stages",
+				"set view squirrel_coming_out 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 3",
+				"nop 300",
+				"set frame 4",
+				"jmp continue_stage1 $stage == 1",
+				"jmp continue_stage2 $stage == 2",
+				"jmp continue_stage3 $stage == 3",
+				"jmp continue_stage4 $stage == 4",
+				"jmp continue_stage5 $stage == 5",
+				"jmp continue_stage6 $stage == 6",
+				"jmp continue_stage7 $stage == 7",
+				"jmp continue_stage8 $stage == 8",
+				"jmp end",
+
+				"lbl continue_stage1",
+				"nut continue_stage1",
+
+				"lbl continue_stage2",
+				"nut continue_stage2",
+
+				"lbl continue_stage3",
+				"nut continue_stage3",
+
+				"lbl continue_stage4",
+				"nut continue_stage4",
+
+				"lbl continue_stage5",
+				"nut continue_stage5",
+
+				"lbl continue_stage6",
+				"nut continue_stage6",
+
+				"lbl continue_stage7",
+				"nut continue_stage7",
+
+				"lbl continue_stage8",
+				"nut continue_stage8",
+
+				"lbl end"
+			]
+		},
+
+		{
+			"name": "choice_stage0_talk",
+			"type": "choice",
+			"script": [
+				"set view squirrel_coming_out 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 3",
+				"nop 300",
+				"set frame 4",
+
+				"var stage 1",
+				"dlg squirrel 0 text Hi!",
+				"dlg squirrel 1 text You look like someone who likes squirrels!",
+				"dlg squirrel 1 choice choice_stage1_yes I love squirrels!",
+				"dlg squirrel 1 choice choice_stage1_no Not really...",
+				"dlg squirrel 1 choice choice_stage1_no I hate squirrels!!!",
+				"dlg squirrel show"
 			]
 		},
 		{
-			"name": "choice_knock",
+			"name": "choice_stage0_knock",
 			"type": "choice",
 			"script": [
 				"dlg ekk 0 text ...",
@@ -203,31 +296,369 @@
 			]
 		},
 		{
-			"name": "choice_go_inside",
-			"type": "choice",
-			"script": [
-				"dlg teleport 0 text What's that?",
-				"dlg teleport 1 text Something's pulling me in!",
-				"dlg teleport 2 text Aaaaaaaaaaaaaaa!",
-				"dlg teleport show",
-				"map start test",
-				"nop 200",
-				"dlg new_place 0 text That's a weird place...",
-				"dlg new_place show"
-			]
-		},
-		{
-			"name": "choice_go_away",
+			"name": "choice_stage0_ignore",
 			"type": "choice",
 			"script": [
 				"nut squirrel_wind"
 			]
 		},
+
 		{
-			"name": "master_wind",
+			"name": "continue_stage1",
+			"type": "partial",
+			"script": [
+				"dlg squirrel 0 text Hello again!",
+				"dlg squirrel 0 choice choice_stage1_yes I think I like squirrels now!",
+				"dlg squirrel 0 choice choice_continue_stage1_no I still don't like squirrels.",
+				"dlg squirrel show"
+			]
+		},
+		{
+			"name": "choice_continue_stage1_no",
+			"type": "choice",
+			"script": [
+				"dlg squirrel 0 text Well... You should start liking squirrels.\nThey are furry and nice, and everyone\nlikes squirrels.",
+				"dlg squirrel show",
+				"nut partial_decline_animation"
+			]
+		},
+		{
+			"name": "choice_stage1_yes",
+			"type": "choice",
+			"script": [
+				"var stage 2",
+				"dlg squirrel 0 text Great! Do you like playing with squirrels?",
+				"dlg squirrel 0 choice choice_stage2_yes Sure!",
+				"dlg squirrel 0 choice choice_stage2_yes I don't know, maybe...",
+				"dlg squirrel 0 choice choice_stage2_no I hate playing with squirrels!!!",
+				"dlg squirrel show"
+			]
+		},
+		{
+			"name": "choice_stage1_no",
+			"type": "choice",
+			"script": [
+				"dlg squirrel 0 text Oh... Nevermind then. I'll just wait for\nsomeone who likes squirrels.",
+				"dlg squirrel show",
+				"nut partial_decline_animation"
+			]
+		},
+
+		{
+			"name": "continue_stage2",
+			"type": "partial",
+			"script": [
+				"dlg squirrel 0 text Did you change your mind?",
+				"dlg squirrel 0 choice choice_stage2_yes Yes, I like playing with squirrels!",
+				"dlg squirrel 0 choice choice_continue_stage2_no Nope.",
+				"dlg squirrel show"
+			]
+		},
+		{
+			"name": "choice_continue_stage2_no",
+			"type": "choice",
+			"script": [
+				"dlg squirrel 0 text See ya later!",
+				"dlg squirrel show",
+				"nut partial_decline_animation"
+			]
+		},
+		{
+			"name": "choice_stage2_yes",
+			"type": "choice",
+			"script": [
+				"var stage 3",
+				"dlg squirrel 0 text :D",
+				"dlg squirrel 1 text Wanna play a game?",
+				"dlg squirrel 1 choice choice_stage3_yes Let's play!",
+				"dlg squirrel 1 choice choice_stage3_no Maybe later...",
+				"dlg squirrel 1 choice choice_stage2_no I lied, I don't like playing with squirrels.",
+				"dlg squirrel show"
+			]
+		},
+		{
+			"name": "choice_stage2_no",
+			"type": "choice",
+			"script": [
+				"dlg squirrel 0 text Oh... Okay then. Have fun with other things\nyou like to play with!",
+				"dlg squirrel show",
+				"nut partial_decline_animation"
+			]
+		},
+
+		{
+			"name": "continue_stage3",
+			"type": "partial",
+			"script": [
+				"dlg squirrel 0 text So... Do you wanna play?",
+				"dlg squirrel 0 choice choice_stage3_yes Yes!",
+				"dlg squirrel 0 choice choice_continue_stage3_no No...",
+				"dlg squirrel show"
+			]
+		},
+		{
+			"name": "choice_continue_stage3_no",
+			"type": "choice",
+			"script": [
+				"dlg squirrel 0 text ...",
+				"dlg squirrel show",
+				"nut partial_decline_animation"
+			]
+		},
+		{
+			"name": "choice_stage3_yes",
+			"type": "choice",
+			"script": [
+				"var stage 4",
+				"dlg squirrel 0 text Cool!",
+				"dlg squirrel 1 text Let's play hide and seek!",
+				"dlg squirrel 2 text I'm going to hide now. Try to find me!",
+				"dlg squirrel show",
+				"nut partial_decline_animation"
+			]
+		},
+		{
+			"name": "choice_stage3_no",
+			"type": "choice",
+			"script": [
+				"dlg squirrel 0 text Oh... Okay then. I'll be here in case you\nchange your mind.",
+				"dlg squirrel show",
+				"nut partial_decline_animation"
+			]
+		},
+
+		{
+			"name": "continue_stage4",
+			"type": "partial",
+			"script": [
+				"dlg squirrel 0 text Wow, you found me! That was pretty quick.\nGood job! You are good at finding stuff.",
+				"dlg squirrel 1 text Now let's play something else...",
+				"dlg squirrel 2 text I'm sure there is a big pile of nuts\nsomewhere close. Could you find it and\nbring it to me?",
+				"dlg squirrel 2 choice choice_continue_stage4_yes Sure! I like finding stuff.",
+				"dlg squirrel 2 choice choice_continue_stage4_no No, this isn't fun.",
+				"dlg squirrel show"
+			]
+		},
+		{
+			"name": "choice_continue_stage4_yes",
+			"type": "choice",
+			"script": [
+				"var stage 5",
+				"dlg squirrel 0 text Nice! :D",
+				"dlg squirrel 1 text Go find it then!",
+				"dlg squirrel show",
+				"nut partial_decline_animation"
+			]
+		},
+		{
+			"name": "choice_continue_stage4_no",
+			"type": "choice",
+			"script": [
+				"var stage 5",
+				"dlg squirrel 0 text Oh, come on... It will be fun!",
+				"dlg squirrel 1 text Go find these nuts, I'll stay here and think\nabout our next game!",
+				"dlg squirrel show",
+				"nut partial_decline_animation"
+			]
+		},
+
+		{
+			"name": "continue_stage5",
+			"type": "partial",
+			"script": [
+				"inv has has_item Pile of nuts",
+				"dlg squirrel 0 text (sniffs)",
+				"dlg squirrel 1 text Where are the nuts? Did you find them yet?",
+				"dlg squirrel 2 text Go find them!",
+				"dlg squirrel show",
+				"jmp end",
+
+				"lbl has_item",
+				"inv rem Pile of nuts",
+				"dlg has_item 0 text (sniffs)",
+				"dlg has_item 1 text Nuts!!!",
+				"dlg has_item 2 text Thank you! Those nuts are delicious!",
+				"dlg has_item 3 text Okay, let's play another game!",
+				"dlg has_item 4 text Someone told me there is a sword nearby.\nFind it!",
+				"dlg has_item 4 choice choice_continue_stage5_yes Okay!",
+				"dlg has_item 4 choice choice_continue_stage5_why Um... But why?",
+				"dlg has_item 4 choice choice_continue_stage5_no I don't want to.",
+				"dlg has_item show",
+
+				"lbl end",
+				"nut partial_decline_animation"
+			]
+		},
+		{
+			"name": "choice_continue_stage5_yes",
+			"type": "choice",
+			"script": [
+				"var stage 6",
+				"nut partial_decline_animation"
+			]
+		},
+		{
+			"name": "choice_continue_stage5_why",
+			"type": "choice",
+			"script": [
+				"var stage 6",
+				"dlg squirrel 0 text Um... You might need it later. And it's fun!",
+				"dlg squirrel 1 text Go find it!",
+				"dlg squirrel show",
+				"nut partial_decline_animation"
+			]
+		},
+		{
+			"name": "choice_continue_stage5_no",
+			"type": "choice",
+			"script": [
+				"var stage 6",
+				"dlg squirrel 0 text Don't be such a grump.",
+				"dlg squirrel 1 text It will be fun, I promise.",
+				"dlg squirrel 2 text Now go find that sword!",
+				"dlg squirrel show",
+				"nut partial_decline_animation"
+			]
+		},
+
+		{
+			"name": "continue_stage6",
+			"type": "partial",
+			"script": [
+				"inv has has_item Sword",
+				"dlg squirrel 0 text Do you have that sword? I don't see it.",
+				"dlg squirrel 1 text Find it!",
+				"dlg squirrel show",
+				"jmp end",
+
+				"lbl has_item",
+				"dlg has_item 0 text Yay, you found it!",
+				"dlg has_item 1 text You know what... You can keep that sword.\nIt's too heavy for me anyway.",
+				"dlg has_item 2 text Hm...",
+				"dlg has_item 3 text You see, I like playing with squirrels too.",
+				"dlg has_item 4 text I used to play with my squirrel friend\neveryday, but then one day he just\ndisappeared.",
+				"dlg has_item 5 text I heard someone saw him in the forest on\nthe other side of that river, but there are\nweird creatures living inside.",
+				"dlg has_item 6 text It's too dangerous for someone like me.",
+				"dlg has_item 7 text And I'm worried about my friend...",
+				"dlg has_item 8 text But you have a sword! You could help me!\nAnd you are good at finding stuff!",
+				"dlg has_item 9 text Please?",
+				"dlg has_item 10 text Will you help me find the lost squirrel?",
+				"dlg has_item 10 choice choice_continue_stage6_yes I will help you!",
+				"dlg has_item 10 choice choice_continue_stage6_no No, I'm a heartless monster.",
+				"dlg has_item show",
+
+				"lbl end",
+				"nut partial_decline_animation"
+			]
+		},
+		{
+			"name": "choice_continue_stage6_yes",
+			"type": "choice",
+			"script": [
+				"var stage 8",
+				"dlg squirrel 0 text Really? :D",
+				"dlg squirrel 1 text You are the best!",
+				"dlg squirrel 2 text Thank you so much!",
+				"dlg squirrel 3 text I'll show you a shortcut to that forest.",
+				"dlg squirrel 4 text Are you ready to go?",
+				"dlg squirrel 4 choice choice_leave_the_map_yes Yes, let's go to the forest!",
+				"dlg squirrel 4 choice choice_leave_the_map_no Not yet, I want to check something first...",
+				"dlg squirrel show"
+			]
+		},
+		{
+			"name": "choice_continue_stage6_no",
+			"type": "choice",
+			"script": [
+				"var stage 7",
+				"dlg squirrel 0 text Oh...",
+				"dlg squirrel 1 text Well... Okay then.",
+				"dlg squirrel 2 text Maybe someone else will help me some day.",
+				"dlg squirrel 3 text ...",
+				"dlg squirrel 4 text Could you at least put that sword back\nwhere it was?",
+				"dlg squirrel show",
+
+				"set view squirrel_coming_in 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 3",
+				"nop 300",
+				"set frame 4",
+				"nop 2000",
+				"nut master_hole_wind"
+			]
+		},
+
+		{
+			"name": "continue_stage7",
+			"type": "partial",
+			"script": [
+				"dlg squirrel 0 text Hm...?",
+				"dlg squirrel 1 text Why are you still here?",
+				"dlg squirrel 1 choice choice_continue_stage6_yes I changed my mind, I will help you.",
+				"dlg squirrel 1 choice choice_continue_stage7_no I hate you!!!",
+				"dlg squirrel show",
+				"lbl end"
+			]
+		},
+		{
+			"name": "choice_continue_stage7_no",
+			"type": "choice",
+			"script": [
+				"dlg squirrel 0 text ...",
+				"dlg squirrel show",
+
+				"set view squirrel_coming_in 0",
+				"nop 300",
+				"set frame 1",
+				"nop 300",
+				"set frame 2",
+				"nop 300",
+				"set frame 3",
+				"nop 300",
+				"set frame 4",
+				"nop 2000",
+				"nut master_hole_wind"
+			]
+		},
+		{
+			"name": "choice_leave_the_map_yes",
+			"type": "choice",
+			"script": [
+				"dlg squirrel 0 text Let's go then!",
+				"dlg squirrel show",
+				"map start forest_1"
+			]
+		},
+		{
+			"name": "choice_leave_the_map_no",
+			"type": "choice",
+			"script": [
+				"dlg squirrel 0 text Tell me when you're ready!",
+				"dlg squirrel show",
+				"nut partial_decline_animation"
+			]
+		},
+
+		{
+			"name": "continue_stage8",
+			"type": "partial",
+			"script": [
+				"dlg squirrel 0 text Ready to go?",
+				"dlg squirrel 0 choice choice_leave_the_map_yes Yes, let's go to the forest!",
+				"dlg squirrel 0 choice choice_leave_the_map_no Not yet, I want to check something first...",
+				"dlg squirrel show"
+			]
+		},
+
+		{
+			"name": "master_hole_wind",
 			"type": "manual",
 			"script": [
-				"set view master 0",
+				"set view master_hole 0",
 				"nop 300",
 				"set frame 1",
 				"nop 300",

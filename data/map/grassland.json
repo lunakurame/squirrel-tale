@@ -19,6 +19,22 @@
 			"frame": 0
 		},
 		{
+			"name": "pile_of_nuts",
+			"posX": 700,
+			"posY": 500,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "sword",
+			"posX": 700,
+			"posY": 550,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
 			"name": "grass_clump",
 			"posX": 600,
 			"posY": 530,
