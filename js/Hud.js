@@ -565,6 +565,7 @@ Hud.prototype.setDialogue = function (options) {
 	this.app.player.tryingToMoveVert = 'none';
 	this.app.modePrev = this.app.mode;
 	this.app.mode = 'game-ui';
+	this.redraw();
 };
 
 Hud.prototype.resetDialogue = function (options) {

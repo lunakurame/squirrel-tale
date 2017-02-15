@@ -20,6 +20,13 @@ var Nutcracker = function (application) {
 		 * }
 		 */
 	];
+	this.variables = new WeakMap(
+		/* {
+		 * 	[variable name]: [variable value],
+		 * 	...
+		 * }
+		 */
+	);
 };
 
 Nutcracker.prototype.load = function () {
@@ -33,6 +40,7 @@ Nutcracker.prototype.load = function () {
 				variables: {},
 				nut: nut
 			});
+			this.variables.set(entity, {});
 		});
 	});
 	this.app.player.nuts.forEach(nut => {
@@ -44,6 +52,7 @@ Nutcracker.prototype.load = function () {
 			nut: nut
 		});
 	});
+	this.variables.set(this.app.player, {});
 
 	// exec all auto nuts
 	this.nutshells.forEach(nutshell => {
@@ -102,7 +111,8 @@ Nutcracker.prototype.isNutshellVariable = function (nutshell, variable) {
 };
 
 Nutcracker.prototype.getNutshellVariable = function (nutshell, variable) {
-	return nutshell.variables[variable.substr(1)];
+	return nutshell.variables[variable.substr(1)] ||
+	       this.variables.get(nutshell.owner)[variable.substr(1)];
 };
 
 Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
@@ -134,6 +144,11 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 			warn('Cannot decrement a variable without a name');
 		else if (typeof args[2] === 'undefined' && tools.isNumeric(nutshell.variables[args[1]]))
 			--nutshell.variables[args[1]];
+		else if (typeof args[2] === 'undefined' && tools.isNumeric(this.variables.get(nutshell.owner)[args[1]])) {
+			let variables = this.variables.get(nutshell.owner);
+			--variables[args[1]];
+			this.variables.set(nutshell.owner, variables);
+		}
 		jumpNext();
 		break;
 	case 'dlg':
@@ -241,6 +256,11 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 			warn('Cannot increment a variable without a name');
 		else if (typeof args[2] === 'undefined' && tools.isNumeric(nutshell.variables[args[1]]))
 			++nutshell.variables[args[1]];
+		else if (typeof args[2] === 'undefined' && tools.isNumeric(this.variables.get(nutshell.owner)[args[1]])) {
+			let variables = this.variables.get(nutshell.owner);
+			++variables[args[1]];
+			this.variables.set(nutshell.owner, variables);
+		}
 		jumpNext();
 		break;
 	case 'inv':
@@ -451,6 +471,21 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 			));
 			break;
 		}
+		jumpNext();
+		break;
+	case 'var':
+		let variables = this.variables.get(nutshell.owner);
+
+		if (typeof args[1] === 'undefined')
+			warn('Cannot set a variable without a name');
+		else if (typeof args[2] === 'undefined')
+			variables[args[1]] = variables[args[1]] || 0;
+		else if (tools.isNumeric(args[2]))
+			variables[args[1]] = +args[2];
+		else
+			variables[args[1]] = args[2];
+
+		this.variables.set(nutshell.owner, variables);
 		jumpNext();
 		break;
 	default:
