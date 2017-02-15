@@ -135,5 +135,9 @@ If `PARAM2` or `PARAM3` is not defined, the currently set view or frame will be
 reloaded. If not set, the defaults will be loaded (view `master`, frame `0`). At
 the end, always jumps to the next instruction.
 `PARAM1`, `PARAM2` and `PARAM3` might be variable names.
+- `var PARAM1 PARAM2`  
+The same as `let`, except variables declated by `var` are visible to all nuts
+of the owner entity.
+`PARAM1`, `PARAM2` and `PARAM3` might be variable names.
 - Any other instructions throw a warning to the console and jump to the next
 instruction.
