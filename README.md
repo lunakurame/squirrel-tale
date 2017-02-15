@@ -1,7 +1,8 @@
-# Nuthead
+# Squirrel Tale
 
-![Screenshot of a sample game](doc/screenshot.png)
+![Screenshot of the game](doc/screenshot.png)
 
 ## Description
 
-A game engine for pixel art RPG games running in a web browser.
+A game about finding a lost squirrel. Created using
+[Nuthead engine](https://github.com/kurogetsusai/nuthead).
