@@ -11,6 +11,14 @@
 	},
 	"entities": [
 		{
+			"name": "grassland_river",
+			"posX": 1279,
+			"posY": 959,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
 			"name": "willow_tree",
 			"posX": 640,
 			"posY": 480,
@@ -20,16 +28,56 @@
 		},
 		{
 			"name": "pile_of_nuts",
-			"posX": 700,
-			"posY": 500,
+			"posX": 1155,
+			"posY": 275,
 			"posZ": "over",
 			"view": "master",
 			"frame": 0
 		},
 		{
 			"name": "sword",
-			"posX": 700,
-			"posY": 550,
+			"posX": 160,
+			"posY": 170,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "big_rock",
+			"posX": 124,
+			"posY": 142,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "medium_rock",
+			"posX": 187,
+			"posY": 163,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_1",
+			"posX": 1100,
+			"posY": 180,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_2",
+			"posX": 1185,
+			"posY": 280,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_3",
+			"posX": 1188,
+			"posY": 118,
 			"posZ": "over",
 			"view": "master",
 			"frame": 0

@@ -1,0 +1,27 @@
+{
+	"label": "Medium Rock",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 27,
+		"cropHeight": 19,
+		"width": 27,
+		"height": 19,
+		"centerX": 13,
+		"centerY": 15,
+		"collisions": [
+			{
+				"posX": 2,
+				"posY": 8,
+				"width": 23,
+				"height": 11
+			}
+		]
+	},
+	"views": {
+		"master": [
+			{
+			}
+		]
+	}
+}

@@ -1,0 +1,32 @@
+{
+	"label": "Tree",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 106,
+		"cropHeight": 104,
+		"width": 106,
+		"height": 104,
+		"centerX": 52,
+		"centerY": 96,
+		"collisions": [
+			{
+				"posX": 46,
+				"posY": 92,
+				"width": 12,
+				"height": 12
+			}
+		]
+	},
+	"views": {
+		"master": [
+			{
+			}
+		],
+		"trunk": [
+			{
+				"cropY": 104
+			}
+		]
+	}
+}
