@@ -1,0 +1,52 @@
+{
+	"label": "Tree",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 71,
+		"cropHeight": 84,
+		"width": 71,
+		"height": 84,
+		"centerX": 42,
+		"centerY": 80,
+		"collisions": [
+			{
+				"posX": 32,
+				"posY": 76,
+				"width": 16,
+				"height": 8
+			}
+		]
+	},
+	"views": {
+		"master": [
+			{
+			}
+		],
+		"trunk": [
+			{
+				"cropY": 84
+			}
+		],
+		"master_hole": [
+			{
+				"cropY": 168
+			}
+		],
+		"trunk_hole": [
+			{
+				"cropY": 252
+			}
+		],
+		"master_book": [
+			{
+				"cropY": 336
+			}
+		],
+		"trunk_book": [
+			{
+				"cropY": 420
+			}
+		]
+	}
+}

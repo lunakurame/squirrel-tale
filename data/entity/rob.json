@@ -1,0 +1,492 @@
+{
+	"label": "Rob the robot",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 17,
+		"cropHeight": 25,
+		"width": 17,
+		"height": 25,
+		"centerX": 8,
+		"centerY": 24,
+		"collisions": [
+			{
+				"posX": 0,
+				"posY": 22,
+				"width": 17,
+				"height": 3
+			}
+		]
+	},
+	"views": {
+		"master": [
+			{
+			}
+		]
+	},
+	"nuts": [
+		{
+			"name": "interaction",
+			"type": "interaction",
+			"script": [
+				"var stage",
+				"jmp stages $stage > 0",
+
+				"dlg robot 0 text DON'T MOVE!",
+				"dlg robot 1 text NO ROBOTS ALLOWED HERE.",
+				"dlg robot 1 choice choice_stage0_you_robot But you are a robot...",
+				"dlg robot 1 choice choice_stage0_not_robot I'm not a robot.",
+				"dlg robot 1 choice choice_stage0_leave Okay, I'll leave then.",
+				"dlg robot show",
+				"jmp end",
+
+				"lbl stages",
+				"jmp continue_stage1 $stage == 1",
+				"jmp continue_stage2 $stage == 2",
+				"jmp continue_stage3 $stage == 3",
+				"jmp continue_stage4 $stage == 4",
+				"jmp continue_stage5 $stage == 5",
+				"jmp continue_stage6 $stage == 6",
+				"jmp continue_stage7 $stage == 7",
+				"jmp end",
+
+				"lbl continue_stage1",
+				"nut continue_stage1",
+
+				"lbl continue_stage2",
+				"nut continue_stage2",
+
+				"lbl continue_stage3",
+				"nut continue_stage3",
+
+				"lbl continue_stage4",
+				"nut continue_stage4",
+
+				"lbl continue_stage5",
+				"nut continue_stage5",
+
+				"lbl continue_stage6",
+				"nut continue_stage6",
+
+				"lbl continue_stage7",
+				"nut continue_stage7",
+
+				"lbl end"
+			]
+		},
+
+		{
+			"name": "choice_stage0_not_robot",
+			"type": "choice",
+			"script": [
+				"var stage 2",
+				"dlg robot 0 text I'm not stupid, you must be a robot.",
+				"dlg robot 1 text And robots are not allowed to enter this\nforest.",
+				"dlg robot 1 choice choice_stage2_sword Taste my sword!",
+				"dlg robot 1 choice choice_stage2_get_lost Get lost, you broken robot...",
+				"dlg robot 1 choice choice_stage2_talk How can I convince you I'm not a robot?",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage0_you_robot",
+			"type": "choice",
+			"script": [
+				"var stage 1",
+				"dlg robot 0 text No, I'm not.",
+				"dlg robot 0 choice choice_stage1_you_robot_1 You are.",
+				"dlg robot 0 choice choice_stage1_not_robot Okay, you're not.",
+				"dlg robot 0 choice choice_stage1_leave (leave)",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage0_leave",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text Good.",
+				"dlg robot show"
+			]
+		},
+
+		{
+			"name": "choice_stage1_you_robot_1",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text Nope.",
+				"dlg robot 0 choice choice_stage1_you_robot_2 You are.",
+				"dlg robot 0 choice choice_stage1_not_robot Okay, you're not.",
+				"dlg robot 0 choice choice_stage1_leave (leave)",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage1_you_robot_2",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text No!",
+				"dlg robot 0 choice choice_stage1_you_robot_3 You are.",
+				"dlg robot 0 choice choice_stage1_not_robot Okay, you're not.",
+				"dlg robot 0 choice choice_stage1_leave (leave)",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage1_you_robot_3",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text Stop that.",
+				"dlg robot 0 choice choice_stage1_you_robot_4 You are.",
+				"dlg robot 0 choice choice_stage1_not_robot Okay, you're not.",
+				"dlg robot 0 choice choice_stage1_leave (leave)",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage1_you_robot_4",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text ...",
+				"dlg robot 0 choice choice_stage1_you_robot_5 You are.",
+				"dlg robot 0 choice choice_stage1_not_robot Okay, you're not.",
+				"dlg robot 0 choice choice_stage1_leave (leave)",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage1_you_robot_5",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text See? You are a robot.",
+				"dlg robot 0 choice choice_stage1_you_robot_6 You are.",
+				"dlg robot 0 choice choice_stage1_not_robot Okay, you're not.",
+				"dlg robot 0 choice choice_stage1_leave (leave)",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage1_you_robot_6",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text You keep saying the same thing.",
+				"dlg robot 0 choice choice_stage1_you_robot_7 You are.",
+				"dlg robot 0 choice choice_stage1_not_robot Okay, you're not.",
+				"dlg robot 0 choice choice_stage1_leave (leave)",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage1_you_robot_7",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text Stop. Spamming.",
+				"dlg robot 0 choice choice_stage1_you_robot_8 You are.",
+				"dlg robot 0 choice choice_stage1_not_robot Okay, you're not.",
+				"dlg robot 0 choice choice_stage1_leave (leave)",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage1_you_robot_8",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text QWERTYUIOP",
+				"dlg robot 0 choice choice_stage1_you_robot_9 You are.",
+				"dlg robot 0 choice choice_stage1_not_robot Okay, you're not.",
+				"dlg robot 0 choice choice_stage1_leave (leave)",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage1_you_robot_9",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text Okay, seriously, stop that...",
+				"dlg robot 0 choice choice_stage1_you_robot_10 You are.",
+				"dlg robot 0 choice choice_stage1_not_robot Okay, you're not.",
+				"dlg robot 0 choice choice_stage1_leave (leave)",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage1_you_robot_10",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!",
+				"dlg robot 0 choice choice_stage1_you_robot_11 You are.",
+				"dlg robot 0 choice choice_stage1_not_robot Okay, you're not.",
+				"dlg robot 0 choice choice_stage1_leave (leave)",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage1_you_robot_11",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text I will just ignore you.",
+				"dlg robot 0 choice choice_stage1_you_robot_12 You are.",
+				"dlg robot 0 choice choice_stage1_not_robot Okay, you're not.",
+				"dlg robot 0 choice choice_stage1_leave (leave)",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage1_you_robot_12",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text ...",
+				"dlg robot 0 choice choice_stage1_you_robot_12 You are.",
+				"dlg robot 0 choice choice_stage1_not_robot Okay, you're not.",
+				"dlg robot 0 choice choice_stage1_leave (leave)",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage1_not_robot",
+			"type": "choice",
+			"script": [
+				"var stage 0",
+				"dlg robot 0 text Finally you understood it!",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage1_leave",
+			"type": "choice",
+			"script": [
+				"var stage 0"
+			]
+		},
+
+		{
+			"name": "choice_stage2_sword",
+			"type": "choice",
+			"script": [
+				"var stage 0",
+				"inv has has_item Sword",
+
+				"dlg robot 0 text ???",
+				"dlg robot 1 text You have no sword...",
+				"dlg robot 2 text Maybe that's just your hallucinations.",
+				"dlg robot show",
+				"jmp end",
+
+				"lbl has_item",
+				"inv rem Sword",
+				"dlg has_item 0 text Isn't this sword a bit too heavy for you?",
+				"dlg has_item 1 text You can barely hold it with two hands.",
+				"dlg has_item 2 text Better give me that thing before you hurt\nyourself.",
+				"dlg has_item show",
+				"lbl end"
+			]
+		},
+		{
+			"name": "choice_stage2_get_lost",
+			"type": "choice",
+			"script": [
+				"var stage 0",
+				"dlg robot 0 text How rude...",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage2_talk",
+			"type": "choice",
+			"script": [
+				"var stage 3",
+				"dlg robot 0 text Hm...",
+				"dlg robot show",
+				"nut continue_stage3"
+			]
+		},
+
+		{
+			"name": "continue_stage3",
+			"type": "partial",
+			"script": [
+				"dlg robot 0 text What's the second letter of the second word\nof the book?",
+				"dlg robot 0 choice choice_stage3_what What book?",
+				"dlg robot 0 choice choice_stage3_wrong E",
+				"dlg robot 0 choice choice_stage3_wrong K",
+				"dlg robot 0 choice choice_stage3_wrong L",
+				"dlg robot 0 choice choice_stage3_wrong A",
+				"dlg robot 0 choice choice_stage3_wrong O",
+				"dlg robot 0 choice choice_stage3_right N",
+				"dlg robot 0 choice choice_stage3_wrong R",
+				"dlg robot 0 choice choice_stage3_wrong B",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage3_what",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text What book? Oh, you didn't find the book yet?",
+				"dlg robot 1 text You are slow...",
+				"dlg robot 2 text There is a book lying on the ground\nsomewhere.",
+				"dlg robot 3 text Or maybe somewhere else... Anyway, find\nthat book and go back to me.",
+				"dlg robot 4 text Unless you are a robot~",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage3_wrong",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text No.",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage3_right",
+			"type": "choice",
+			"script": [
+				"var stage 4",
+				"dlg robot 0 text Hm... Okay, you might not be a robot.",
+				"dlg robot 1 text Just kidding, every robot would have\nanswered that question!",
+				"dlg robot 2 text If you want to convince me, I have a better\ntest for you.",
+				"dlg robot 3 text What is 0.1 + 0.2?",
+				"dlg robot 3 choice choice_stage4_right 0.3",
+				"dlg robot 3 choice choice_stage4_js 0.30000000000000004",
+				"dlg robot 3 choice choice_stage4_wrong 3",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage4_right",
+			"type": "choice",
+			"script": [
+				"var stage 5",
+				"dlg robot 0 text Hm... That's almost right, the answer is\n0.30000000000000004, but I guess you\nmust be a human if you can't do math.",
+				"dlg robot 1 text One more test before I can know for sure\nthat you're not a robot.",
+				"dlg robot 2 text Find the secret code! Robots can't read it,\nso if you guess the correct answer,\nI'll know that you are not a robot!",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage4_js",
+			"type": "choice",
+			"script": [
+				"var stage 5",
+				"dlg robot 0 text That's correct!",
+				"dlg robot 1 text Which makes me a bit suspicious...\nHumans usually pick a wrong answer.",
+				"dlg robot 2 text But maybe you are just good at math.",
+				"dlg robot 3 text One more test before I can know for sure\nthat you're not a robot.",
+				"dlg robot 4 text Find the secret code! Robots can't read it,\nso if you guess the correct answer,\nI'll know that you are not a robot!",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage4_wrong",
+			"type": "choice",
+			"script": [
+				"var stage 5",
+				"dlg robot 0 text No. That's not even close.",
+				"dlg robot 1 text Eh... Whatever, let's move on to the next one.",
+				"dlg robot 2 text Find the secret code! Robots can't read it,\nso if you guess the correct answer,\nI'll know that you are not a robot!",
+				"dlg robot show"
+			]
+		},
+
+		{
+			"name": "continue_stage5",
+			"type": "partial",
+			"script": [
+				"dlg robot 0 text What's the secret code?",
+				"dlg robot 0 choice choice_stage5_wrong lol42bot",
+				"dlg robot 0 choice choice_stage5_wrong ej94bp6",
+				"dlg robot 0 choice choice_stage5_wrong I am a robot",
+				"dlg robot 0 choice choice_stage5_wrong m1k4n",
+				"dlg robot 0 choice choice_stage5_right afu9s",
+				"dlg robot 0 choice choice_stage5_wrong N",
+				"dlg robot 0 choice choice_stage5_wrong despair",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage5_wrong",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text Aaaaaaand... Nope! You just lost the game.\nBetter luck next time!",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage5_right",
+			"type": "choice",
+			"script": [
+				"var stage 6",
+				"dlg robot 0 text Oh... Is that correct?",
+				"dlg robot 1 text I'm not sure, it's hard to read.",
+				"dlg robot 2 text Hm...",
+				"dlg robot 3 text And why do you even want to go to that\nforest?",
+				"dlg robot 3 choice choice_continue_stage6 I'm looking for a lost squirrel.",
+				"dlg robot show"
+			]
+		},
+
+		{
+			"name": "choice_continue_stage6",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text A lost squirrel? That changes everything!\nYou should just have told me that before,\nI thought you want to steal some trees.",
+				"dlg robot 1 text I saw a squirrel nearby, it had a long,\nfurry tail and two ears, and one head...\nOh, and it was a red squirrel!",
+				"dlg robot 2 text Does it sound like the squirrel you are\nlooking for?",
+				"dlg robot 2 choice choice_stage6_yes Yes.",
+				"dlg robot 2 choice choice_stage6_yes Maybe.",
+				"dlg robot 2 choice choice_stage6_yes I don't know.",
+				"dlg robot 2 choice choice_stage6_no No.",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_stage6_yes",
+			"type": "choice",
+			"script": [
+				"var stage 7",
+				"dlg robot 0 text I know a place in that forest where you can\nusually find some squirrels.",
+				"dlg robot 1 text I can show you.",
+				"dlg robot show",
+				"nut continue_stage7"
+			]
+		},
+		{
+			"name": "choice_stage6_no",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text Hm... Maybe it was a different squirrel.",
+				"dlg robot 1 text But I'm sure there are other squirrels too!",
+				"dlg robot show",
+				"nut choice_stage6_yes"
+			]
+		},
+
+		{
+			"name": "continue_stage7",
+			"type": "partial",
+			"script": [
+				"dlg robot 0 text Are you ready to go?",
+				"dlg robot 0 choice choice_leave_the_map_yes Yes, let's go to the place of squirrels!",
+				"dlg robot 0 choice choice_leave_the_map_no Not yet, I want to check something first...",
+				"dlg robot show"
+			]
+		},
+		{
+			"name": "choice_leave_the_map_yes",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text Let's go then!",
+				"dlg robot show",
+				"map start forest_2"
+			]
+		},
+		{
+			"name": "choice_leave_the_map_no",
+			"type": "choice",
+			"script": [
+				"dlg robot 0 text I'll stay here then.",
+				"dlg robot show"
+			]
+		}
+	]
+}

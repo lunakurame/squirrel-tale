@@ -3,12 +3,146 @@
 	"entrances": {
 		"start": {
 			"posX": 80,
-			"posY": 60,
+			"posY": 240,
 			"view": "master",
 			"frame": 0,
 			"direction": "down"
 		}
 	},
 	"entities": [
+		{
+			"name": "rob",
+			"posX": 600,
+			"posY": 240,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_4",
+			"posX": 127,
+			"posY": 433,
+			"posZ": "over",
+			"view": "master_book",
+			"frame": 0,
+			"nuts": [
+				{
+					"name": "interaction",
+					"type": "interaction",
+					"script": [
+						"var taken",
+						"jmp taken $taken > 0",
+
+						"dlg item 0 text * Looks like there is a book inside that\nhole. Take it?",
+						"dlg item 0 choice choice_take_yes Yes.",
+						"dlg item 0 choice choice_take_no No.",
+						"dlg item show",
+						"jmp end",
+
+						"lbl taken",
+						"dlg item_taken 0 text * Do you want to put the book back?",
+						"dlg item_taken 0 choice choice_put_back_yes Yes.",
+						"dlg item_taken 0 choice choice_put_back_no No.",
+						"dlg item_taken show",
+
+						"lbl end"
+					]
+				},
+				{
+					"name": "choice_take_yes",
+					"type": "choice",
+					"script": [
+						"var taken 1",
+						"inv add Book: Squirrel anatomy",
+						"set view master_hole",
+						"dlg item 0 text * You found a book: \"Squirrel anatomy\".",
+						"dlg item show"
+					]
+				},
+				{
+					"name": "choice_take_no",
+					"type": "choice",
+					"script": []
+				},
+				{
+					"name": "choice_put_back_yes",
+					"type": "choice",
+					"script": [
+						"var taken 0",
+						"inv rem Book: Squirrel anatomy",
+						"set view master_book"
+					]
+				},
+				{
+					"name": "choice_put_back_no",
+					"type": "choice",
+					"script": []
+				}
+			]
+		},
+		{
+			"name": "secret_code",
+			"posX": 540,
+			"posY": 50,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "medium_rock",
+			"posX": 570,
+			"posY": 70,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_4",
+			"posX": 400,
+			"posY": 100,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_3",
+			"posX": 250,
+			"posY": 150,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_1",
+			"posX": 100,
+			"posY": 120,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_3",
+			"posX": 550,
+			"posY": 390,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_1",
+			"posX": 443,
+			"posY": 447,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_2",
+			"posX": 281,
+			"posY": 393,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		}
 	]
 }
