@@ -505,8 +505,8 @@ Hud.prototype.drawUserMenu = function () {
 	});
 	top += itemsLabelTextSize.height;
 
-	if (this.app.player.inventory.length > 0) {
-		this.app.player.inventory.forEach(item => {
+	if (this.app.player.inventory.filter(item => item.type !== 'hidden').length > 0) {
+		this.app.player.inventory.filter(item => item.type !== 'hidden').forEach(item => {
 			top += 8;
 			let textSize = this.app.fontList.getTextSize(' ' + item.name, 'basic');
 			texts.push({

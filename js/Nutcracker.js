@@ -289,7 +289,8 @@ Nutcracker.prototype.execNutshell = function (nutshell, lineNum = 0) {
 		switch (arg1) {
 		case 'add':
 			this.app.player.inventory.push({
-				name: arg2
+				name: arg2,
+				type: arg2[0] === arg2[0].toLowerCase() ? 'hidden' : 'normal'
 			});
 			jumpNext();
 			break;
