@@ -1,0 +1,86 @@
+{
+	"label": "Button",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 5,
+		"cropHeight": 13,
+		"width": 5,
+		"height": 13,
+		"centerX": 2,
+		"centerY": 12,
+		"collisions": [
+			{
+				"posX": 0,
+				"posY": 10,
+				"width": 5,
+				"height": 3
+			}
+		]
+	},
+	"views": {
+		"master": [
+			{
+			}
+		],
+		"on": [
+			{
+				"cropX": 5
+			}
+		],
+		"off": [
+			{
+			}
+		]
+	},
+	"nuts": [
+		{
+			"name": "interaction",
+			"type": "interaction",
+			"script": [
+				"var pressed",
+				"jmp pressed $pressed > 0",
+
+				"dlg turn_on 0 text * Looks like a button. Press it?",
+				"dlg turn_on 0 choice choice_press_yes Yes.",
+				"dlg turn_on 0 choice choice_press_no No.",
+				"dlg turn_on show",
+				"jmp end",
+
+				"lbl pressed",
+				"dlg turn_off 0 text * Press the button again?",
+				"dlg turn_off 0 choice choice_press_again_yes Yes.",
+				"dlg turn_off 0 choice choice_press_again_no No.",
+				"dlg turn_off show",
+
+				"lbl end"
+			]
+		},
+		{
+			"name": "choice_press_yes",
+			"type": "choice",
+			"script": [
+				"var pressed 1",
+				"set view on"
+			]
+		},
+		{
+			"name": "choice_press_no",
+			"type": "choice",
+			"script": []
+		},
+		{
+			"name": "choice_press_again_yes",
+			"type": "choice",
+			"script": [
+				"var pressed 0",
+				"set view off"
+			]
+		},
+		{
+			"name": "choice_press_again_no",
+			"type": "choice",
+			"script": []
+		}
+	]
+}

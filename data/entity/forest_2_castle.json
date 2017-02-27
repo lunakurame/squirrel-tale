@@ -1,0 +1,120 @@
+{
+	"label": "Castle",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 665,
+		"cropHeight": 195,
+		"width": 665,
+		"height": 195,
+		"centerX": 0,
+		"centerY": 0,
+		"collisions": [
+			{
+				"posX": 0,
+				"posY": 0,
+				"width": 665,
+				"height": 145
+			},
+			{
+				"posX": 102,
+				"posY": 185,
+				"width": 563,
+				"height": 1
+			}
+		]
+	},
+	"views": {
+		"master": [
+			{
+			}
+		],
+		"lava": [
+			{
+				"cropY": 195
+			}
+		],
+		"melting": [
+			{
+				"cropY": 195
+			},
+			{
+				"cropY": 390
+			},
+			{
+				"cropY": 585
+			},
+			{
+				"cropY": 780
+			},
+			{
+				"cropY": 975
+			},
+			{
+				"cropY": 1170
+			},
+			{
+				"cropY": 1365
+			},
+			{
+				"cropY": 1560
+			},
+			{
+				"cropY": 1755
+			},
+			{
+				"cropY": 1950
+			},
+			{
+				"cropY": 2145
+			}
+		]
+	},
+	"nuts": [
+		{
+			"name": "insanity",
+			"type": "auto",
+			"script": [
+				"inv has lava insanity",
+				"nop 1000",
+				"jmp 0",
+
+				"lbl lava",
+				"set view lava 0",
+				"lbl waiting_for_meltdown",
+				"inv has meltdown curse",
+				"nop 1000",
+				"jmp waiting_for_meltdown",
+
+				"lbl meltdown",
+				"set view melting 0",
+				"nop 100",
+				"set frame 1",
+				"nop 100",
+				"set frame 2",
+				"nop 100",
+				"set frame 3",
+				"nop 100",
+				"set frame 4",
+				"nop 100",
+				"set frame 5",
+				"nop 100",
+				"set frame 6",
+				"nop 100",
+				"set frame 7",
+				"nop 100",
+				"set frame 8",
+				"nop 100",
+				"set frame 9",
+				"nop 100",
+				"set frame 10",
+
+				"lbl waiting_for_uncurse",
+				"nop 1000",
+				"inv has waiting_for_uncurse curse",
+
+				"set view master 0"
+			]
+		}
+	]
+}

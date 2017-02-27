@@ -1,0 +1,59 @@
+{
+	"label": "Sashimi",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 12,
+		"cropHeight": 7,
+		"width": 12,
+		"height": 7,
+		"centerX": 5,
+		"centerY": 3
+	},
+	"views": {
+		"master": [
+			{
+			}
+		],
+		"invisible": [
+			{
+				"cropY": 7
+			}
+		]
+	},
+	"nuts": [
+		{
+			"name": "auto",
+			"type": "auto",
+			"script": [
+				"inv has sashimi_show sashimi_show",
+				"nop 100",
+				"jmp 0",
+
+				"lbl sashimi_show",
+				"set view master",
+				"inv rem sashimi_show",
+				"var show 1"
+			]
+		},
+		{
+			"name": "interaction",
+			"type": "interaction",
+			"script": [
+				"var show",
+				"jmp end $show < 1",
+
+				"dlg voice_4 0 text Sashimi...?",
+				"dlg voice_4 1 text Weird. Take it and go back to the buttons.",
+				"dlg voice_4 2 text Press the green one.",
+				"dlg voice_4 show",
+				"set view invisible",
+				"inv add Sashimi",
+				"inv rem voice_4",
+				"inv add voice_5",
+
+				"lbl end"
+			]
+		}
+	]
+}

@@ -1,0 +1,63 @@
+{
+	"label": "Swamp",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 246,
+		"cropHeight": 192,
+		"width": 246,
+		"height": 192,
+		"centerX": 245,
+		"centerY": 191,
+		"collisions": [
+			{
+				"posX": 15,
+				"posY": 0,
+				"width": 45,
+				"height": 65
+			},
+			{
+				"posX": 5,
+				"posY": 65,
+				"width": 45,
+				"height": 25
+			},
+			{
+				"posX": 0,
+				"posY": 90,
+				"width": 45,
+				"height": 40
+			},
+			{
+				"posX": 3,
+				"posY": 130,
+				"width": 45,
+				"height": 20
+			},
+			{
+				"posX": 8,
+				"posY": 150,
+				"width": 45,
+				"height": 10
+			},
+			{
+				"posX": 13,
+				"posY": 160,
+				"width": 45,
+				"height": 10
+			},
+			{
+				"posX": 20,
+				"posY": 170,
+				"width": 45,
+				"height": 22
+			}
+		]
+	},
+	"views": {
+		"master": [
+			{
+			}
+		]
+	}
+}

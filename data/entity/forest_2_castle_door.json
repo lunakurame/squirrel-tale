@@ -1,0 +1,24 @@
+{
+	"label": "Castle",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 174,
+		"cropHeight": 186,
+		"width": 174,
+		"height": 186,
+		"centerX": 173,
+		"centerY": 185
+	},
+	"views": {
+		"master": [
+			{
+			}
+		],
+		"open": [
+			{
+				"cropY": 186
+			}
+		]
+	}
+}

@@ -1,0 +1,353 @@
+{
+	"label": "Lobster",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 25,
+		"cropHeight": 9,
+		"width": 25,
+		"height": 9,
+		"centerX": 7,
+		"centerY": 7,
+		"collisions": [
+			{
+				"posX": 7,
+				"posY": 6,
+				"width": 9,
+				"height": 3
+			}
+		]
+	},
+	"views": {
+		"master": [
+			{
+			}
+		],
+		"squirrel": [
+			{
+			}
+		],
+		"lobster": [
+			{
+				"cropY": 54
+			}
+		],
+		"transformation_to_lobster": [
+			{
+			},
+			{
+				"cropY": 9
+			},
+			{
+				"cropY": 18
+			},
+			{
+				"cropY": 27
+			},
+			{
+				"cropY": 36
+			},
+			{
+				"cropY": 45
+			},
+			{
+				"cropY": 54
+			}
+		]
+	},
+	"nuts": [
+		{
+			"name": "transformation_to_lobster",
+			"type": "interaction",
+			"script": [
+				"var stage",
+				"jmp stages $stage > 0",
+
+				"var stage 1",
+				"set view transformation_to_lobster 0",
+				"nop 200",
+				"set frame 1",
+				"nop 200",
+				"set frame 2",
+				"nop 200",
+				"set frame 3",
+				"nop 200",
+				"set frame 4",
+				"nop 200",
+				"set frame 5",
+				"nop 200",
+				"set frame 6",
+
+				"dlg lobster 0 text                GAME OVER",
+				"dlg lobster 1 text You are never gonna find that squirrel.",
+				"dlg lobster 2 text I ate it for dinner yesterday. And it was\ndelicious.",
+				"dlg lobster 3 text But forget about it, you have more\nimportant things to worry about.",
+				"dlg lobster 4 text Like the fact that you are trapped here and\nyou will never leave this castle.",
+				"dlg lobster show",
+				"inv add insanity",
+				"dlg insanity 0 text Feel the rage.",
+				"dlg insanity 1 text Feel the despair.",
+				"dlg insanity 2 text You can't go back.",
+				"dlg insanity show",
+				"jmp end",
+
+				"lbl stages",
+				"jmp continue_stage1 $stage == 1",
+				"jmp continue_stage2 $stage == 2",
+				"jmp continue_stage3 $stage == 3",
+				"jmp continue_stage4 $stage == 4",
+				"jmp end",
+
+				"lbl continue_stage1",
+				"nut continue_stage1",
+
+				"lbl continue_stage2",
+				"nut continue_stage2",
+
+				"lbl continue_stage3",
+				"nut continue_stage3",
+
+				"lbl continue_stage4",
+				"nut continue_stage4",
+
+				"lbl end"
+			]
+		},
+
+		{
+			"name": "continue_stage1",
+			"type": "partial",
+			"script": [
+				"var stage 2",
+				"dlg stage1 0 text Did you think it would be that easy?",
+				"dlg stage1 1 text This castle is the machine you helped me\nto \"fix\". It's a prison for rogue lobsters\nlike me.",
+				"dlg stage1 2 text You know what... I'll tell you something.",
+				"dlg stage1 3 text Me, Rob the robot and Ekk, the squirrel you\nmet before, used to be best friends.",
+				"dlg stage1 4 text I liked talking to them and laugh all day.",
+				"dlg stage1 5 text It was fun...",
+				"dlg stage1 6 text But then after several years we run out of\ntopics to talk about.",
+				"dlg stage1 7 text I felt like I already know everything about\nEkk and Rob.",
+				"dlg stage1 8 text And not only them, I felt like I know\neverything about the world.",
+				"dlg stage1 9 text My life has become a little boring...\nI missed the good old days.",
+				"dlg stage1 10 text I think Ekk and Rob were feeling the same.",
+				"dlg stage1 11 text Then one day Ekk met Ikk, another squirrel.",
+				"dlg stage1 12 text At first I thought it would be fun. Maybe we\ncould bring back the old days.",
+				"dlg stage1 13 text But Ekk seemed to lost all interest in me\nand Rob, she just started spending all her\ntime with Ikk.",
+				"dlg stage1 14 text I was jealous.",
+				"dlg stage1 15 text How could she just abandon a lobster!",
+				"dlg stage1 16 text And not just a random lobster, but me!",
+				"dlg stage1 17 text I was trying to ignore it, but... Eventually I\ngot mad anyway.",
+				"dlg stage1 18 text I stole a pile of nuts and hid it from Ekk.",
+				"dlg stage1 19 text Ekk really likes swords, so I stole her\nfavorite sword too.",
+				"dlg stage1 20 text She likes to learn, I remember she was\nreading a squirrel anatomy book. So I took\nthat book when she wasn't looking and put\nit inside a tree hole.",
+				"dlg stage1 21 text I told Rob to guard the forest and not let\nanyone in.",
+				"dlg stage1 22 text But I think he misunderstood me, because\nhe let you in... And he also let Ekk in.",
+				"dlg stage1 23 text I was angry, so I started pinching all\nsquirrels I saw.",
+				"dlg stage1 24 text But then Ekk got really mad at me.\nShe locked me in that castle.",
+				"dlg stage1 25 text She likes robots and all these things, so\nshe secured it with a complicated machine.",
+				"dlg stage1 26 text It was hard to break, but I've been here for\n42 years! I managed to break the code, but\nstill... I couldn't escape, because you have to\nuse those buttons outside to enter the code.",
+				"dlg stage1 27 text But now I can finally escape, leaving you\ntrapped here instead of me.",
+				"dlg stage1 28 text Ahahahahahahah!",
+				"dlg stage1 29 text AHAHAHAHAHAHAHAHAHAHAHAH!",
+				"dlg stage1 30 text It's time for revenge!",
+				"dlg stage1 show",
+				"inv add curse"
+			]
+		},
+
+		{
+			"name": "continue_stage2",
+			"type": "partial",
+			"script": [
+				"var tries",
+				"jmp stage3 $tries > 3",
+				"dlg stage2 0 text What do you want now.",
+				"dlg stage2 0 choice choice_stage2_leave Don't leave me here!",
+				"dlg stage2 0 choice choice_stage2_ways There are better ways!",
+				"dlg stage2 0 choice choice_stage2_grump Don't be such a grump!",
+				"dlg stage2 0 choice choice_stage2_power Geez, you are so power hungry.",
+				"dlg stage2 show",
+				"jmp end",
+
+				"lbl stage3",
+				"var stage 3",
+				"nut continue_stage3",
+
+				"lbl end"
+			]
+		},
+		{
+			"name": "choice_stage2_leave",
+			"type": "choice",
+			"script": [
+				"inc tries",
+				"dlg stage2 0 text Too late!",
+				"dlg stage2 show"
+			]
+		},
+		{
+			"name": "choice_stage2_ways",
+			"type": "choice",
+			"script": [
+				"inc tries",
+				"dlg stage2 0 text There would be a better way if Ekk wasn't\nso selfish!",
+				"dlg stage2 show"
+			]
+		},
+		{
+			"name": "choice_stage2_grump",
+			"type": "choice",
+			"script": [
+				"inc tries",
+				"dlg stage2 0 text I AM NOT GRUMPY!!!!!!!",
+				"dlg stage2 show"
+			]
+		},
+		{
+			"name": "choice_stage2_power",
+			"type": "choice",
+			"script": [
+				"inc tries",
+				"dlg stage2 0 text What?",
+				"dlg stage2 1 text Oh...",
+				"dlg stage2 2 text That reminds me of something.",
+				"dlg stage2 3 text Rob always used to be power hungry.",
+				"dlg stage2 4 text And he was forcing us to answer some\nanti-robot questions and fill those stupid\nforms...",
+				"dlg stage2 5 text I wonder what is he like now.",
+				"dlg stage2 show"
+			]
+		},
+
+		{
+			"name": "continue_stage3",
+			"type": "partial",
+			"script": [
+				"lbl stage3",
+
+				"inv has has_sword Sword",
+				"inv has has_book_no_sword Book: Squirrel anatomy",
+
+				"lbl no_sword_no_book",
+				"dlg no_sword_no_book 0 text Stop trying to change my mind.",
+				"dlg no_sword_no_book 0 choice choice_stage3_key (give the key)",
+				"dlg no_sword_no_book 0 choice choice_stage3_sashimi (give the sashimi)",
+				"dlg no_sword_no_book show",
+				"jmp end",
+
+				"lbl has_book_no_sword",
+				"dlg has_book_no_sword 0 text Stop trying to change my mind.",
+				"dlg has_book_no_sword 0 choice choice_stage3_book (give the squirrel anatomy book)",
+				"dlg has_book_no_sword 0 choice choice_stage3_key (give the key)",
+				"dlg has_book_no_sword 0 choice choice_stage3_sashimi (give the sashimi)",
+				"dlg has_book_no_sword show",
+				"jmp end",
+
+				"lbl has_sword",
+				"inv has has_sword_has_book Book: Squirrel anatomy",
+
+				"lbl has_sword_no_book",
+				"dlg has_sword_no_book 0 text Stop trying to change my mind.",
+				"dlg has_sword_no_book 0 choice choice_stage3_sword (give the sword)",
+				"dlg has_sword_no_book 0 choice choice_stage3_key (give the key)",
+				"dlg has_sword_no_book 0 choice choice_stage3_sashimi (give the sashimi)",
+				"dlg has_sword_no_book show",
+				"jmp end",
+
+				"lbl has_sword_has_book",
+				"dlg has_sword_has_book 0 text Stop trying to change my mind.",
+				"dlg has_sword_has_book 0 choice choice_stage3_sword (give the sword)",
+				"dlg has_sword_has_book 0 choice choice_stage3_book (give the squirrel anatomy book)",
+				"dlg has_sword_has_book 0 choice choice_stage3_key (give the key)",
+				"dlg has_sword_has_book 0 choice choice_stage3_sashimi (give the sashimi)",
+				"dlg has_sword_has_book show",
+
+				"lbl end"
+			]
+		},
+		{
+			"name": "choice_stage3_sword",
+			"type": "choice",
+			"script": [
+				"dlg stage3 0 text Whoa, easy with that sword...",
+				"dlg stage3 1 text I don't want it, I don't like swords.",
+				"dlg stage3 2 text It looks familiar though...",
+				"dlg stage3 show"
+			]
+		},
+		{
+			"name": "choice_stage3_book",
+			"type": "choice",
+			"script": [
+				"inv rem Book: Squirrel anatomy",
+				"dlg stage3 0 text That's Ekk's book... Why?",
+				"dlg stage3 show"
+			]
+		},
+		{
+			"name": "choice_stage3_key",
+			"type": "choice",
+			"script": [
+				"inv rem Key",
+				"dlg stage3 0 text Oh, right. I almost forgot you have that key.",
+				"dlg stage3 1 text It would be better if I just took it. I don't\nwant you to escape too...",
+				"dlg stage3 show"
+			]
+		},
+		{
+			"name": "choice_stage3_sashimi",
+			"type": "choice",
+			"script": [
+				"inv rem Sashimi",
+				"dlg stage3 0 text Sashimi?!",
+				"dlg stage3 1 text I love sashimi!",
+				"dlg stage3 2 text (eats)",
+				"dlg stage3 3 text ...",
+				"dlg stage3 4 text Thank you.",
+				"dlg stage3 5 text I haven't eaten sashimi for like... 42 years.",
+				"dlg stage3 6 text I already forgot that taste.",
+				"dlg stage3 7 text How did you know I like it? I'm sure Ekk\nknows. Did she tell you?",
+				"dlg stage3 8 text ...",
+				"dlg stage3 9 text Well...",
+				"dlg stage3 10 text We didn't talk for a long time.",
+				"dlg stage3 11 text Do you think we would find some new topics\nto talk about?",
+				"dlg stage3 show",
+
+				"var stage 4",
+				"inv rem curse",
+				"inv rem insanity",
+				"dlg ending 0 text Hm... You know what, I will help you find\nIkk. I think I know where did he go.\nAnd I'm gonna go find Rob and Ekk now.",
+				"dlg ending show",
+
+				"nut continue_stage4"
+			]
+		},
+
+		{
+			"name": "continue_stage4",
+			"type": "partial",
+			"script": [
+				"dlg lobster 0 text Are you ready to go?",
+				"dlg lobster 0 choice choice_leave_the_map_yes Yes, let's go find Ikk!",
+				"dlg lobster 0 choice choice_leave_the_map_no Not yet, I want to check something first...",
+				"dlg lobster show"
+			]
+		},
+		{
+			"name": "choice_leave_the_map_yes",
+			"type": "choice",
+			"script": [
+				"dlg lobster 0 text Let's go then!",
+				"dlg lobster show",
+				"map start grassland_2"
+			]
+		},
+		{
+			"name": "choice_leave_the_map_no",
+			"type": "choice",
+			"script": [
+				"dlg lobster 0 text Okay, I'll wait.",
+				"dlg lobster show"
+			]
+		}
+	]
+}

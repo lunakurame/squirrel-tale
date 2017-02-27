@@ -3,12 +3,552 @@
 	"entrances": {
 		"start": {
 			"posX": 80,
-			"posY": 60,
+			"posY": 240,
 			"view": "master",
 			"frame": 0,
 			"direction": "down"
 		}
 	},
 	"entities": [
+		{
+			"name": "tree_4",
+			"posX": 90,
+			"posY": 440,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_2",
+			"posX": 227,
+			"posY": 377,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_3",
+			"posX": 280,
+			"posY": 120,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_1",
+			"posX": 634,
+			"posY": 80,
+			"posZ": "over",
+			"view": "trunk",
+			"frame": 0
+		},
+		{
+			"name": "tree_2",
+			"posX": 614,
+			"posY": 440,
+			"posZ": "over",
+			"view": "trunk",
+			"frame": 0
+		},
+		{
+			"name": "tree_3",
+			"posX": 540,
+			"posY": 228,
+			"posZ": "over",
+			"view": "trunk",
+			"frame": 0
+		},
+		{
+			"name": "tree_4",
+			"posX": 506,
+			"posY": 115,
+			"posZ": "over",
+			"view": "trunk",
+			"frame": 0
+		},
+		{
+			"name": "button",
+			"posX": 150,
+			"posY": 355,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0,
+			"nuts": [
+				{
+					"name": "interaction",
+					"type": "interaction",
+					"script": [
+						"var locked",
+						"var pressed",
+						"jmp locked $locked > 0",
+						"jmp pressed $pressed > 0",
+
+						"dlg turn_on 0 text * Looks like a button. Press it?",
+						"dlg turn_on 0 choice choice_press_yes Yes.",
+						"dlg turn_on 0 choice choice_press_no No.",
+						"dlg turn_on show",
+						"jmp end",
+
+						"lbl pressed",
+						"dlg turn_off 0 text * Press the button again?",
+						"dlg turn_off 0 choice choice_press_again_yes Yes.",
+						"dlg turn_off 0 choice choice_press_again_no No.",
+						"dlg turn_off show",
+						"jmp end",
+
+						"lbl locked",
+						"dlg broken 0 text * Looks like a broken button.\n  You can't press it.",
+						"dlg broken show",
+
+						"lbl end"
+					]
+				},
+				{
+					"name": "voice",
+					"type": "partial",
+					"script": [
+						"nop 2000",
+						"var locked 1",
+						"inv add voice_0",
+						"dlg voice 0 text Hey! Who pressed that button?!",
+						"dlg voice 0 choice choice_voice_me It was me!",
+						"dlg voice 0 choice choice_voice_not Not me!",
+						"dlg voice 0 choice choice_voice_who Who is it?!",
+						"dlg voice show"
+					]
+				},
+				{
+					"name": "choice_press_yes",
+					"type": "choice",
+					"script": [
+						"var pressed 1",
+						"set view on",
+						"nut voice"
+					]
+				},
+				{
+					"name": "choice_press_no",
+					"type": "choice",
+					"script": [
+					]
+				},
+				{
+					"name": "choice_press_again_yes",
+					"type": "choice",
+					"script": [
+						"dlg turn_off 0 text * The button is stuck.",
+						"dlg turn_off show",
+						"nut voice"
+					]
+				},
+				{
+					"name": "choice_press_again_no",
+					"type": "choice",
+					"script": [
+						"nut voice"
+					]
+				},
+
+				{
+					"name": "choice_voice_me",
+					"type": "choice",
+					"script": [
+						"dlg voice 0 text Why would you do that?!",
+						"dlg voice 1 text You just broke my machine!",
+						"dlg voice 2 text I was trying to make it work for like a\nweek and you just ruined it...",
+						"dlg voice 3 text You've got to help me fix it now.",
+						"dlg voice 4 text Go up and you will find more buttons, press\nthe red one.",
+						"dlg voice show"
+					]
+				},
+				{
+					"name": "choice_voice_not",
+					"type": "choice",
+					"script": [
+						"dlg voice 0 text I know it was you!",
+						"dlg voice 1 text You just broke my machine!",
+						"dlg voice 2 text I was trying to make it work for like a\nweek and you just ruined it...",
+						"dlg voice 3 text You've got to help me fix it now.",
+						"dlg voice 4 text Go up and you will find more buttons, press\nthe red one.",
+						"dlg voice show"
+					]
+				},
+				{
+					"name": "choice_voice_who",
+					"type": "choice",
+					"script": [
+						"dlg voice 0 text Who am I? More importantly, who are you!",
+						"dlg voice 1 text And why are you breaking my stuff!",
+						"dlg voice 2 text You've got to help me fix it now.",
+						"dlg voice 3 text Go up and you will find more buttons, press\nthe red one.",
+						"dlg voice show"
+					]
+				}
+			]
+		},
+		{
+			"name": "button",
+			"variant": "blue",
+			"posX": 60,
+			"posY": 40,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0,
+			"nuts": [
+				{
+					"name": "interaction",
+					"type": "interaction",
+					"script": [
+						"inv has voice_0 voice_0",
+						"inv has voice_1 voice_1",
+						"inv has voice_2 voice_2",
+						"inv has voice_3 voice_3",
+						"inv has voice_4 end",
+						"inv has voice_5 voice_5",
+						"inv has voice_6 voice_6",
+
+						"dlg broken 0 text * Looks like a broken button.\n  You can't press it.",
+						"dlg broken show",
+						"jmp end",
+
+						"lbl voice_0",
+						"set view on",
+						"dlg voice_0 0 text That's not red!",
+						"dlg voice_0 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_1",
+						"inv rem voice_1",
+						"inv add voice_2",
+						"set view on",
+						"dlg voice_1 0 text Okay... Now yellow.",
+						"dlg voice_1 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_2",
+						"set view on",
+						"dlg voice_2 0 text I said yellow...",
+						"dlg voice_2 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_3",
+						"inv rem voice_3",
+						"inv add voice_4",
+						"set view on",
+						"inv add sashimi_show",
+						"nop 200",
+						"dlg voice_3 0 text Oh... What's that.",
+						"dlg voice_3 1 text Are you sure you pressed the blue button?",
+						"dlg voice_3 2 text Well, go check that thing.",
+						"dlg voice_3 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_5",
+						"set view on",
+						"dlg voice_5 0 text Green!",
+						"dlg voice_5 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_6",
+						"set view on",
+						"dlg voice_6 0 text What? Are you scared? Press the red one!",
+						"dlg voice_6 show",
+						"set view off",
+						"jmp end",
+
+						"lbl end"
+					]
+				}
+			]
+		},
+		{
+			"name": "button",
+			"variant": "green",
+			"posX": 100,
+			"posY": 40,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0,
+			"nuts": [
+				{
+					"name": "interaction",
+					"type": "interaction",
+					"script": [
+						"inv has voice_0 voice_0",
+						"inv has voice_1 voice_1",
+						"inv has voice_2 voice_2",
+						"inv has voice_3 voice_3",
+						"inv has voice_4 end",
+						"inv has voice_5 voice_5",
+						"inv has voice_6 voice_6",
+
+						"dlg broken 0 text * Looks like a broken button.\n  You can't press it.",
+						"dlg broken show",
+						"jmp end",
+
+						"lbl voice_0",
+						"set view on",
+						"dlg voice_0 0 text That's not red!",
+						"dlg voice_0 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_1",
+						"set view on",
+						"dlg voice_1 0 text Not this one... Blue!",
+						"dlg voice_1 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_2",
+						"set view on",
+						"dlg voice_2 0 text I said yellow...",
+						"dlg voice_2 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_3",
+						"set view on",
+						"dlg voice_3 0 text Blue!",
+						"dlg voice_3 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_5",
+						"inv rem voice_5",
+						"inv add voice_6",
+						"set view on",
+						"dlg voice_5 0 text I'm in that castle, someone locked the door\nand I can't go out.",
+						"dlg voice_5 1 text Now the red one.",
+						"dlg voice_5 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_6",
+						"set view on",
+						"dlg voice_6 0 text What? Are you scared? Press the red one!",
+						"dlg voice_6 show",
+						"set view off",
+						"jmp end",
+
+						"lbl end"
+					]
+				}
+			]
+		},
+		{
+			"name": "button",
+			"variant": "yellow",
+			"posX": 140,
+			"posY": 40,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0,
+			"nuts": [
+				{
+					"name": "interaction",
+					"type": "interaction",
+					"script": [
+						"inv has voice_0 voice_0",
+						"inv has voice_1 voice_1",
+						"inv has voice_2 voice_2",
+						"inv has voice_3 voice_3",
+						"inv has voice_4 end",
+						"inv has voice_5 voice_5",
+						"inv has voice_6 voice_6",
+
+						"dlg broken 0 text * Looks like a broken button.\n  You can't press it.",
+						"dlg broken show",
+						"jmp end",
+
+						"lbl voice_0",
+						"set view on",
+						"dlg voice_0 0 text That's not red!",
+						"dlg voice_0 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_1",
+						"set view on",
+						"dlg voice_1 0 text Not this one... Blue!",
+						"dlg voice_1 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_2",
+						"inv rem voice_2",
+						"inv add voice_3",
+						"set view on",
+						"dlg voice_2 0 text Good! You are good at clicking buttons!",
+						"dlg voice_2 1 text Do you want to know what does this\nmachine do?",
+						"dlg voice_2 2 text There is a castle nearby. It uses some cool\ntricks, I will show you later!",
+						"dlg voice_2 3 text Now press the blue button.",
+						"dlg voice_2 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_3",
+						"set view on",
+						"dlg voice_3 0 text Blue!",
+						"dlg voice_3 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_5",
+						"set view on",
+						"dlg voice_5 0 text Green!",
+						"dlg voice_5 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_6",
+						"set view on",
+						"dlg voice_6 0 text What? Are you scared? Press the red one!",
+						"dlg voice_6 show",
+						"set view off",
+						"jmp end",
+
+						"lbl end"
+					]
+				}
+			]
+		},
+		{
+			"name": "button",
+			"posX": 180,
+			"posY": 40,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0,
+			"nuts": [
+				{
+					"name": "interaction",
+					"type": "interaction",
+					"script": [
+						"inv has voice_0 voice_0",
+						"inv has voice_1 voice_1",
+						"inv has voice_2 voice_2",
+						"inv has voice_3 voice_3",
+						"inv has voice_4 end",
+						"inv has voice_5 voice_5",
+						"inv has voice_6 voice_6",
+
+						"dlg broken 0 text * Looks like a broken button.\n  You can't press it.",
+						"dlg broken show",
+						"jmp end",
+
+						"lbl voice_0",
+						"inv rem voice_0",
+						"inv add voice_1",
+						"set view on",
+						"dlg voice_0 0 text Good. Now press the blue one.",
+						"dlg voice_0 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_1",
+						"set view on",
+						"dlg voice_1 0 text Not this one... Blue!",
+						"dlg voice_1 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_2",
+						"set view on",
+						"dlg voice_2 0 text I said yellow...",
+						"dlg voice_2 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_3",
+						"set view on",
+						"dlg voice_3 0 text Blue!",
+						"dlg voice_3 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_5",
+						"set view on",
+						"dlg voice_5 0 text Green!",
+						"dlg voice_5 show",
+						"set view off",
+						"jmp end",
+
+						"lbl voice_6",
+						"inv rem voice_6",
+						"inv add Key",
+						"set view on",
+						"dlg voice_6 0 text Okay! I think you just unlocked the door! :D",
+						"dlg voice_6 1 text Thank you!",
+						"dlg voice_6 show",
+						"set view off",
+						"jmp end",
+
+						"lbl end"
+					]
+				}
+			]
+		},
+		{
+			"name": "forest_2_castle",
+			"posX": 615,
+			"posY": 104,
+			"posZ": "under",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "sashimi",
+			"posX": 120,
+			"posY": 100,
+			"posZ": "under",
+			"view": "invisible",
+			"frame": 0
+		},
+		{
+			"name": "forest_2_castle_door",
+			"posX": 788,
+			"posY": 290,
+			"posZ": "under",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "forest_2_castle_door_fg",
+			"posX": 788,
+			"posY": 290,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "forest_2_swamp",
+			"posX": 962,
+			"posY": 479,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "forest_2_bushes",
+			"posX": 776,
+			"posY": 103,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "lobster",
+			"posX": 1212,
+			"posY": 269,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		}
 	]
 }
