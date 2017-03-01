@@ -2,13 +2,721 @@
 	"label": "Grassland 2",
 	"entrances": {
 		"start": {
-			"posX": 80,
-			"posY": 60,
+			"posX": 640,
+			"posY": 880,
 			"view": "master",
 			"frame": 0,
-			"direction": "down"
+			"direction": "up"
 		}
 	},
 	"entities": [
+		{
+			"name": "grassland_river",
+			"posX": 1279,
+			"posY": 959,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "rob",
+			"posX": 560,
+			"posY": 490,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0,
+			"nuts": [
+				{
+					"name": "interaction",
+					"type": "interaction",
+					"script": [
+						"var stage",
+						"jmp stages $stage > 0",
+
+						"var stage 1",
+
+						"dlg robot 0 text Oh, hello again!",
+						"dlg robot 1 text I've been thinking about the tests and now\nI'm pretty sure they weren't hard enough.",
+						"dlg robot 2 text Which means you might still be a robot.",
+						"dlg robot 3 text NO ROBOTS ALLOWED",
+						"dlg robot show",
+						"jmp end",
+
+						"lbl stages",
+						"dlg robots 0 text NO ROBOTS ALLOWED",
+						"dlg robots show",
+
+						"lbl end"
+					]
+				}
+			]
+		},
+		{
+			"name": "lobster",
+			"posX": 720,
+			"posY": 490,
+			"posZ": "over",
+			"view": "lobster",
+			"frame": 0,
+			"nuts": [
+				{
+					"name": "interaction",
+					"type": "interaction",
+					"script": [
+						"var stage",
+						"jmp stages $stage > 0",
+
+						"var stage 1",
+
+						"dlg lobster 0 text Hi!",
+						"dlg lobster 1 text Actually I'm not that scary...",
+						"dlg lobster 2 text It was nice to meet you.",
+						"dlg lobster 3 text (pinches)",
+						"dlg lobster show",
+						"jmp end",
+
+						"lbl stages",
+						"dlg pinch 0 text (pinches)",
+						"dlg pinch show",
+
+						"lbl end"
+					]
+				}
+			]
+		},
+		{
+			"name": "willow_tree",
+			"posX": 640,
+			"posY": 480,
+			"posZ": "over",
+			"view": "master_hole",
+			"frame": 0,
+			"nuts": [
+				{
+					"name": "interaction",
+					"type": "interaction",
+					"script": [
+						"var stage",
+						"jmp stages $stage > 0",
+
+						"dlg stage0 0 text * Looks like a squirrel lives on this tree!",
+						"dlg stage0 0 choice choice_stage0_talk Hello, squirrel!",
+						"dlg stage0 0 choice choice_stage0_knock (knock)",
+						"dlg stage0 0 choice choice_stage0_ignore (ignore)",
+						"dlg stage0 show",
+						"jmp end",
+
+						"lbl stages",
+						"set view squirrel_coming_out 0",
+						"nop 300",
+						"set frame 1",
+						"nop 300",
+						"set frame 2",
+						"nop 300",
+						"set frame 3",
+						"nop 300",
+						"set frame 4",
+						"jmp continue_stage1 $stage == 1",
+						"jmp continue_stage2 $stage == 2",
+						"jmp continue_stage3 $stage == 3",
+						"jmp continue_stage4 $stage == 4",
+						"jmp continue_stage5 $stage == 5",
+						"jmp continue_stage6 $stage == 6",
+						"jmp continue_stage7 $stage == 7",
+						"jmp continue_stage8 $stage == 8",
+						"jmp end",
+
+						"lbl continue_stage5",
+						"nut continue_stage5",
+
+						"lbl end"
+					]
+				},
+				{
+					"name": "choice_stage1_yes",
+					"type": "choice",
+					"script": [
+						"var stage 2",
+						"dlg squirrel 0 text That's nice to hear, I like you too! :D",
+						"dlg squirrel 1 text It was fun to play with you.",
+						"dlg squirrel 2 text Thank you for finding my friend squirrel!",
+						"dlg squirrel 2 choice choice_stage2_np No problem!",
+						"dlg squirrel 2 choice choice_stage2_didnt But I didn't find the squirrel...",
+						"dlg squirrel show"
+					]
+				},
+				{
+					"name": "choice_stage1_no",
+					"type": "choice",
+					"script": [
+						"var stage 2",
+						"dlg squirrel 0 text Well, that's weird...",
+						"dlg squirrel 1 text How can you not like squirrels after\nplaying with a squirrel for so long?",
+						"dlg squirrel 2 text I think you are just trying to trick me.",
+						"dlg squirrel 3 text Anyway, it was fun to play with you.",
+						"dlg squirrel 4 text Thank you for finding my friend squirrel!",
+						"dlg squirrel 4 choice choice_stage2_np No problem!",
+						"dlg squirrel 4 choice choice_stage2_didnt But I didn't find the squirrel...",
+						"dlg squirrel show"
+					]
+				},
+
+				{
+					"name": "choice_stage2_np",
+					"type": "choice",
+					"script": [
+						"var stage 3",
+						"dlg squirrel 0 text Actually it was a lobster using magic to\nlook like a squirrel...",
+						"dlg squirrel 1 text I'm the only squirrel here. Ikk isn't real.\nAll that story about the lost squirrel was\nfake. :D",
+						"dlg squirrel 1 choice choice_stage3_why But why?",
+						"dlg squirrel 1 choice choice_stage3_fake What?!?!?! You fake lying squirrel!!!",
+						"dlg squirrel show"
+					]
+				},
+				{
+					"name": "choice_stage2_didnt",
+					"type": "choice",
+					"script": [
+						"dlg squirrel 0 text You didn't? I thought you found a squirrel\nin the castle.",
+						"dlg squirrel show",
+						"nut choice_stage2_np"
+					]
+				},
+
+				{
+					"name": "choice_stage3_why",
+					"type": "choice",
+					"script": [
+						"var stage 4",
+						"dlg squirrel 0 text You said you like playing with squirrels.",
+						"dlg squirrel 1 text And I like playing with you too!",
+						"dlg squirrel 1 choice choice_stage4_fake But the story wasn't real...",
+						"dlg squirrel show"
+					]
+				},
+				{
+					"name": "choice_stage3_fake",
+					"type": "choice",
+					"script": [
+						"dlg squirrel 0 text Hey, I'm not fake.",
+						"dlg squirrel show",
+						"nut choice_stage3_why"
+					]
+				},
+
+				{
+					"name": "choice_stage4_fake",
+					"type": "choice",
+					"script": [
+						"var stage 5",
+						"dlg squirrel 0 text Does it matter?\nYou had fun anyway, didn't you?",
+						"dlg squirrel 1 text It was real enough for us.",
+						"dlg squirrel 2 text We've spent some nice time together. You\nthought it was real, your choices were real,\nyour feelings were real.",
+						"dlg squirrel 3 text Sounds pretty real to me.",
+						"dlg squirrel 4 text Everything ends some day and not\neverything ends as we expect, but what\nmatters is the journey.",
+						"dlg squirrel 5 text All the time you spend doing nice things is\nvaluable, even if it doesn't make you\nachieve anything.",
+						"dlg squirrel 6 text So I hope you liked our little journey! :D",
+						"dlg squirrel 7 text Feel free to play with me again, I'll pretend\nto not remember anything~",
+						"dlg squirrel 8 text And by the way...",
+						"dlg squirrel 9 text Are talking squirrels even real?",
+						"dlg squirrel 10 text ...",
+						"dlg squirrel 11 text Ekk ekk!",
+						"dlg squirrel show",
+						"nut partial_decline_animation"
+					]
+				},
+				{
+					"name": "choice_stage3_fake",
+					"type": "choice",
+					"script": [
+						"dlg squirrel 0 text Hey, I'm not fake.",
+						"dlg squirrel show",
+						"nut choice_stage3_why"
+					]
+				},
+
+				{
+					"name": "continue_stage5",
+					"type": "choice",
+					"script": [
+						"dlg squirrel 0 text Ekk ekk!",
+						"dlg squirrel show",
+						"nut partial_decline_animation"
+					]
+				}
+			]
+		},
+		{
+			"name": "sword",
+			"posX": 160,
+			"posY": 170,
+			"posZ": "over",
+			"view": "taken",
+			"frame": 0,
+			"nuts": [
+				{
+					"name": "respawn",
+					"type": "auto",
+					"script": [
+						"inv has has_item Sword",
+						"var taken 0",
+						"set view master",
+						"jmp end",
+
+						"lbl has_item",
+						"var taken 1",
+						"set view taken",
+
+						"lbl end"
+					]
+				}
+			]
+		},
+		{
+			"name": "big_rock",
+			"posX": 124,
+			"posY": 142,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "medium_rock",
+			"posX": 187,
+			"posY": 163,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_1",
+			"posX": 1100,
+			"posY": 180,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_2",
+			"posX": 1185,
+			"posY": 280,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "tree_3",
+			"posX": 1188,
+			"posY": 118,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "grass_clump",
+			"posX": 600,
+			"posY": 530,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "grass_clump",
+			"variant": "2",
+			"posX": 650,
+			"posY": 515,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "grass_clump",
+			"variant": "3",
+			"posX": 670,
+			"posY": 570,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 238,
+			"posY": 656,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 220,
+			"posY": 670,
+			"posZ": "over",
+			"view": "master",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 230,
+			"posY": 665,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 225,
+			"posY": 640,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 229,
+			"posY": 652,
+			"posZ": "over",
+			"view": "master",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 218,
+			"posY": 654,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 210,
+			"posY": 630,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 203,
+			"posY": 645,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 190,
+			"posY": 660,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 204,
+			"posY": 675,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 224,
+			"posY": 660,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 222,
+			"posY": 647,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 219,
+			"posY": 636,
+			"posZ": "over",
+			"view": "master",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 213,
+			"posY": 646,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 214,
+			"posY": 678,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 211,
+			"posY": 666,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 204,
+			"posY": 657,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 192,
+			"posY": 677,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 200,
+			"posY": 635,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 188,
+			"posY": 632,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 193,
+			"posY": 648,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 181,
+			"posY": 642,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 182,
+			"posY": 656,
+			"posZ": "over",
+			"view": "master",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 172,
+			"posY": 640,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 158,
+			"posY": 642,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 168,
+			"posY": 652,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 158,
+			"posY": 656,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 173,
+			"posY": 661,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 162,
+			"posY": 666,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 181,
+			"posY": 673,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 174,
+			"posY": 670,
+			"posZ": "over",
+			"view": "master",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 165,
+			"posY": 677,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 154,
+			"posY": 674,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 178,
+			"posY": 682,
+			"posZ": "over",
+			"view": "master",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 166,
+			"posY": 691,
+			"posZ": "over",
+			"view": "big",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 157,
+			"posY": 687,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 151,
+			"posY": 661,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 142,
+			"posY": 680,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 236,
+			"posY": 638,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 244,
+			"posY": 647,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 254,
+			"posY": 654,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 248,
+			"posY": 662,
+			"posZ": "over",
+			"view": "big",
+			"frame": 2,
+			"nuts": [
+				{
+					"name": "talking_papaver",
+					"type": "interaction",
+					"script": [
+						"dlg talk 0 text Oh no...",
+						"dlg talk show"
+					]
+				}
+			]
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 234,
+			"posY": 674,
+			"posZ": "over",
+			"view": "master",
+			"frame": 1
+		},
+		{
+			"name": "papaver_flower",
+			"posX": 276,
+			"posY": 658,
+			"posZ": "over",
+			"view": "big",
+			"frame": 0
+		},
+		{
+			"name": "sign",
+			"posX": 250,
+			"posY": 700,
+			"posZ": "over",
+			"view": "master",
+			"frame": 0,
+			"nuts": [
+				{
+					"name": "text",
+					"type": "interaction",
+					"script": [
+						"dlg caption 0 text I think at this point you can just walk on\nthe flowers if you want...",
+						"dlg caption show"
+					]
+				}
+			]
+		}
 	]
 }

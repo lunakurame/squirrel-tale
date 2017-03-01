@@ -57,7 +57,7 @@
 	},
 	"nuts": [
 		{
-			"name": "transformation_to_lobster",
+			"name": "interaction",
 			"type": "interaction",
 			"script": [
 				"var stage",
