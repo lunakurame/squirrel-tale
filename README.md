@@ -4,5 +4,5 @@
 
 ## Description
 
-A game about finding a lost squirrel. Created using
-[Nuthead engine](https://github.com/kurogetsusai/nuthead).
+A video game about helping a squirrel find her lost friend. Created with the
+[Nuthead engine](https://github.com/lunakurame/nuthead).

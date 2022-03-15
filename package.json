@@ -1,0 +1,16 @@
+{
+  "name": "squirrel-tale",
+  "version": "1.0.0",
+  "description": "Squirrel Tale: a video game about helping a squirrel find her lost friend.",
+  "main": "index.html",
+  "repository": "https://github.com/lunakurame/squirrel-tale",
+  "author": "Luna Kurame <luna@kurame.org>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "dev": "lite-server"
+  },
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}
