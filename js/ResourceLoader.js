@@ -91,10 +91,10 @@ ResourceLoader.prototype.load = function (format, type, name, variant) {
 		resource.status = this.loaderStatus.loading;
 
 		// load the file
-		$.getJSON(resource.src, json => {
+		fetch(resource.src).then((resource) => resource.json()).then((json) => {
 			resource.file = json;
 			resource.status = this.loaderStatus.completed;
-		}).fail(() => {
+		}).catch(() => {
 			resource.status = this.loaderStatus.error;
 		});
 

@@ -47,10 +47,12 @@ canvas, #black-screen {
 	z-index: 100000;
 	display: flex;
 	background-color: #000;
+	transition: all .3s ease;
 }
 
 #black-screen > div {
 	margin: auto;
+	transition: all .3s ease;
 }
 
 #black-screen img {
@@ -64,3 +66,28 @@ canvas, #black-screen {
 	color: #fff;
 }
 
+#black-screen .loading-icon.rotating {
+	animation: loading-icon-rotate 1s ease-in-out forwards infinite;
+}
+#black-screen .loading-icon.failed {
+	animation: loading-icon-failed .5s ease-in-out forwards 1;
+}
+
+.hidden {
+	visibility: hidden;
+	opacity: 0;
+}
+
+@keyframes loading-icon-rotate {
+	to {
+		transform: rotate(180deg);
+	}
+}
+@keyframes loading-icon-failed {
+	from {
+		transform: rotate(-90deg);
+	}
+	to {
+		transform: rotate(0deg);
+	}
+}

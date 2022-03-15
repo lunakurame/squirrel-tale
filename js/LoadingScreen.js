@@ -17,36 +17,42 @@ var LoadingScreen = function (application) {
 LoadingScreen.prototype.rotateIcon = function () {
 	var that = this;
 
+	var blackScreen = document.querySelector('#black-screen');
+	var loadingIcon = document.querySelector('#black-screen .loading-icon');
+
 	// if black screen is visible and is loading, then rotate the loading icon (loop)
-	if ($('#black-screen').css('display') != 'none' && $('#black-screen .loading-icon').attr('alt').indexOf('fail') < 0) {
-		$('#black-screen .loading-icon').rotate({
-			duration: 1000,
-			angle: 0,
-			animateTo: 180,
-			callback: that.rotateIcon
-		});
+	if (blackScreen.style.display !== 'none' && loadingIcon.getAttribute('alt').indexOf('fail') < 0) {
+		loadingIcon.classList.add('rotating');
 	}
 };
 
 LoadingScreen.prototype.fadeIn = function (callback) {
 	// turn on black screen
-	$('#black-screen').fadeIn(300, callback);
+	document.querySelector('#black-screen').classList.remove('hidden');
+	setTimeout(callback, 300);
 };
 
 LoadingScreen.prototype.fadeOut = function (callback) {
 	// turn off black screen
-	$('#black-screen').fadeOut(300, callback);
-	$('#black-screen > div').fadeOut();
+	document.querySelector('#black-screen').classList.add('hidden');
+	document.querySelector('#black-screen > div').classList.add('hidden');
+	setTimeout(callback, 300);
 };
 
 LoadingScreen.prototype.showError = function (message = 'Error – can\'t load all resources.') {
-	$('#black-screen > div').fadeOut(300, function() {
-		$('#black-screen .loading-icon').attr({
-			'src': 'data/image/loading-failed.png',
-			'alt': 'Loading failed icon'
-		});
-		$('#black-screen > div').append('<p>' + message + '</p>').css({
-			'padding-top': '40px'
-		}).fadeIn(300);
-	});
+	var div = document.querySelector('#black-screen > div');
+	var loadingIcon = document.querySelector('#black-screen .loading-icon');
+
+	div.classList.add('hidden');
+	setTimeout(() => {
+		loadingIcon.classList.remove('rotating');
+		loadingIcon.classList.add('failed');
+		loadingIcon.setAttribute('src', 'data/image/loading-failed.png');
+		loadingIcon.setAttribute('alt', 'Loading failed icon');
+		var p = document.createElement('p');
+		p.innerHTML = message;
+		div.append(p);
+		div.style.paddingTop = '40px';
+		div.classList.remove('hidden');
+	}, 300);
 };

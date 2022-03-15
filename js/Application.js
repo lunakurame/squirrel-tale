@@ -105,16 +105,16 @@ Application.prototype.init = function (arg) {
 	case 'setup-environment':
 		// canvas
 		console.log('Application: setting up the canvasList');
-		this.canvasList.addCanvas('map', $('#map')[0]);
-		this.canvasList.addContext('map', $('#map')[0].getContext('2d'));
-		this.canvasList.addCanvas('entity_under', $('#entity_under')[0]);
-		this.canvasList.addContext('entity_under', $('#entity_under')[0].getContext('2d'));
-		this.canvasList.addCanvas('player', $('#player')[0]);
-		this.canvasList.addContext('player', $('#player')[0].getContext('2d'));
-		this.canvasList.addCanvas('entity_over', $('#entity_over')[0]);
-		this.canvasList.addContext('entity_over', $('#entity_over')[0].getContext('2d'));
-		this.canvasList.addCanvas('hud', $('#hud')[0]);
-		this.canvasList.addContext('hud', $('#hud')[0].getContext('2d'));
+		this.canvasList.addCanvas('map', document.getElementById('map'));
+		this.canvasList.addContext('map', document.getElementById('map').getContext('2d'));
+		this.canvasList.addCanvas('entity_under', document.getElementById('entity_under'));
+		this.canvasList.addContext('entity_under', document.getElementById('entity_under').getContext('2d'));
+		this.canvasList.addCanvas('player', document.getElementById('player'));
+		this.canvasList.addContext('player', document.getElementById('player').getContext('2d'));
+		this.canvasList.addCanvas('entity_over', document.getElementById('entity_over'));
+		this.canvasList.addContext('entity_over', document.getElementById('entity_over').getContext('2d'));
+		this.canvasList.addCanvas('hud', document.getElementById('hud'));
+		this.canvasList.addContext('hud', document.getElementById('hud').getContext('2d'));
 		this.canvasList.resizeAll();
 
 		// player
