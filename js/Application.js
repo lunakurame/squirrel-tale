@@ -437,7 +437,8 @@ Application.prototype.init = function (arg) {
 		this.draw();
 
 	case 'done':
-		this.loadingScreen.fadeOut();
+		this.loadingScreen.startFakingLoading();
+		setTimeout(this.loadingScreen.stopFakingLoading, 10000);
 	}
 };
 

@@ -42,6 +42,7 @@ LoadingScreen.prototype.fadeOut = function (callback) {
 LoadingScreen.prototype.showError = function (message = 'Error – can\'t load all resources.') {
 	var div = document.querySelector('#black-screen > div');
 	var loadingIcon = document.querySelector('#black-screen .loading-icon');
+	var controls = document.querySelector('#black-screen .controls');
 
 	div.classList.add('hidden');
 	setTimeout(() => {
@@ -49,10 +50,33 @@ LoadingScreen.prototype.showError = function (message = 'Error – can\'t load a
 		loadingIcon.classList.add('failed');
 		loadingIcon.setAttribute('src', 'data/image/loading-failed.png');
 		loadingIcon.setAttribute('alt', 'Loading failed icon');
+		controls.style.display = 'none';
 		var p = document.createElement('p');
 		p.innerHTML = message;
 		div.append(p);
 		div.style.paddingTop = '40px';
 		div.classList.remove('hidden');
 	}, 300);
+};
+
+LoadingScreen.prototype.startFakingLoading = function () {
+	var blackScreen = document.querySelector('#black-screen');
+	var div = document.querySelector('#black-screen > div');
+	var loadingIcon = document.querySelector('#black-screen .loading-icon');
+
+	blackScreen.classList.remove('hidden');
+	div.classList.remove('hidden');
+	loadingIcon.classList.add('loading');
+};
+
+LoadingScreen.prototype.stopFakingLoading = function () {
+	var blackScreen = document.querySelector('#black-screen');
+	var div = document.querySelector('#black-screen > div');
+	var loadingIcon = document.querySelector('#black-screen .loading-icon');
+	var controls = document.querySelector('#black-screen .controls');
+
+	div.classList.add('hidden');
+	controls.classList.add('hidden');
+	loadingIcon.classList.remove('loading');
+	blackScreen.classList.add('hidden');
 };

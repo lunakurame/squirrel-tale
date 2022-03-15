@@ -66,6 +66,24 @@ canvas, #black-screen {
 	color: #fff;
 }
 
+#black-screen .controls {
+	padding-top: 20px;
+	font-family: Verdana, sans-serif;
+	color: #fff;
+}
+
+#black-screen .controls h1 {
+	text-align: center;
+}
+
+#black-screen .controls td {
+	padding: 5px 8px;
+	width: 20vw;
+}
+#black-screen .controls td:first-of-type {
+	text-align: right;
+}
+
 #black-screen .loading-icon.rotating {
 	animation: loading-icon-rotate 1s ease-in-out forwards infinite;
 }
