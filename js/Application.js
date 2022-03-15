@@ -6,9 +6,10 @@ var Application = function () {
 
 	// data
 	this.lastPressedKey = 0;
-	this.mode = 'game';
+	this.mode = 'loading';
 	this.modePrev = 'game';
 	this.maps = [];
+	this.fakingLoadingTimeout = null;
 
 	// modules
 	this.config = new Config(this);
@@ -201,6 +202,13 @@ Application.prototype.init = function (arg) {
 		// primary
 		this.controls.addToQueue(() => {
 			switch (this.mode) {
+			case 'loading':
+				if (this.fakingLoadingTimeout !== null) {
+					clearTimeout(this.fakingLoadingTimeout);
+					this.loadingScreen.stopFakingLoading();
+					this.mode = 'game';
+				}
+				break;
 			case 'pause':
 				let itemCount = 0;
 				for (let i in this.hud.pauseMenu.items) {
@@ -438,7 +446,10 @@ Application.prototype.init = function (arg) {
 
 	case 'done':
 		this.loadingScreen.startFakingLoading();
-		setTimeout(this.loadingScreen.stopFakingLoading, 10000);
+		this.fakingLoadingTimeout = setTimeout(() => {
+			this.loadingScreen.stopFakingLoading();
+			this.mode = 'game';
+		}, 10000);
 	}
 };
 
